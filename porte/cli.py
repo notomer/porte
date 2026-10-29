@@ -369,6 +369,29 @@ def _cmd_runtime(args) -> int:
         print(f"\nwrote {path}")
         return 0
 
+    if args.action == "profile":
+        from .backends import profile as profile_mod
+        from .backends import wine as wine_backend
+
+        exe = Path(args.exe).expanduser()
+        if not exe.exists():
+            print(f"no such file: {exe}", file=sys.stderr)
+            return 2
+        runtime = wine_backend.select()
+        key = args.bottle or f"profile-{util.sha256_file(exe)[:12]}"
+        prefix = wine_backend.ensure_bottle(runtime, key)
+        windows_path = args.windows_path or str(exe)
+        report = profile_mod.profile_program(
+            windows_path, arguments=args.arg, seconds=args.seconds,
+            prefix=prefix, wine_root=runtime.root)
+        report.program = str(exe)
+        print(profile_mod.summarise(report))
+        out = (Path(args.out) if args.out
+               else util.RESULTS / "wine_profile.json")
+        util.write_json(out, report.to_dict())
+        print(f"\nwrote {out}")
+        return 0
+
     print(f"unknown runtime action {args.action}", file=sys.stderr)
     return 2
 
@@ -742,6 +765,20 @@ def main(argv=None) -> int:
     r.add_argument("--repeats", type=int, default=5)
     r.add_argument("--iterations", type=int, default=20000000)
     r.add_argument("--no-gui", action="store_true")
+    r.set_defaults(fn=_cmd_runtime)
+    r = rsub.add_parser(
+        "profile",
+        help="sample a Windows program under the runtime and show where its "
+             "time goes")
+    r.add_argument("exe", help="a Windows executable (path on this Mac or "
+                               "inside the prefix)")
+    r.add_argument("--windows-path", help="the Windows path to launch instead")
+    r.add_argument("--bottle", help="reuse an existing environment by key")
+    r.add_argument("--arg", action="append", default=[],
+                   help="an argument for the program (repeatable)")
+    r.add_argument("--seconds", type=int, default=5,
+                   help="how long to sample (default 5)")
+    r.add_argument("--out", help="write the JSON report here")
     r.set_defaults(fn=_cmd_runtime)
 
     p = sub.add_parser("frame",

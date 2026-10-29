@@ -1,0 +1,84 @@
+{
+  "classes": {
+    "guest-translated": 6134,
+    "rosetta-runtime": 6413,
+    "unattributed": 16192
+  },
+  "code_type": "X86-64 (translated)",
+  "guest_images": [],
+  "notes": [
+    "guest-translated mixes the guest program with Wine's own Win32 modules: Rosetta reports JIT addresses, not the instruction's original address, so that split cannot be recovered from public APIs.",
+    "unattributed frames are system ranges the sampler could not symbolize; a thread waiting on a Wine event object lands there, so it is not compute time."
+  ],
+  "pid": 59957,
+  "program": "/Users/omer/Library/Application Support/Porte/Bottles/7-zip-26-05-x64-edition-96360287/drive_c/Program Files/7-Zip/7z.exe",
+  "seconds": 10.44,
+  "shares": {
+    "guest-translated": 0.2134,
+    "rosetta-runtime": 0.2231,
+    "unattributed": 0.5634
+  },
+  "top_frames": [
+    {
+      "address": "0x7ff892472b80",
+      "count": 16192,
+      "image": "<unknown binary>"
+    },
+    {
+      "address": "0x7ff7ffe2eed0",
+      "count": 6404,
+      "image": "Rosetta Runtime Routines"
+    },
+    {
+      "address": "0x2001762d8",
+      "count": 3045,
+      "image": "Rosetta JIT"
+    },
+    {
+      "address": "0x200176304",
+      "count": 1312,
+      "image": "Rosetta JIT"
+    },
+    {
+      "address": "0x2001762e4",
+      "count": 885,
+      "image": "Rosetta JIT"
+    },
+    {
+      "address": "0x20016f854",
+      "count": 90,
+      "image": "Rosetta JIT"
+    },
+    {
+      "address": "0x20016fc6c",
+      "count": 65,
+      "image": "Rosetta JIT"
+    },
+    {
+      "address": "0x2001762e0",
+      "count": 64,
+      "image": "Rosetta JIT"
+    },
+    {
+      "address": "0x20016fc24",
+      "count": 51,
+      "image": "Rosetta JIT"
+    },
+    {
+      "address": "0x2001762bc",
+      "count": 40,
+      "image": "Rosetta JIT"
+    },
+    {
+      "address": "0x2001762f4",
+      "count": 40,
+      "image": "Rosetta JIT"
+    },
+    {
+      "address": "0x20016fbc4",
+      "count": 35,
+      "image": "Rosetta JIT"
+    }
+  ],
+  "total_samples": 28739
+}

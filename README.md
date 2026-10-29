@@ -46,6 +46,33 @@ No near-native performance claim is made beyond the GPU-bound case, and no
 compatibility claim is made beyond the executables whose imports the engine
 serves.
 
+## Direction after the competitive audit
+
+Porte's frontend (installs, prefixes, MSI, `.app` bundles, Finder integration)
+is not a differentiator: [Highball](https://github.com/gauthierpiarrette/highball)
+implements the same shape on top of Wine, DXMT and D3DMetal with an open CC0
+compatibility database. Porte's only unclaimed asset is its guarded,
+profile-driven nativeization with a differential oracle.
+
+Measurements in this repository bound what that asset can do on macOS today:
+
+- A Rosetta-translated process **cannot load arm64 code** (verified with
+  `dlopen`), so native code cannot be injected into a Wine process.
+- Profiling a genuine third-party Windows program under Wine shows ≈49% of
+  executing samples inside Rosetta's runtime, but the guest's hot code is
+  reported only as anonymous `Rosetta JIT` addresses — it cannot be mapped back
+  to the program's functions.
+- Porte's own generated ARM64 code, verified byte-exact against an interpreter,
+  is still 1.3×–19.5× slower than a native build on the same workloads.
+
+So Porte does not ship a faster execution path today. The next milestone is the
+narrow one that can still be won: run one real Windows **console** program in the
+engine and require byte-identical output plus at least Wine parity before
+claiming anything. Details, including the go/no-go bar:
+[`docs/11-competitive-analysis.md`](docs/11-competitive-analysis.md),
+[`docs/12-technical-direction.md`](docs/12-technical-direction.md),
+[`docs/13-nativeization-experiment.md`](docs/13-nativeization-experiment.md).
+
 Read first:
 
 - [`docs/00-prior-art.md`](docs/00-prior-art.md) — what FEX, MetalSharp, Ferrum,
@@ -296,6 +323,7 @@ The experiment prints a summary and writes `results/experiment.json`,
 | `porte app repair\|uninstall <product>` | verify and re-extract, or remove product + apps |
 | `porte runtime verify` | report the compatibility runtime Porte found and whether it is usable |
 | `porte runtime verify-e2e` | drive a Win32 fixture, Notepad++ and 7-Zip's MSI end to end, writing `results/runtime_verification.json` |
+| `porte runtime profile <exe>` | sample a real Windows program under the runtime and report how much time is guest code, runtime, Rosetta or host (`results/wine_profile.json`) |
 
 ## How it works (30 seconds)
 
