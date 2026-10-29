@@ -1,0 +1,45 @@
+name: Feature or experiment proposal
+description: Propose a capability, measurement, or experiment.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: goal
+    attributes:
+      label: What should Porte be able to do
+      description: State the outcome, not the implementation.
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Engine / nativeization
+        - macOS application bundles
+        - Package importer (MSI, MSIX, EXE)
+        - Graphics / frame path
+        - Measurement and evidence
+        - Documentation and tooling
+    validations:
+      required: true
+  - type: textarea
+    id: today
+    attributes:
+      label: What exists today
+      description: Name the closest current behaviour and the document that describes its limits.
+  - type: textarea
+    id: evidence
+    attributes:
+      label: How it would be verified
+      description: What measurement, corpus, or assertion would prove it works — and what could falsify it.
+    validations:
+      required: true
+  - type: checkboxes
+    id: honesty
+    attributes:
+      label: Evidence rules
+      options:
+        - label: The proposal distinguishes implemented behaviour from roadmap work.
+          required: true
+        - label: The verification can fail; it is not a demonstration that always passes.
+          required: true

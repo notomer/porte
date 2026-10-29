@@ -1,0 +1,668 @@
+{
+  "arch": "x86_64",
+  "blocks": 94,
+  "blocks_detail": [
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank_generic",
+      "instructions": 16,
+      "last": "jne\t0x702 <_forge_kernel_rank_generic+0x1f2>",
+      "start": "0x510"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank_generic",
+      "instructions": 9,
+      "last": "je\t0x5a3 <_forge_kernel_rank_generic+0x93>",
+      "start": "0x53f"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank_generic",
+      "instructions": 15,
+      "last": "jae\t0x5af <_forge_kernel_rank_generic+0x9f>",
+      "start": "0x562"
+    },
+    {
+      "ends_indirect": true,
+      "function": "forge_kernel_rank_generic",
+      "instructions": 4,
+      "last": "jmp\t0x604 <_forge_kernel_rank_generic+0xf4>",
+      "start": "0x599"
+    },
+    {
+      "ends_indirect": true,
+      "function": "forge_kernel_rank_generic",
+      "instructions": 2,
+      "last": "jmp\t0x702 <_forge_kernel_rank_generic+0x1f2>",
+      "start": "0x5a3"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank_generic",
+      "instructions": 6,
+      "last": "nopw\t%cs:(%rax,%rax)",
+      "start": "0x5af"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank_generic",
+      "instructions": 11,
+      "last": "jne\t0x5d0 <_forge_kernel_rank_generic+0xc0>",
+      "start": "0x5d0"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank_generic",
+      "instructions": 2,
+      "last": "je\t0x621 <_forge_kernel_rank_generic+0x111>",
+      "start": "0x604"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank_generic",
+      "instructions": 3,
+      "last": "nop",
+      "start": "0x609"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank_generic",
+      "instructions": 5,
+      "last": "jne\t0x610 <_forge_kernel_rank_generic+0x100>",
+      "start": "0x610"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank_generic",
+      "instructions": 2,
+      "last": "je\t0x6f2 <_forge_kernel_rank_generic+0x1e2>",
+      "start": "0x621"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank_generic",
+      "instructions": 5,
+      "last": "jne\t0x66d <_forge_kernel_rank_generic+0x15d>",
+      "start": "0x62a"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank_generic",
+      "instructions": 1,
+      "last": "xorl\t%r8d, %r8d",
+      "start": "0x63c"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank_generic",
+      "instructions": 2,
+      "last": "je\t0x6f2 <_forge_kernel_rank_generic+0x1e2>",
+      "start": "0x63f"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank_generic",
+      "instructions": 6,
+      "last": "je\t0x6e4 <_forge_kernel_rank_generic+0x1d4>",
+      "start": "0x649"
+    },
+    {
+      "ends_indirect": true,
+      "function": "forge_kernel_rank_generic",
+      "instructions": 4,
+      "last": "jmp\t0x6ea <_forge_kernel_rank_generic+0x1da>",
+      "start": "0x660"
+    },
+    {
+      "ends_indirect": true,
+      "function": "forge_kernel_rank_generic",
+      "instructions": 7,
+      "last": "jmp\t0x6aa <_forge_kernel_rank_generic+0x19a>",
+      "start": "0x66d"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank_generic",
+      "instructions": 2,
+      "last": "divq\t%rbx",
+      "start": "0x690"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank_generic",
+      "instructions": 6,
+      "last": "je\t0x63f <_forge_kernel_rank_generic+0x12f>",
+      "start": "0x695"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank_generic",
+      "instructions": 4,
+      "last": "je\t0x6c0 <_forge_kernel_rank_generic+0x1b0>",
+      "start": "0x6aa"
+    },
+    {
+      "ends_indirect": true,
+      "function": "forge_kernel_rank_generic",
+      "instructions": 4,
+      "last": "jmp\t0x6c6 <_forge_kernel_rank_generic+0x1b6>",
+      "start": "0x6b6"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank_generic",
+      "instructions": 3,
+      "last": "divl\t%ebx",
+      "start": "0x6c0"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank_generic",
+      "instructions": 7,
+      "last": "jne\t0x690 <_forge_kernel_rank_generic+0x180>",
+      "start": "0x6c6"
+    },
+    {
+      "ends_indirect": true,
+      "function": "forge_kernel_rank_generic",
+      "instructions": 3,
+      "last": "jmp\t0x695 <_forge_kernel_rank_generic+0x185>",
+      "start": "0x6de"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank_generic",
+      "instructions": 3,
+      "last": "divl\t%ebx",
+      "start": "0x6e4"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank_generic",
+      "instructions": 2,
+      "last": "movl\t%eax, (%r14,%r8,4)",
+      "start": "0x6ea"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank_generic",
+      "instructions": 5,
+      "last": "movq\t%rbx, %rax",
+      "start": "0x6f2"
+    },
+    {
+      "ends_indirect": true,
+      "function": "forge_kernel_rank_generic",
+      "instructions": 8,
+      "last": "retq",
+      "start": "0x702"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank_generic",
+      "instructions": 1,
+      "last": "nopw\t%cs:(%rax,%rax)",
+      "start": "0x711"
+    },
+    {
+      "ends_indirect": true,
+      "function": "cmp_i32",
+      "instructions": 10,
+      "last": "retq",
+      "start": "0x720"
+    },
+    {
+      "ends_indirect": false,
+      "function": "cmp_i32",
+      "instructions": 1,
+      "last": "nopw\t%cs:(%rax,%rax)",
+      "start": "0x735"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_audit_generic",
+      "instructions": 10,
+      "last": "js\t0x7b6 <_forge_kernel_audit_generic+0x76>",
+      "start": "0x740"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_audit_generic",
+      "instructions": 1,
+      "last": "je\t0x7bf <_forge_kernel_audit_generic+0x7f>",
+      "start": "0x756"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_audit_generic",
+      "instructions": 5,
+      "last": "je\t0x7c4 <_forge_kernel_audit_generic+0x84>",
+      "start": "0x758"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_audit_generic",
+      "instructions": 3,
+      "last": "nop",
+      "start": "0x769"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_audit_generic",
+      "instructions": 20,
+      "last": "jne\t0x770 <_forge_kernel_audit_generic+0x30>",
+      "start": "0x770"
+    },
+    {
+      "ends_indirect": true,
+      "function": "forge_kernel_audit_generic",
+      "instructions": 1,
+      "last": "jmp\t0x808 <_forge_kernel_audit_generic+0xc8>",
+      "start": "0x7b4"
+    },
+    {
+      "ends_indirect": true,
+      "function": "forge_kernel_audit_generic",
+      "instructions": 2,
+      "last": "jmp\t0x808 <_forge_kernel_audit_generic+0xc8>",
+      "start": "0x7b6"
+    },
+    {
+      "ends_indirect": true,
+      "function": "forge_kernel_audit_generic",
+      "instructions": 2,
+      "last": "jmp\t0x808 <_forge_kernel_audit_generic+0xc8>",
+      "start": "0x7bf"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_audit_generic",
+      "instructions": 3,
+      "last": "nopw\t(%rax,%rax)",
+      "start": "0x7c4"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_audit_generic",
+      "instructions": 16,
+      "last": "jne\t0x7d0 <_forge_kernel_audit_generic+0x90>",
+      "start": "0x7d0"
+    },
+    {
+      "ends_indirect": true,
+      "function": "forge_kernel_audit_generic",
+      "instructions": 9,
+      "last": "retq",
+      "start": "0x808"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_audit_generic",
+      "instructions": 1,
+      "last": "nopw\t(%rax,%rax)",
+      "start": "0x81a"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank",
+      "instructions": 16,
+      "last": "jne\t0xa12 <_forge_kernel_rank+0x1f2>",
+      "start": "0x820"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank",
+      "instructions": 9,
+      "last": "je\t0x8b3 <_forge_kernel_rank+0x93>",
+      "start": "0x84f"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank",
+      "instructions": 15,
+      "last": "jae\t0x8bf <_forge_kernel_rank+0x9f>",
+      "start": "0x872"
+    },
+    {
+      "ends_indirect": true,
+      "function": "forge_kernel_rank",
+      "instructions": 4,
+      "last": "jmp\t0x914 <_forge_kernel_rank+0xf4>",
+      "start": "0x8a9"
+    },
+    {
+      "ends_indirect": true,
+      "function": "forge_kernel_rank",
+      "instructions": 2,
+      "last": "jmp\t0xa12 <_forge_kernel_rank+0x1f2>",
+      "start": "0x8b3"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank",
+      "instructions": 6,
+      "last": "nopw\t%cs:(%rax,%rax)",
+      "start": "0x8bf"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank",
+      "instructions": 11,
+      "last": "jne\t0x8e0 <_forge_kernel_rank+0xc0>",
+      "start": "0x8e0"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank",
+      "instructions": 2,
+      "last": "je\t0x931 <_forge_kernel_rank+0x111>",
+      "start": "0x914"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank",
+      "instructions": 3,
+      "last": "nop",
+      "start": "0x919"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank",
+      "instructions": 5,
+      "last": "jne\t0x920 <_forge_kernel_rank+0x100>",
+      "start": "0x920"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank",
+      "instructions": 2,
+      "last": "je\t0xa02 <_forge_kernel_rank+0x1e2>",
+      "start": "0x931"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank",
+      "instructions": 5,
+      "last": "jne\t0x97d <_forge_kernel_rank+0x15d>",
+      "start": "0x93a"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank",
+      "instructions": 1,
+      "last": "xorl\t%r8d, %r8d",
+      "start": "0x94c"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank",
+      "instructions": 2,
+      "last": "je\t0xa02 <_forge_kernel_rank+0x1e2>",
+      "start": "0x94f"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank",
+      "instructions": 6,
+      "last": "je\t0x9f4 <_forge_kernel_rank+0x1d4>",
+      "start": "0x959"
+    },
+    {
+      "ends_indirect": true,
+      "function": "forge_kernel_rank",
+      "instructions": 4,
+      "last": "jmp\t0x9fa <_forge_kernel_rank+0x1da>",
+      "start": "0x970"
+    },
+    {
+      "ends_indirect": true,
+      "function": "forge_kernel_rank",
+      "instructions": 7,
+      "last": "jmp\t0x9ba <_forge_kernel_rank+0x19a>",
+      "start": "0x97d"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank",
+      "instructions": 2,
+      "last": "divq\t%rbx",
+      "start": "0x9a0"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank",
+      "instructions": 6,
+      "last": "je\t0x94f <_forge_kernel_rank+0x12f>",
+      "start": "0x9a5"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank",
+      "instructions": 4,
+      "last": "je\t0x9d0 <_forge_kernel_rank+0x1b0>",
+      "start": "0x9ba"
+    },
+    {
+      "ends_indirect": true,
+      "function": "forge_kernel_rank",
+      "instructions": 4,
+      "last": "jmp\t0x9d6 <_forge_kernel_rank+0x1b6>",
+      "start": "0x9c6"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank",
+      "instructions": 3,
+      "last": "divl\t%ebx",
+      "start": "0x9d0"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank",
+      "instructions": 7,
+      "last": "jne\t0x9a0 <_forge_kernel_rank+0x180>",
+      "start": "0x9d6"
+    },
+    {
+      "ends_indirect": true,
+      "function": "forge_kernel_rank",
+      "instructions": 3,
+      "last": "jmp\t0x9a5 <_forge_kernel_rank+0x185>",
+      "start": "0x9ee"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank",
+      "instructions": 3,
+      "last": "divl\t%ebx",
+      "start": "0x9f4"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank",
+      "instructions": 2,
+      "last": "movl\t%eax, (%r14,%r8,4)",
+      "start": "0x9fa"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank",
+      "instructions": 5,
+      "last": "movq\t%rbx, %rax",
+      "start": "0xa02"
+    },
+    {
+      "ends_indirect": true,
+      "function": "forge_kernel_rank",
+      "instructions": 8,
+      "last": "retq",
+      "start": "0xa12"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank",
+      "instructions": 1,
+      "last": "nopw\t%cs:(%rax,%rax)",
+      "start": "0xa21"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_audit",
+      "instructions": 10,
+      "last": "js\t0xaa6 <_forge_kernel_audit+0x76>",
+      "start": "0xa30"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_audit",
+      "instructions": 1,
+      "last": "je\t0xaaf <_forge_kernel_audit+0x7f>",
+      "start": "0xa46"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_audit",
+      "instructions": 5,
+      "last": "je\t0xab4 <_forge_kernel_audit+0x84>",
+      "start": "0xa48"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_audit",
+      "instructions": 3,
+      "last": "nop",
+      "start": "0xa59"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_audit",
+      "instructions": 20,
+      "last": "jne\t0xa60 <_forge_kernel_audit+0x30>",
+      "start": "0xa60"
+    },
+    {
+      "ends_indirect": true,
+      "function": "forge_kernel_audit",
+      "instructions": 1,
+      "last": "jmp\t0xaf8 <_forge_kernel_audit+0xc8>",
+      "start": "0xaa4"
+    },
+    {
+      "ends_indirect": true,
+      "function": "forge_kernel_audit",
+      "instructions": 2,
+      "last": "jmp\t0xaf8 <_forge_kernel_audit+0xc8>",
+      "start": "0xaa6"
+    },
+    {
+      "ends_indirect": true,
+      "function": "forge_kernel_audit",
+      "instructions": 2,
+      "last": "jmp\t0xaf8 <_forge_kernel_audit+0xc8>",
+      "start": "0xaaf"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_audit",
+      "instructions": 3,
+      "last": "nopw\t(%rax,%rax)",
+      "start": "0xab4"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_audit",
+      "instructions": 16,
+      "last": "jne\t0xac0 <_forge_kernel_audit+0x90>",
+      "start": "0xac0"
+    },
+    {
+      "ends_indirect": true,
+      "function": "forge_kernel_audit",
+      "instructions": 9,
+      "last": "retq",
+      "start": "0xaf8"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_audit",
+      "instructions": 1,
+      "last": "nopw\t(%rax,%rax)",
+      "start": "0xb0a"
+    },
+    {
+      "ends_indirect": true,
+      "function": "forge_kernel_impl",
+      "instructions": 5,
+      "last": "retq",
+      "start": "0xb10"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_impl",
+      "instructions": 1,
+      "last": "nopl\t(%rax)",
+      "start": "0xb1d"
+    },
+    {
+      "ends_indirect": true,
+      "function": "forge_kernel_caps",
+      "instructions": 5,
+      "last": "retq",
+      "start": "0xb20"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_caps",
+      "instructions": 1,
+      "last": "nopl\t(%rax,%rax)",
+      "start": "0xb28"
+    },
+    {
+      "ends_indirect": true,
+      "function": "forge_kernel_counters",
+      "instructions": 5,
+      "last": "retq",
+      "start": "0xb30"
+    },
+    {
+      "ends_indirect": true,
+      "function": "forge_kernel_counters",
+      "instructions": 1,
+      "last": "jmpq\t*0x4ca(%rip)            ## 0x1008 <_qsort+0x1008>",
+      "start": "0xb38"
+    },
+    {
+      "ends_indirect": true,
+      "function": "forge_kernel_counters",
+      "instructions": 1,
+      "last": "jmpq\t*0x4bc(%rip)            ## 0x1000 <_qsort+0x1000>",
+      "start": "0xb3e"
+    },
+    {
+      "ends_indirect": true,
+      "function": "forge_kernel_counters",
+      "instructions": 1,
+      "last": "jmpq\t*0x4c6(%rip)            ## 0x1010 <_qsort+0x1010>",
+      "start": "0xb44"
+    },
+    {
+      "ends_indirect": true,
+      "function": "forge_kernel_counters",
+      "instructions": 1,
+      "last": "jmpq\t*0x4c8(%rip)            ## 0x1018 <_qsort+0x1018>",
+      "start": "0xb4a"
+    },
+    {
+      "ends_indirect": true,
+      "function": "forge_kernel_counters",
+      "instructions": 1,
+      "last": "jmpq\t*0x4ca(%rip)            ## 0x1020 <_qsort+0x1020>",
+      "start": "0xb50"
+    }
+  ],
+  "indirect_blocks": 31,
+  "instructions": 475,
+  "path": "build/x86_64/libforge_kernel_generic.dylib",
+  "sha256": "1a84c0968fdd786ffaacc2221fc8a820b0ac4c7edbd3d1fa3e1858dc4181f6be"
+}

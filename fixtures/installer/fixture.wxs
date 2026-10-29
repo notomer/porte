@@ -1,0 +1,38 @@
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="*" Name="Porte Installer Fixture" Language="1033" Version="1.0.0"
+           Manufacturer="Porte" UpgradeCode="6d1f3a2e-8c41-4b7a-9f60-2c1b7d5e9a10">
+    <Package InstallerVersion="500" Compressed="yes" InstallScope="perUser"/>
+    <Media Id="1" Cabinet="fixture.cab" EmbedCab="yes"/>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="LocalAppDataFolder" Name="AppData">
+        <Directory Id="INSTALLDIR" Name="PorteFixture">
+          <Component Id="AppExe" Guid="1f2e3d4c-5b6a-4978-8c9d-0a1b2c3d4e5f">
+            <File Id="PorteFixture.exe" Source="tree/PorteFixture.exe" KeyPath="yes">
+              <Shortcut Id="FixtureShortcut" Directory="ProgramMenuFolder"
+                        Name="Porte Fixture"
+                        Target="[INSTALLDIR]PorteFixture.exe"
+                        WorkingDirectory="INSTALLDIR"/>
+            </File>
+          </Component>
+          <Component Id="GuiExe" Guid="5d6e7f80-91a2-43b4-c5d6-e7f809123456">
+            <File Id="PorteFixtureGui.exe" Source="tree/PorteFixtureGui.exe" KeyPath="yes"/>
+          </Component>
+          <Component Id="Readme" Guid="2a3b4c5d-6e7f-4081-92a3-b4c5d6e7f809">
+            <File Id="readme.txt" Source="tree/readme.txt"/>
+          </Component>
+          <Component Id="Reg" Guid="3b4c5d6e-7f80-4192-a3b4-c5d6e7f80912">
+            <RegistryKey Root="HKCU" Key="Software\PorteFixture">
+              <RegistryValue Name="Installed" Type="integer" Value="1" KeyPath="yes"/>
+            </RegistryKey>
+          </Component>
+        </Directory>
+      </Directory>
+    </Directory>
+    <Feature Id="Main" Level="1">
+      <ComponentRef Id="AppExe"/>
+      <ComponentRef Id="GuiExe"/>
+      <ComponentRef Id="Readme"/>
+      <ComponentRef Id="Reg"/>
+    </Feature>
+  </Product>
+</Wix>

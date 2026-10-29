@@ -1,0 +1,235 @@
+{
+  "candidate_dylib": "build/spec/staging/libforge_kernel_spec_arm64.dylib",
+  "candidate_sha256": "93fe053ec7f3f613c2855be880cb91845eec03e6a43fb161f394dc79ccffb0ea",
+  "cases": [
+    {
+      "baseline": {
+        "ledger_bytes": 0,
+        "out_digest": "5c2d757acd3abaab",
+        "ret": 551150700
+      },
+      "candidate": {
+        "fallback": 0,
+        "fast": 1,
+        "impl": "forge:rank-counting-v1+host-batch-v1",
+        "out_digest": "5c2d757acd3abaab",
+        "ret": 551150700
+      },
+      "candidate_ledger_bytes": 0,
+      "checks": {
+        "fast_path_taken": true,
+        "ledger_matches_baseline": true,
+        "ledger_matches_native": true,
+        "native_matches_baseline": true,
+        "output_matches_baseline": true,
+        "output_matches_native": true,
+        "return_matches_baseline": true,
+        "return_matches_native": true
+      },
+      "expected_fast": true,
+      "kernel": "rank",
+      "native": {
+        "ledger_bytes": 0,
+        "out_digest": "5c2d757acd3abaab",
+        "ret": 551150700
+      },
+      "ok": true,
+      "workload": "rank_small_range"
+    },
+    {
+      "baseline": {
+        "ledger_bytes": 0,
+        "out_digest": "c52f02c4e5e9a11b",
+        "ret": 4191542759
+      },
+      "candidate": {
+        "fallback": 1,
+        "fast": 0,
+        "impl": "forge:rank-counting-v1+host-batch-v1",
+        "out_digest": "c52f02c4e5e9a11b",
+        "ret": 4191542759
+      },
+      "candidate_ledger_bytes": 0,
+      "checks": {
+        "fallback_taken": true,
+        "ledger_matches_baseline": true,
+        "ledger_matches_native": true,
+        "native_matches_baseline": true,
+        "output_matches_baseline": true,
+        "output_matches_native": true,
+        "return_matches_baseline": true,
+        "return_matches_native": true
+      },
+      "expected_fast": false,
+      "kernel": "rank",
+      "native": {
+        "ledger_bytes": 0,
+        "out_digest": "c52f02c4e5e9a11b",
+        "ret": 4191542759
+      },
+      "ok": true,
+      "workload": "rank_wide"
+    },
+    {
+      "baseline": {
+        "ledger_bytes": 0,
+        "out_digest": "5c2d757acd3abaab",
+        "ret": 551150700
+      },
+      "candidate": {
+        "fallback": 0,
+        "fast": 1,
+        "impl": "forge:rank-counting-v1+host-batch-v1",
+        "out_digest": "5c2d757acd3abaab",
+        "ret": 551150700
+      },
+      "candidate_ledger_bytes": 0,
+      "checks": {
+        "fast_path_taken": true,
+        "ledger_matches_baseline": true,
+        "ledger_matches_native": true,
+        "native_matches_baseline": true,
+        "output_matches_baseline": true,
+        "output_matches_native": true,
+        "return_matches_baseline": true,
+        "return_matches_native": true
+      },
+      "expected_fast": true,
+      "kernel": "rank",
+      "native": {
+        "ledger_bytes": 0,
+        "out_digest": "5c2d757acd3abaab",
+        "ret": 551150700
+      },
+      "ok": true,
+      "workload": "rank_unaligned"
+    },
+    {
+      "baseline": {
+        "ledger_bytes": 0,
+        "out_digest": "33eba75dd8c08b5d",
+        "ret": 1345771299
+      },
+      "candidate": {
+        "fallback": 1,
+        "fast": 0,
+        "impl": "forge:rank-counting-v1+host-batch-v1",
+        "out_digest": "33eba75dd8c08b5d",
+        "ret": 1345771299
+      },
+      "candidate_ledger_bytes": 0,
+      "checks": {
+        "fallback_taken": true,
+        "ledger_matches_baseline": true,
+        "ledger_matches_native": true,
+        "native_matches_baseline": true,
+        "output_matches_baseline": true,
+        "output_matches_native": true,
+        "return_matches_baseline": true,
+        "return_matches_native": true
+      },
+      "expected_fast": false,
+      "kernel": "rank",
+      "native": {
+        "ledger_bytes": 0,
+        "out_digest": "33eba75dd8c08b5d",
+        "ret": 1345771299
+      },
+      "ok": true,
+      "workload": "rank_tiny"
+    },
+    {
+      "baseline": {
+        "ledger_bytes": 32000000,
+        "out_digest": "64c6775ff010843f",
+        "ret": 4290974976217135
+      },
+      "candidate": {
+        "fallback": 0,
+        "fast": 1,
+        "impl": "forge:rank-counting-v1+host-batch-v1",
+        "out_digest": "64c6775ff010843f",
+        "ret": 4290974976217135
+      },
+      "candidate_ledger_bytes": 32000000,
+      "checks": {
+        "fast_path_taken": true,
+        "ledger_matches_baseline": true,
+        "ledger_matches_native": true,
+        "native_matches_baseline": true,
+        "output_matches_baseline": true,
+        "output_matches_native": true,
+        "return_matches_baseline": true,
+        "return_matches_native": true
+      },
+      "expected_fast": true,
+      "kernel": "audit",
+      "native": {
+        "ledger_bytes": 32000000,
+        "out_digest": "64c6775ff010843f",
+        "ret": 4290974976217135
+      },
+      "ok": true,
+      "workload": "audit_basic"
+    },
+    {
+      "baseline": {
+        "ledger_bytes": 32000000,
+        "out_digest": "81a6b5260bbb9f03",
+        "ret": 4290974976217135
+      },
+      "candidate": {
+        "fallback": 1,
+        "fast": 0,
+        "impl": "forge:rank-counting-v1+host-batch-v1",
+        "out_digest": "81a6b5260bbb9f03",
+        "ret": 4290974976217135
+      },
+      "candidate_ledger_bytes": 32000000,
+      "checks": {
+        "fallback_taken": true,
+        "ledger_matches_baseline": true,
+        "ledger_matches_native": true,
+        "native_matches_baseline": true,
+        "output_matches_baseline": true,
+        "output_matches_native": true,
+        "return_matches_baseline": true,
+        "return_matches_native": true
+      },
+      "expected_fast": false,
+      "kernel": "audit",
+      "native": {
+        "ledger_bytes": 32000000,
+        "out_digest": "81a6b5260bbb9f03",
+        "ret": 4290974976217135
+      },
+      "ok": true,
+      "workload": "audit_interleaved"
+    }
+  ],
+  "corpus": [
+    "rank_small_range",
+    "rank_wide",
+    "rank_unaligned",
+    "rank_tiny",
+    "audit_basic",
+    "audit_interleaved"
+  ],
+  "corpus_digest": "0470c37f2be0bcebfc325862c6fd8ae93368f5ca824ccb423e278213e421f96b",
+  "host": {
+    "chip": "Apple M2 Max",
+    "machine": "arm64",
+    "memory_mb": "34359738368",
+    "model": "Mac14,6",
+    "ncpu": "12",
+    "os": "27.2",
+    "os_build": "26B123"
+  },
+  "passed": true,
+  "schema": 1,
+  "when": {
+    "clang": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+    "clang_path": "/usr/bin/clang",
+    "sdk": "27.0"
+  }
+}

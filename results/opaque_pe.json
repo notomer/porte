@@ -1,0 +1,1315 @@
+{
+  "corpus": [
+    "0",
+    "1",
+    "2",
+    "3",
+    "7",
+    "16",
+    "63",
+    "64",
+    "65",
+    "127",
+    "255",
+    "256",
+    "257",
+    "511",
+    "1023",
+    "1024",
+    "1025",
+    "2047",
+    "2048",
+    "4096",
+    "65536",
+    "1000000"
+  ],
+  "generated_at": "2026-10-29T02:34:02Z",
+  "host": {
+    "chip": "Apple M2 Max",
+    "machine": "arm64",
+    "memory_mb": "34359738368",
+    "model": "Mac14,6",
+    "ncpu": "12",
+    "os": "27.2",
+    "os_build": "26B123"
+  },
+  "native_reference": {
+    "blob": {
+      "1000000": {
+        "median_ms": 0.022125,
+        "min_ms": 0.022041,
+        "samples": [
+          0.028,
+          0.022791,
+          0.022167,
+          0.022125,
+          0.022041,
+          0.022084,
+          0.022083
+        ],
+        "value": 11400997030969288358
+      },
+      "16": {
+        "median_ms": 0.000416,
+        "min_ms": 0.000333,
+        "samples": [
+          0.000459,
+          0.000459,
+          0.000375,
+          0.000417,
+          0.000333,
+          0.000333,
+          0.000416
+        ],
+        "value": 11400714848638730651
+      },
+      "262144": {
+        "median_ms": 0.022084,
+        "min_ms": 0.022,
+        "samples": [
+          0.022125,
+          0.022208,
+          0.022042,
+          0.022084,
+          0.022083,
+          0.022084,
+          0.022
+        ],
+        "value": 11400997030969288358
+      },
+      "65536": {
+        "median_ms": 0.01125,
+        "min_ms": 0.01125,
+        "samples": [
+          0.011375,
+          0.01125,
+          0.01125,
+          0.011291,
+          0.01125,
+          0.01125,
+          0.01125
+        ],
+        "value": 11400856193826085641
+      }
+    },
+    "crc": {
+      "1000000": {
+        "median_ms": 0.857458,
+        "min_ms": 0.819375,
+        "samples": [
+          0.819375,
+          0.826958,
+          0.857458,
+          0.845792,
+          0.883042,
+          0.939916,
+          0.858625
+        ],
+        "value": 2743218541
+      },
+      "16": {
+        "median_ms": 0.000416,
+        "min_ms": 0.000375,
+        "samples": [
+          0.000416,
+          0.000375,
+          0.000417,
+          0.000417,
+          0.000417,
+          0.000416,
+          0.000416
+        ],
+        "value": 2889553710
+      },
+      "262144": {
+        "median_ms": 0.775958,
+        "min_ms": 0.770375,
+        "samples": [
+          0.7785,
+          0.773959,
+          0.777,
+          0.778666,
+          0.773958,
+          0.770375,
+          0.775958
+        ],
+        "value": 2743218541
+      },
+      "65536": {
+        "median_ms": 0.192834,
+        "min_ms": 0.19275,
+        "samples": [
+          0.196125,
+          0.19275,
+          0.192833,
+          0.192834,
+          0.192792,
+          0.20725,
+          0.206708
+        ],
+        "value": 2934210249
+      }
+    },
+    "lookup": {
+      "1000000": {
+        "median_ms": 0.2605,
+        "min_ms": 0.255916,
+        "samples": [
+          0.256541,
+          0.255916,
+          0.272791,
+          0.263292,
+          0.255958,
+          0.2605,
+          0.277166
+        ],
+        "value": 7745799349080299301
+      },
+      "16": {
+        "median_ms": 0.000458,
+        "min_ms": 0.000416,
+        "samples": [
+          0.0005,
+          0.000542,
+          0.000458,
+          0.000459,
+          0.000458,
+          0.000416,
+          0.000416
+        ],
+        "value": 9508735600475738382
+      },
+      "262144": {
+        "median_ms": 0.273625,
+        "min_ms": 0.255666,
+        "samples": [
+          0.273708,
+          0.273625,
+          0.276917,
+          0.273625,
+          0.282458,
+          0.255708,
+          0.255666
+        ],
+        "value": 7745799349080299301
+      },
+      "65536": {
+        "median_ms": 0.255709,
+        "min_ms": 0.255708,
+        "samples": [
+          0.255709,
+          0.255709,
+          0.255708,
+          0.255709,
+          0.272667,
+          0.273584,
+          0.27775
+        ],
+        "value": 7745799349080299301
+      }
+    },
+    "sieve": {
+      "1000000": {
+        "median_ms": 1.260917,
+        "min_ms": 1.242791,
+        "samples": [
+          1.242791,
+          1.260917,
+          1.279125,
+          1.304333,
+          1.24475,
+          1.270125,
+          1.255208
+        ],
+        "value": 78498
+      },
+      "16": {
+        "median_ms": 0.000417,
+        "min_ms": 0.000375,
+        "samples": [
+          0.000541,
+          0.000459,
+          0.000375,
+          0.000375,
+          0.000417,
+          0.000417,
+          0.000416
+        ],
+        "value": 6
+      },
+      "262144": {
+        "median_ms": 0.297958,
+        "min_ms": 0.291917,
+        "samples": [
+          0.319625,
+          0.293917,
+          0.301334,
+          0.292166,
+          0.297958,
+          0.291917,
+          0.30225
+        ],
+        "value": 23000
+      },
+      "65536": {
+        "median_ms": 0.067708,
+        "min_ms": 0.067625,
+        "samples": [
+          0.067791,
+          0.067625,
+          0.07775,
+          0.067792,
+          0.067666,
+          0.067666,
+          0.067708
+        ],
+        "value": 6542
+      }
+    }
+  },
+  "programs": {
+    "blob": {
+      "argv": "65536",
+      "bench": {
+        "argv": [
+          "65536"
+        ],
+        "arms_ms": {
+          "baseline": {
+            "median": 2.07625,
+            "min": 2.041958,
+            "samples": [
+              2.151625,
+              2.140125,
+              2.041958,
+              2.042584,
+              2.057208,
+              2.07625,
+              2.183125
+            ]
+          },
+          "specialized": {
+            "median": 0.40475,
+            "min": 0.3675,
+            "samples": [
+              0.451042,
+              0.3675,
+              0.404292,
+              0.40475,
+              0.410875,
+              0.45975,
+              0.39125
+            ],
+            "speedup_vs_baseline": 5.1297096973440395
+          },
+          "translated": {
+            "median": 0.481708,
+            "min": 0.443125,
+            "samples": [
+              0.601792,
+              0.481708,
+              0.458125,
+              0.443125,
+              0.460583,
+              0.539083,
+              0.528125
+            ],
+            "speedup_vs_baseline": 4.3101837627774495
+          }
+        },
+        "artifact_unchanged": true,
+        "repeats": 7
+      },
+      "cache": {
+        "check_seconds": 0.06150062499909836,
+        "hit": true,
+        "smoke_cases": [
+          "1024",
+          "1"
+        ],
+        "smoke_passed": true
+      },
+      "cold_seconds": 2.0068740420010727,
+      "image": {
+        "bytes": 527360,
+        "entry_rva": "0x1000",
+        "exports": [],
+        "image": "blob.exe",
+        "image_base": "0x140000000",
+        "imports": [
+          "KERNEL32.dll!ExitProcess",
+          "KERNEL32.dll!GetCommandLineA",
+          "KERNEL32.dll!GetStdHandle",
+          "KERNEL32.dll!WriteFile"
+        ],
+        "relocations": 0,
+        "sections": [
+          {
+            "name": ".text",
+            "raw": 1024,
+            "va": "0x1000"
+          },
+          {
+            "name": ".rdata",
+            "raw": 524800,
+            "va": "0x2000"
+          },
+          {
+            "name": ".bss",
+            "raw": 0,
+            "va": "0x83000"
+          },
+          {
+            "name": ".idata",
+            "raw": 512,
+            "va": "0x104000"
+          }
+        ],
+        "sha256": "c12ae53cd0134a972f3252aa6f39a1dacf0fb9a0ba45351cb5e5fd41d1ad3f19",
+        "stripped_exports": true
+      },
+      "invalidation": {
+        "modified_exe": "/Users/omer/Local_Repo/maxe/build/pe/invalidate/blob_modified.exe",
+        "modified_hit": false,
+        "modified_sha256": "0e3b802725985c1dfbe9112f5ef59bf23f1c0fd016c4017fc4aad1ac4797c7f3",
+        "original_hit": true,
+        "original_sha256": "c12ae53cd0134a972f3252aa6f39a1dacf0fb9a0ba45351cb5e5fd41d1ad3f19",
+        "tested": true
+      },
+      "optimization": {
+        "admitted": true,
+        "assumptions": [
+          "the traced loop is entered at its header and leaves only via a modelled exit edge",
+          "every memory access inside the trace stays inside the region the profile pinned for that site; otherwise the trace bails at that instruction",
+          "the image's region layout is the one recorded in the artifact; a different layout demotes the whole run to interpretation"
+        ],
+        "cache_key": "8933ba16734524e439c7d73d",
+        "candidate": {
+          "back_edge": "0x140001100",
+          "blocks": [
+            "0x140001100"
+          ],
+          "bytes_sha256": "fe42e05a838341cd5ae676268b216eae656e52c2a74a5e1f026905dd77fb576c",
+          "dynamic_instructions": 786420,
+          "end": "0x14000112c",
+          "exit_targets": [
+            "0x14000112c"
+          ],
+          "head": "0x140001100",
+          "instructions": 12,
+          "observed_iterations": 65535,
+          "size": 44
+        },
+        "compile_seconds": null,
+        "memory_ops": 2,
+        "pinned_sites": 1,
+        "regions": [
+          [
+            5368709120,
+            1069056
+          ],
+          [
+            268435456,
+            8388608
+          ]
+        ],
+        "verification": {
+          "cases": 22,
+          "corpus": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "7",
+            "16",
+            "63",
+            "64",
+            "65",
+            "127",
+            "255",
+            "256",
+            "257",
+            "511",
+            "1023",
+            "1024",
+            "1025",
+            "2047",
+            "2048",
+            "4096",
+            "65536",
+            "1000000"
+          ],
+          "passed": true
+        }
+      },
+      "peak_rss_mb": 222.84375,
+      "rollback": {
+        "demoted": true,
+        "heap_size": 4194304,
+        "output_matches": true,
+        "region_mismatch": true
+      },
+      "selftest": {
+        "cases": [
+          "65536",
+          "64"
+        ],
+        "failing_cases": [
+          "65536",
+          "64"
+        ],
+        "first_diff": "writes: base='65536 9e37fa4dd050db09 00000000221c2482 00000000381db06a\\n' spec='65536 9e37f9cb0b96e143 00000000c0820d24 00000000c539d34a\\n'; image_digest: base='90f317f1e6c5013c5c35f57ce8be8c8f1119ab6769a6c1dcfe56b93ff2a50146' spec='ff7ec3ab356fcd197824cf764290a3b96c4883f83d76c7d883dbd22ded9b8dd6'",
+        "mutant_built": true,
+        "mutation": "one loaded value bit-flipped in the emitted trace",
+        "rejected": true
+      },
+      "startup": {
+        "median_ms": 12.7185,
+        "samples": [
+          13.214042,
+          12.25625,
+          12.7185,
+          13.404166,
+          12.2615
+        ]
+      }
+    },
+    "crc": {
+      "argv": "262144",
+      "bench": {
+        "argv": [
+          "262144"
+        ],
+        "arms_ms": {
+          "baseline": {
+            "median": 1.642083,
+            "min": 1.579875,
+            "samples": [
+              1.624584,
+              1.800375,
+              1.623417,
+              1.708042,
+              1.66025,
+              1.642083,
+              1.579875
+            ]
+          },
+          "specialized": {
+            "median": 1.040958,
+            "min": 1.024958,
+            "samples": [
+              1.33675,
+              1.041083,
+              1.024958,
+              1.040958,
+              1.029584,
+              1.05725,
+              1.0345
+            ],
+            "speedup_vs_baseline": 1.5774728663404287
+          },
+          "translated": {
+            "median": 1.13125,
+            "min": 1.0055,
+            "samples": [
+              1.25125,
+              1.13125,
+              1.190541,
+              1.027917,
+              1.067125,
+              1.0055,
+              1.183416
+            ],
+            "speedup_vs_baseline": 1.451565082872928
+          }
+        },
+        "artifact_unchanged": true,
+        "repeats": 7
+      },
+      "cache": {
+        "check_seconds": 0.04072775000167894,
+        "hit": true,
+        "smoke_cases": [
+          "1024",
+          "1"
+        ],
+        "smoke_passed": true
+      },
+      "cold_seconds": 2.4748266249989683,
+      "image": {
+        "bytes": 266240,
+        "entry_rva": "0x1000",
+        "exports": [],
+        "image": "crc.exe",
+        "image_base": "0x140000000",
+        "imports": [
+          "KERNEL32.dll!ExitProcess",
+          "KERNEL32.dll!GetCommandLineA",
+          "KERNEL32.dll!GetStdHandle",
+          "KERNEL32.dll!WriteFile"
+        ],
+        "relocations": 0,
+        "sections": [
+          {
+            "name": ".text",
+            "raw": 1024,
+            "va": "0x1000"
+          },
+          {
+            "name": ".rdata",
+            "raw": 263680,
+            "va": "0x2000"
+          },
+          {
+            "name": ".bss",
+            "raw": 0,
+            "va": "0x43000"
+          },
+          {
+            "name": ".idata",
+            "raw": 512,
+            "va": "0x44000"
+          }
+        ],
+        "sha256": "9ee3cc9ba0b88a1df23991cac94729b16f812486726a73b48c7e04dd815ac460",
+        "stripped_exports": true
+      },
+      "invalidation": {
+        "modified_exe": "/Users/omer/Local_Repo/maxe/build/pe/invalidate/crc_modified.exe",
+        "modified_hit": false,
+        "modified_sha256": "8531f062599b1861f2e30b49a20c4c8d19fa7bf3152ffd6607af3b3fc212c565",
+        "original_hit": true,
+        "original_sha256": "9ee3cc9ba0b88a1df23991cac94729b16f812486726a73b48c7e04dd815ac460",
+        "tested": true
+      },
+      "optimization": {
+        "admitted": true,
+        "assumptions": [
+          "the traced loop is entered at its header and leaves only via a modelled exit edge",
+          "every memory access inside the trace stays inside the region the profile pinned for that site; otherwise the trace bails at that instruction",
+          "the image's region layout is the one recorded in the artifact; a different layout demotes the whole run to interpretation"
+        ],
+        "cache_key": "b6fd105c2a9e77b08997ad7f",
+        "candidate": {
+          "back_edge": "0x1400010c0",
+          "blocks": [
+            "0x1400010c0"
+          ],
+          "bytes_sha256": "1b9f61a8bd1635741906dbfed08c05bc637fc16e0a487ca221e6f949de52db3b",
+          "dynamic_instructions": 2097136,
+          "end": "0x1400010dc",
+          "exit_targets": [
+            "0x1400010dc"
+          ],
+          "head": "0x1400010c0",
+          "instructions": 8,
+          "observed_iterations": 262142,
+          "size": 28
+        },
+        "compile_seconds": null,
+        "memory_ops": 2,
+        "pinned_sites": 1,
+        "regions": [
+          [
+            5368709120,
+            282624
+          ],
+          [
+            268435456,
+            8388608
+          ]
+        ],
+        "verification": {
+          "cases": 22,
+          "corpus": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "7",
+            "16",
+            "63",
+            "64",
+            "65",
+            "127",
+            "255",
+            "256",
+            "257",
+            "511",
+            "1023",
+            "1024",
+            "1025",
+            "2047",
+            "2048",
+            "4096",
+            "65536",
+            "1000000"
+          ],
+          "passed": true
+        }
+      },
+      "peak_rss_mb": 465.859375,
+      "rollback": {
+        "demoted": true,
+        "heap_size": 4194304,
+        "output_matches": true,
+        "region_mismatch": true
+      },
+      "selftest": {
+        "cases": [
+          "262144",
+          "64"
+        ],
+        "failing_cases": [
+          "262144",
+          "64"
+        ],
+        "first_diff": "writes: base='262144 00000000a382316d\\n' spec='262144 00000000946a6d5e\\n'; image_digest: base='2b6b90575ac358b469baaf4709984b9caa66bbb82ac00adc37b6e73fc1e74bb3' spec='b902feff1516ba0a26544554b4c7a8f6531c1cf67d8e0bf257bc2a2653f23022'",
+        "mutant_built": true,
+        "mutation": "one loaded value bit-flipped in the emitted trace",
+        "rejected": true
+      },
+      "startup": {
+        "median_ms": 6.241792,
+        "samples": [
+          6.05775,
+          6.445541,
+          6.241792,
+          7.272917,
+          5.66125
+        ]
+      }
+    },
+    "fault": {
+      "argv": "16",
+      "bench": {
+        "argv": [
+          "16"
+        ],
+        "arms_ms": {
+          "baseline": {
+            "median": 0.096333,
+            "min": 0.073459,
+            "samples": [
+              0.132,
+              0.123167,
+              0.096333,
+              0.104042,
+              0.090125,
+              0.080125,
+              0.073459
+            ]
+          },
+          "specialized": {
+            "median": 0.142416,
+            "min": 0.131958,
+            "samples": [
+              0.234292,
+              0.174625,
+              0.150208,
+              0.14125,
+              0.135584,
+              0.131958,
+              0.142416
+            ],
+            "speedup_vs_baseline": 0.6764197842938996
+          },
+          "translated": {
+            "median": 0.17025,
+            "min": 0.132958,
+            "samples": [
+              0.232959,
+              0.176167,
+              0.1885,
+              0.17025,
+              0.142709,
+              0.132958,
+              0.1395
+            ],
+            "speedup_vs_baseline": 0.5658325991189427
+          }
+        },
+        "artifact_unchanged": true,
+        "repeats": 7
+      },
+      "cache": {
+        "check_seconds": 0.019445084000835777,
+        "hit": true,
+        "smoke_cases": [
+          "1024",
+          "1"
+        ],
+        "smoke_passed": true
+      },
+      "cold_seconds": 1.623935874999006,
+      "image": {
+        "bytes": 3072,
+        "entry_rva": "0x1000",
+        "exports": [],
+        "image": "fault.exe",
+        "image_base": "0x140000000",
+        "imports": [
+          "KERNEL32.dll!ExitProcess",
+          "KERNEL32.dll!GetCommandLineA",
+          "KERNEL32.dll!GetStdHandle",
+          "KERNEL32.dll!WriteFile"
+        ],
+        "relocations": 0,
+        "sections": [
+          {
+            "name": ".text",
+            "raw": 1024,
+            "va": "0x1000"
+          },
+          {
+            "name": ".rdata",
+            "raw": 512,
+            "va": "0x2000"
+          },
+          {
+            "name": ".bss",
+            "raw": 0,
+            "va": "0x3000"
+          },
+          {
+            "name": ".idata",
+            "raw": 512,
+            "va": "0x4000"
+          }
+        ],
+        "sha256": "ae027ae04efcd8236435f94d7798c7042021c256e327974f1296a6d7bdbf73ad",
+        "stripped_exports": true
+      },
+      "invalidation": {
+        "modified_exe": "/Users/omer/Local_Repo/maxe/build/pe/invalidate/fault_modified.exe",
+        "modified_hit": false,
+        "modified_sha256": "3dfc7a05cd70e9d6632d3706c6d9345c1495ce4733d620c8c123214b865ccd61",
+        "original_hit": true,
+        "original_sha256": "ae027ae04efcd8236435f94d7798c7042021c256e327974f1296a6d7bdbf73ad",
+        "tested": true
+      },
+      "optimization": {
+        "admitted": true,
+        "assumptions": [
+          "the traced loop is entered at its header and leaves only via a modelled exit edge",
+          "every memory access inside the trace stays inside the region the profile pinned for that site; otherwise the trace bails at that instruction",
+          "the image's region layout is the one recorded in the artifact; a different layout demotes the whole run to interpretation"
+        ],
+        "cache_key": "1c81ab0ee05bcd17c650118d",
+        "candidate": {
+          "back_edge": "0x1400010c0",
+          "blocks": [
+            "0x1400010c0",
+            "0x1400010c9",
+            "0x1400010e3"
+          ],
+          "bytes_sha256": "69db4899ee57526e1a7120f603a73cdfb2e9310d28af8ba0d19f8d5e0956de96",
+          "dynamic_instructions": 85,
+          "end": "0x1400010fe",
+          "exit_targets": [
+            "0x1400010fe"
+          ],
+          "head": "0x1400010c9",
+          "instructions": 16,
+          "observed_iterations": 9,
+          "size": 62
+        },
+        "compile_seconds": null,
+        "memory_ops": 5,
+        "pinned_sites": 1,
+        "regions": [
+          [
+            5368709120,
+            20480
+          ],
+          [
+            268435456,
+            8388608
+          ]
+        ],
+        "verification": {
+          "cases": 22,
+          "corpus": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "7",
+            "16",
+            "63",
+            "64",
+            "65",
+            "127",
+            "255",
+            "256",
+            "257",
+            "511",
+            "1023",
+            "1024",
+            "1025",
+            "2047",
+            "2048",
+            "4096",
+            "65536",
+            "1000000"
+          ],
+          "passed": true
+        }
+      },
+      "peak_rss_mb": 452.90625,
+      "rollback": {
+        "demoted": true,
+        "heap_size": 4194304,
+        "output_matches": true,
+        "region_mismatch": true
+      },
+      "selftest": {
+        "cases": [
+          "16",
+          "64"
+        ],
+        "failing_cases": [
+          "16",
+          "64"
+        ],
+        "first_diff": "image_digest: base='9170364b04a67d2417a73f9fba69b10fe810b8c96cecc2824bbd412f8f78bf6d' spec='91c60e95789dc5094ab8dc2fbecd4f5e174a878cbc210608880aa36ef68b9773'",
+        "mutant_built": true,
+        "mutation": "one loaded value bit-flipped in the emitted trace",
+        "rejected": true
+      },
+      "startup": {
+        "median_ms": 0.643542,
+        "samples": [
+          1.85925,
+          0.643542,
+          0.98525,
+          0.580917,
+          0.634541
+        ]
+      }
+    },
+    "lookup": {
+      "argv": "65536",
+      "bench": {
+        "argv": [
+          "65536"
+        ],
+        "arms_ms": {
+          "baseline": {
+            "median": 2.450917,
+            "min": 2.379166,
+            "samples": [
+              2.380833,
+              2.86275,
+              2.524625,
+              2.450917,
+              2.445959,
+              2.379166,
+              2.54775
+            ]
+          },
+          "specialized": {
+            "median": 0.554041,
+            "min": 0.493458,
+            "samples": [
+              0.759458,
+              0.55275,
+              0.594,
+              0.543041,
+              0.493458,
+              0.554041,
+              0.580292
+            ],
+            "speedup_vs_baseline": 4.423710519618584
+          },
+          "translated": {
+            "median": 0.544375,
+            "min": 0.520833,
+            "samples": [
+              0.765917,
+              0.541625,
+              0.567458,
+              0.544375,
+              0.520833,
+              0.52875,
+              0.576292
+            ],
+            "speedup_vs_baseline": 4.502258553386911
+          }
+        },
+        "artifact_unchanged": true,
+        "repeats": 7
+      },
+      "cache": {
+        "check_seconds": 0.039239708001332474,
+        "hit": true,
+        "smoke_cases": [
+          "1024",
+          "1"
+        ],
+        "smoke_passed": true
+      },
+      "cold_seconds": 2.3647651669998595,
+      "image": {
+        "bytes": 267264,
+        "entry_rva": "0x1000",
+        "exports": [],
+        "image": "lookup.exe",
+        "image_base": "0x140000000",
+        "imports": [
+          "KERNEL32.dll!ExitProcess",
+          "KERNEL32.dll!GetCommandLineA",
+          "KERNEL32.dll!GetStdHandle",
+          "KERNEL32.dll!WriteFile"
+        ],
+        "relocations": 0,
+        "sections": [
+          {
+            "name": ".text",
+            "raw": 1024,
+            "va": "0x1000"
+          },
+          {
+            "name": ".rdata",
+            "raw": 264704,
+            "va": "0x2000"
+          },
+          {
+            "name": ".bss",
+            "raw": 0,
+            "va": "0x43000"
+          },
+          {
+            "name": ".idata",
+            "raw": 512,
+            "va": "0x84000"
+          }
+        ],
+        "sha256": "5f2b211759b378b67ee7e3527843eb4554f4dc4de0cc07504bf5075c800451f9",
+        "stripped_exports": true
+      },
+      "invalidation": {
+        "modified_exe": "/Users/omer/Local_Repo/maxe/build/pe/invalidate/lookup_modified.exe",
+        "modified_hit": false,
+        "modified_sha256": "4b13f92ec4659c825f98d4f3e1fb80d6c3a5fab7f1d1a67e2953797cf5e5cd65",
+        "original_hit": true,
+        "original_sha256": "5f2b211759b378b67ee7e3527843eb4554f4dc4de0cc07504bf5075c800451f9",
+        "tested": true
+      },
+      "optimization": {
+        "admitted": true,
+        "assumptions": [
+          "the traced loop is entered at its header and leaves only via a modelled exit edge",
+          "every memory access inside the trace stays inside the region the profile pinned for that site; otherwise the trace bails at that instruction",
+          "the image's region layout is the one recorded in the artifact; a different layout demotes the whole run to interpretation"
+        ],
+        "cache_key": "fd4923c29503504be36ea362",
+        "candidate": {
+          "back_edge": "0x140001100",
+          "blocks": [
+            "0x140001100"
+          ],
+          "bytes_sha256": "9c0d0a97af1c6517f370202c8f5c4649364aa21b253ad98555e51a5306f6d0be",
+          "dynamic_instructions": 983010,
+          "end": "0x140001132",
+          "exit_targets": [
+            "0x140001132"
+          ],
+          "head": "0x140001100",
+          "instructions": 15,
+          "observed_iterations": 65534,
+          "size": 50
+        },
+        "compile_seconds": null,
+        "memory_ops": 4,
+        "pinned_sites": 1,
+        "regions": [
+          [
+            5368709120,
+            544768
+          ],
+          [
+            268435456,
+            8388608
+          ]
+        ],
+        "verification": {
+          "cases": 22,
+          "corpus": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "7",
+            "16",
+            "63",
+            "64",
+            "65",
+            "127",
+            "255",
+            "256",
+            "257",
+            "511",
+            "1023",
+            "1024",
+            "1025",
+            "2047",
+            "2048",
+            "4096",
+            "65536",
+            "1000000"
+          ],
+          "passed": true
+        }
+      },
+      "peak_rss_mb": 325.296875,
+      "rollback": {
+        "demoted": true,
+        "heap_size": 4194304,
+        "output_matches": true,
+        "region_mismatch": true
+      },
+      "selftest": {
+        "cases": [
+          "65536",
+          "64"
+        ],
+        "failing_cases": [
+          "65536",
+          "64"
+        ],
+        "first_diff": "writes: base='65536 6b7e9b780f621725 000000000f621725\\n' spec='65536 5b289034838a8f77 00000000838a8f77\\n'; image_digest: base='1fce4e7af4756f2d8788b982c6d074cd0530c906715785a8d9e3f7406b4f4f58' spec='0f705f8758a770854b7d5777dff8ddaeced4b2b48635ff246c030ac971583f8e'",
+        "mutant_built": true,
+        "mutation": "one loaded value bit-flipped in the emitted trace",
+        "rejected": true
+      },
+      "startup": {
+        "median_ms": 5.88425,
+        "samples": [
+          5.854541,
+          7.500583,
+          5.889208,
+          5.745,
+          5.88425
+        ]
+      }
+    },
+    "sieve": {
+      "argv": "1000000",
+      "bench": {
+        "argv": [
+          "1000000"
+        ],
+        "arms_ms": {
+          "baseline": {
+            "median": 58.542125,
+            "min": 58.342417,
+            "samples": [
+              60.608167,
+              59.979917,
+              58.884417,
+              58.380084,
+              58.542125,
+              58.342417,
+              58.477334
+            ]
+          },
+          "specialized": {
+            "median": 6.005334,
+            "min": 5.606542,
+            "samples": [
+              6.523875,
+              6.303959,
+              6.005334,
+              6.000625,
+              5.665917,
+              6.147958,
+              5.606542
+            ],
+            "speedup_vs_baseline": 9.748354546141812
+          },
+          "translated": {
+            "median": 6.618667,
+            "min": 6.479833,
+            "samples": [
+              7.451083,
+              6.587875,
+              6.739333,
+              6.6835,
+              6.479833,
+              6.594,
+              6.618667
+            ],
+            "speedup_vs_baseline": 8.845002324486183
+          }
+        },
+        "artifact_unchanged": true,
+        "repeats": 7
+      },
+      "cache": {
+        "check_seconds": 0.0268444580015057,
+        "hit": true,
+        "smoke_cases": [
+          "1024",
+          "1"
+        ],
+        "smoke_passed": true
+      },
+      "cold_seconds": 10.229413833001672,
+      "image": {
+        "bytes": 3072,
+        "entry_rva": "0x1000",
+        "exports": [],
+        "image": "sieve.exe",
+        "image_base": "0x140000000",
+        "imports": [
+          "KERNEL32.dll!ExitProcess",
+          "KERNEL32.dll!GetCommandLineA",
+          "KERNEL32.dll!GetStdHandle",
+          "KERNEL32.dll!WriteFile",
+          "api-ms-win-crt-string-l1-1-0.dll!memset"
+        ],
+        "relocations": 0,
+        "sections": [
+          {
+            "name": ".text",
+            "raw": 1024,
+            "va": "0x1000"
+          },
+          {
+            "name": ".rdata",
+            "raw": 512,
+            "va": "0x2000"
+          },
+          {
+            "name": ".bss",
+            "raw": 0,
+            "va": "0x3000"
+          },
+          {
+            "name": ".idata",
+            "raw": 512,
+            "va": "0x404000"
+          }
+        ],
+        "sha256": "3ec6bf676ecae56676d0f52083130f1a42ee5f19c0bf1ed7d573701f507926e4",
+        "stripped_exports": true
+      },
+      "invalidation": {
+        "modified_exe": "/Users/omer/Local_Repo/maxe/build/pe/invalidate/sieve_modified.exe",
+        "modified_hit": false,
+        "modified_sha256": "bbdb0c5dece7b9e0e827240b040537790754bcb181d301d49f0a127d2a377fdf",
+        "original_hit": true,
+        "original_sha256": "3ec6bf676ecae56676d0f52083130f1a42ee5f19c0bf1ed7d573701f507926e4",
+        "tested": true
+      },
+      "optimization": {
+        "admitted": true,
+        "assumptions": [
+          "the traced loop is entered at its header and leaves only via a modelled exit edge",
+          "every memory access inside the trace stays inside the region the profile pinned for that site; otherwise the trace bails at that instruction",
+          "the image's region layout is the one recorded in the artifact; a different layout demotes the whole run to interpretation"
+        ],
+        "cache_key": "9e1ea08cb2ab132e606ba7a6",
+        "candidate": {
+          "back_edge": "0x1400010c0",
+          "blocks": [
+            "0x1400010c0",
+            "0x1400010d0",
+            "0x1400010da",
+            "0x140001250",
+            "0x140001257",
+            "0x14000125c"
+          ],
+          "bytes_sha256": "08ab169c7d8922a30ad2418740ab437dfa111a155438187e3c3e41602d1b5f94",
+          "dynamic_instructions": 4251582,
+          "end": "0x140001261",
+          "exit_targets": [
+            "0x1400010ea"
+          ],
+          "head": "0x1400010d0",
+          "instructions": 17,
+          "observed_iterations": 998,
+          "size": 59
+        },
+        "compile_seconds": null,
+        "memory_ops": 2,
+        "pinned_sites": 1,
+        "regions": [
+          [
+            5368709120,
+            4214784
+          ],
+          [
+            268435456,
+            8388608
+          ]
+        ],
+        "verification": {
+          "cases": 22,
+          "corpus": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "7",
+            "16",
+            "63",
+            "64",
+            "65",
+            "127",
+            "255",
+            "256",
+            "257",
+            "511",
+            "1023",
+            "1024",
+            "1025",
+            "2047",
+            "2048",
+            "4096",
+            "65536",
+            "1000000"
+          ],
+          "passed": true
+        }
+      },
+      "peak_rss_mb": 448.625,
+      "rollback": {
+        "demoted": true,
+        "heap_size": 4194304,
+        "output_matches": true,
+        "region_mismatch": true
+      },
+      "selftest": {
+        "cases": [
+          "1000000",
+          "64"
+        ],
+        "failing_cases": [
+          "1000000",
+          "64"
+        ],
+        "first_diff": "writes: base='78498 00000008be2da9e7\\n' spec='999998 000000746a4ae6df\\n'; image_digest: base='8a03435a1d01e7f9b53d8b749f5228b8fab26ce68a76b5c1d30a0f79312bc210' spec='aec02931463b1378020119417f633e1f52debf1f54ff2edc09fd59ab4db316c0'; api: base=[{'call': 'GetCommandLineA', 'args': [], 'ret': 268435456}, {'call': 'memset', 'args': [5368721408, 0, 1000000], 'ret': 5368721408}, {'call': 'GetStdHandle', 'args': [4294967285], 'ret': 0}, {'call': 'WriteFile', 'args': [0, 5372915712, 23, 537919168, 0], 'ret': 1}] spec=[{'call': 'GetCommandLineA', 'args': [], 'ret': 268435456}, {'call': 'memset', 'args': [5368721408, 0, 1000000], 'ret': 5368721408}, {'call': 'GetStdHandle', 'args': [4294967285], 'ret': 0}, {'call': 'WriteFile', 'args': [0, 5372915712, 24, 537919168, 0], 'ret': 1}]",
+        "mutant_built": true,
+        "mutation": "one loaded value bit-flipped in the emitted trace",
+        "rejected": true
+      },
+      "startup": {
+        "median_ms": 0.965542,
+        "samples": [
+          0.965542,
+          1.872042,
+          1.210667,
+          0.737125,
+          0.897
+        ]
+      }
+    }
+  },
+  "toolchain": {
+    "clang": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+    "clang_path": "/usr/bin/clang",
+    "sdk": "27.0"
+  }
+}

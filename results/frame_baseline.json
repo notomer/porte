@@ -1,0 +1,1158 @@
+{
+  "arms": {
+    "cpu_bound": {
+      "forge_pe": {
+        "breakdown": {
+          "gpu_ms": 0.2753749977273401,
+          "gpu_share": 0.0013475981361335896,
+          "guest_ms": 204.101792,
+          "guest_share": 0.9988096114414168,
+          "submit_ms": 0.19850000366568565,
+          "submit_share": 0.000971396231212136,
+          "wait_ms": 0.006999999284744263
+        },
+        "cpu_cores_used": 0.9347849751108713,
+        "cpu_gap_vs_native_pct": 12020.109252669037,
+        "cpu_ms_per_frame": 191.01867499999997,
+        "final_hash": "bfae1c1b40a3f312",
+        "first_frame_ms": 239.97825,
+        "fps_ratio_vs_native": 0.0082262822897362,
+        "gap_vs_native_pct": 12056.15954788816,
+        "gpu": {
+          "fps_1pct_low": 3592.2766215201827,
+          "fps_median": 3631.4117412726787,
+          "max": 0.27837500238092616,
+          "mean": 0.258566743906596,
+          "median": 0.2753749977273401,
+          "min": 0.1277083356399089,
+          "n": 108,
+          "p99": 0.27837499874294735
+        },
+        "guest_code": "mingw-gcc x86-64, scalar",
+        "max_rss_kb": 166768.0,
+        "ns_per_entity_step": 194.64663696289062,
+        "p99_gap_vs_native_pct": 12879.226255958929,
+        "process_seconds": 12.455879625002126,
+        "shader_ms": null,
+        "sim": {
+          "fps_1pct_low": 2.8271008716658765,
+          "fps_median": 4.899516021887745,
+          "max": 366.91125100000005,
+          "mean": 207.19903896296296,
+          "median": 204.101792,
+          "min": 168.831709,
+          "n": 108,
+          "p99": 353.71925
+        },
+        "startup_ms": 2.3940414994285675,
+        "submit": {
+          "fps_1pct_low": 4184.1004173665615,
+          "fps_median": 5037.783282282469,
+          "max": 0.24300000071525574,
+          "mean": 0.19581481497044917,
+          "median": 0.19850000366568565,
+          "min": 0.15299999713897705,
+          "n": 108,
+          "p99": 0.23900000005960464
+        },
+        "sustained_fps": 4.893683694072695,
+        "sustained_fps_1pct_low": 2.8253096892583143,
+        "sustained_ms": 204.345042,
+        "sustained_p99": 353.9435,
+        "sustained_repeats": [
+          173.031,
+          218.57345800000002
+        ],
+        "sustained_spread_pct": 22.28703841025906,
+        "wait": {
+          "fps_1pct_low": 83333.31967393782,
+          "fps_median": 142857.1574542002,
+          "max": 0.015999995172023773,
+          "mean": 0.007064814713818056,
+          "median": 0.006999999284744263,
+          "min": 0.003999993205070496,
+          "n": 108,
+          "p99": 0.012000001966953278
+        },
+        "wall": {
+          "fps_1pct_low": 2.8253096892583143,
+          "fps_median": 4.893683694072695,
+          "max": 367.154709,
+          "mean": 207.43855130555554,
+          "median": 204.345042,
+          "min": 169.082042,
+          "n": 108,
+          "p99": 353.9435
+        }
+      },
+      "forge_pe_clang": {
+        "breakdown": {
+          "gpu_ms": 0.27566666722123045,
+          "gpu_share": 0.0014507033329244025,
+          "guest_ms": 189.682187,
+          "guest_share": 0.99820766743792,
+          "submit_ms": 0.19950000196695328,
+          "submit_share": 0.0010498741856940573,
+          "wait_ms": 0.006999999284744263
+        },
+        "cpu_cores_used": 0.9678219915373546,
+        "cpu_gap_vs_native_pct": 11170.626986951362,
+        "cpu_ms_per_frame": 183.90821666666665,
+        "final_hash": "bfae1c1b40a3f312",
+        "first_frame_ms": 196.467917,
+        "fps_ratio_vs_native": 0.008846308214292909,
+        "gap_vs_native_pct": 11204.150565139795,
+        "gpu": {
+          "fps_1pct_low": 3592.814375925953,
+          "fps_median": 3627.569521118312,
+          "max": 0.278416664514225,
+          "mean": 0.26996180571990813,
+          "median": 0.27566666722123045,
+          "min": 0.12916666673845612,
+          "n": 108,
+          "p99": 0.27833333297166973
+        },
+        "guest_code": "clang x86-64, auto-vectorized",
+        "max_rss_kb": 311088.0,
+        "ns_per_entity_step": 180.89503002166748,
+        "p99_gap_vs_native_pct": 8634.309680968097,
+        "process_seconds": 11.381580396000572,
+        "shader_ms": null,
+        "sim": {
+          "fps_1pct_low": 4.202749759983062,
+          "fps_median": 5.27197632954327,
+          "max": 245.434167,
+          "mean": 188.37263393518518,
+          "median": 189.682187,
+          "min": 162.685166,
+          "n": 108,
+          "p99": 237.939458
+        },
+        "startup_ms": 1.4827079994574888,
+        "submit": {
+          "fps_1pct_low": 1992.0318859917493,
+          "fps_median": 5012.531278900176,
+          "max": 1.3799999952316284,
+          "mean": 0.21497222229286475,
+          "median": 0.19950000196695328,
+          "min": 0.1290000006556511,
+          "n": 108,
+          "p99": 0.5019999966025352
+        },
+        "sustained_fps": 5.262527194701313,
+        "sustained_fps_1pct_low": 4.198423806742354,
+        "sustained_ms": 190.02277099999998,
+        "sustained_p99": 238.184625,
+        "sustained_repeats": [
+          194.0964795,
+          172.19466649999998
+        ],
+        "sustained_spread_pct": 11.52588865257628,
+        "wait": {
+          "fps_1pct_low": 71428.54071394626,
+          "fps_median": 142857.1574542002,
+          "max": 0.059999994933605194,
+          "mean": 0.0072777775564679395,
+          "median": 0.006999999284744263,
+          "min": 0.001999996602535248,
+          "n": 108,
+          "p99": 0.014000006020069122
+        },
+        "wall": {
+          "fps_1pct_low": 4.198423806742354,
+          "fps_median": 5.262527194701313,
+          "max": 245.673917,
+          "mean": 188.6208638148148,
+          "median": 190.02277099999998,
+          "min": 162.839166,
+          "n": 108,
+          "p99": 238.184625
+        }
+      },
+      "native_arm64": {
+        "breakdown": {
+          "gpu_ms": 0.2753,
+          "gpu_share": 0.16328588374851719,
+          "guest_ms": 1.485,
+          "guest_share": 0.8807829181494662,
+          "submit_ms": 0.096,
+          "submit_share": 0.05693950177935943,
+          "wait_ms": 0.102
+        },
+        "cpu_cores_used": 0.9974298141557928,
+        "cpu_gap_vs_native_pct": 0.0,
+        "cpu_ms_per_frame": 1.6816666666666669,
+        "final_hash": "bfae1c1b40a3f312",
+        "first_frame_ms": 2.5220000000000002,
+        "fps_ratio_vs_native": 1.0,
+        "gap_vs_native_pct": 0.0,
+        "gpu": {
+          "fps_1pct_low": 2396.3575365444526,
+          "fps_median": 3632.401017072285,
+          "max": 0.4205,
+          "mean": 0.2776478787878788,
+          "median": 0.2753,
+          "min": 0.2737,
+          "n": 165,
+          "p99": 0.4173
+        },
+        "max_rss_kb": 76688,
+        "ns_per_entity_step": 1.4162063598632812,
+        "process_seconds": 0.1268853340006899,
+        "shader_ms": 1.078,
+        "sim": {
+          "fps_1pct_low": 485.67265662943174,
+          "fps_median": 673.4006734006733,
+          "max": 2.594,
+          "mean": 1.4866060606060605,
+          "median": 1.485,
+          "min": 1.367,
+          "n": 165,
+          "p99": 2.059
+        },
+        "startup_ms": 24.194,
+        "submit": {
+          "fps_1pct_low": 3205.128205128205,
+          "fps_median": 10416.666666666666,
+          "max": 0.424,
+          "mean": 0.10403636363636364,
+          "median": 0.096,
+          "min": 0.081,
+          "n": 165,
+          "p99": 0.312
+        },
+        "sustained_fps": 594.883997620464,
+        "sustained_fps_1pct_low": 366.70333700036673,
+        "sustained_ms": 1.681,
+        "sustained_p99": 2.727,
+        "sustained_repeats": [
+          1.694,
+          1.674,
+          1.681
+        ],
+        "sustained_spread_pct": 1.189767995240929,
+        "wait": {
+          "fps_1pct_low": 2808.9887640449438,
+          "fps_median": 9803.921568627451,
+          "max": 0.435,
+          "mean": 0.11038181818181819,
+          "median": 0.102,
+          "min": 0.086,
+          "n": 165,
+          "p99": 0.356
+        },
+        "wall": {
+          "fps_1pct_low": 366.70333700036673,
+          "fps_median": 593.1198102016607,
+          "max": 2.844,
+          "mean": 1.7010242424242423,
+          "median": 1.6860000000000002,
+          "min": 1.555,
+          "n": 165,
+          "p99": 2.727
+        }
+      },
+      "rosetta_x86_64": {
+        "breakdown": {
+          "gpu_ms": 0.2754,
+          "gpu_share": 0.08466031355671687,
+          "guest_ms": 2.705,
+          "guest_share": 0.8315401168152474,
+          "submit_ms": 0.269,
+          "submit_share": 0.08269289886258838,
+          "wait_ms": 0.279
+        },
+        "cpu_cores_used": 0.9678245721897736,
+        "cpu_gap_vs_native_pct": 92.94187425860022,
+        "cpu_ms_per_frame": 3.1483333333333334,
+        "final_hash": "bfae1c1b40a3f312",
+        "first_frame_ms": 7.669,
+        "fps_ratio_vs_native": 0.5175492610837438,
+        "gap_vs_native_pct": 93.21832242712672,
+        "gpu": {
+          "fps_1pct_low": 3579.0980672870437,
+          "fps_median": 3631.082062454612,
+          "max": 0.5349,
+          "mean": 0.2615236363636364,
+          "median": 0.2754,
+          "min": 0.1294,
+          "n": 165,
+          "p99": 0.2794
+        },
+        "max_rss_kb": 71420,
+        "ns_per_entity_step": 2.5796890258789062,
+        "p99_gap_vs_native_pct": 64.75980931426479,
+        "process_seconds": 0.22712670900000376,
+        "shader_ms": 1.824,
+        "sim": {
+          "fps_1pct_low": 271.5177844148792,
+          "fps_median": 369.68576709796673,
+          "max": 3.886,
+          "mean": 2.702551515151515,
+          "median": 2.705,
+          "min": 2.499,
+          "n": 165,
+          "p99": 3.683
+        },
+        "startup_ms": 32.303,
+        "submit": {
+          "fps_1pct_low": 2747.252747252747,
+          "fps_median": 3717.472118959108,
+          "max": 0.878,
+          "mean": 0.2793818181818182,
+          "median": 0.269,
+          "min": 0.238,
+          "n": 165,
+          "p99": 0.364
+        },
+        "sustained_fps": 307.8817733990148,
+        "sustained_fps_1pct_low": 222.56843979523703,
+        "sustained_ms": 3.248,
+        "sustained_p99": 4.493,
+        "sustained_repeats": [
+          3.2430000000000003,
+          3.248,
+          3.269
+        ],
+        "sustained_spread_pct": 0.8004926108374323,
+        "wait": {
+          "fps_1pct_low": 2469.135802469136,
+          "fps_median": 3584.229390681003,
+          "max": 0.895,
+          "mean": 0.2916060606060606,
+          "median": 0.279,
+          "min": 0.244,
+          "n": 165,
+          "p99": 0.405
+        },
+        "wall": {
+          "fps_1pct_low": 222.56843979523703,
+          "fps_median": 307.4085459575776,
+          "max": 4.558,
+          "mean": 3.273539393939394,
+          "median": 3.253,
+          "min": 2.998,
+          "n": 165,
+          "p99": 4.493
+        }
+      }
+    },
+    "gpu_heavy": {
+      "forge_pe": {
+        "breakdown": {
+          "gpu_ms": 8.420166666837758,
+          "gpu_share": 2.9088555337334228,
+          "guest_ms": 1.5794795,
+          "guest_share": 0.5456516320619318,
+          "submit_ms": 0.031000003218650818,
+          "submit_share": 0.01070935225824834,
+          "wait_ms": 1.2699999995529652
+        },
+        "cpu_cores_used": 0.6107899937120026,
+        "cpu_gap_vs_native_pct": -50.06612903225807,
+        "cpu_ms_per_frame": 1.7680333333333447,
+        "final_hash": "01f5018d4be45bd4",
+        "first_frame_ms": 1.624084,
+        "fps_ratio_vs_native": 0.9916787078439062,
+        "gap_vs_native_pct": 0.8391117092940082,
+        "gpu": {
+          "fps_1pct_low": 78.67588484598289,
+          "fps_median": 118.76249480172768,
+          "max": 12.848875001509441,
+          "mean": 8.622300430048083,
+          "median": 8.420166666837758,
+          "min": 3.2532916666241363,
+          "n": 252,
+          "p99": 12.710375001915963
+        },
+        "guest_code": "mingw-gcc x86-64, scalar",
+        "max_rss_kb": 504896,
+        "ns_per_entity_step": 192.80755615234375,
+        "p99_gap_vs_native_pct": -50.71807626636312,
+        "process_seconds": 0.26670437500069966,
+        "shader_ms": null,
+        "sim": {
+          "fps_1pct_low": 438.5001365927925,
+          "fps_median": 633.1199613543575,
+          "max": 2.4995000000000003,
+          "mean": 1.6247315992063494,
+          "median": 1.5794795,
+          "min": 0.922458,
+          "n": 252,
+          "p99": 2.280501
+        },
+        "startup_ms": 1.8262080011481885,
+        "submit": {
+          "fps_1pct_low": 17543.86078654608,
+          "fps_median": 32258.061166856936,
+          "max": 0.05900000035762787,
+          "mean": 0.03229761927846878,
+          "median": 0.031000003218650818,
+          "min": 0.020999997854232788,
+          "n": 252,
+          "p99": 0.056999996304512024
+        },
+        "sustained_fps": 118.76249480172768,
+        "sustained_fps_1pct_low": 78.67588484598289,
+        "sustained_ms": 8.420166666837758,
+        "sustained_p99": 12.710375001915963,
+        "sustained_repeats": [
+          8.374687500690925,
+          8.42683333394234,
+          8.48593750015425
+        ],
+        "sustained_spread_pct": 1.3212327482955386,
+        "wait": {
+          "fps_1pct_low": 373.9715778182842,
+          "fps_median": 787.4015750803118,
+          "max": 2.9849999994039536,
+          "mean": 1.290456349059703,
+          "median": 1.2699999995529652,
+          "min": 0.0,
+          "n": 252,
+          "p99": 2.6740000024437904
+        },
+        "wall": {
+          "fps_1pct_low": 230.97798156195162,
+          "fps_median": 345.4629402039924,
+          "max": 4.355709,
+          "mean": 2.955443615079365,
+          "median": 2.8946665,
+          "min": 1.462042,
+          "n": 252,
+          "p99": 4.329417
+        }
+      },
+      "forge_pe_clang": {
+        "breakdown": {
+          "gpu_ms": 8.514187500622938,
+          "gpu_share": 2.9339665311961194,
+          "guest_ms": 1.448979,
+          "guest_share": 0.4993143374038897,
+          "submit_ms": 0.030000001192092896,
+          "submit_share": 0.010337921196474044,
+          "wait_ms": 1.3605000004172325
+        },
+        "cpu_cores_used": 0.574872630594033,
+        "cpu_gap_vs_native_pct": -49.94070208728654,
+        "cpu_ms_per_frame": 1.6682444444444715,
+        "final_hash": "01f5018d4be45bd4",
+        "first_frame_ms": 1.621375,
+        "fps_ratio_vs_native": 0.9807277558063017,
+        "gap_vs_native_pct": 1.9650962338527562,
+        "gpu": {
+          "fps_1pct_low": 78.03634542300937,
+          "fps_median": 117.4510192460332,
+          "max": 12.971125001058681,
+          "mean": 8.65171544306317,
+          "median": 8.514187500622938,
+          "min": 3.3107499984907918,
+          "n": 252,
+          "p99": 12.814541667466983
+        },
+        "guest_code": "clang x86-64, auto-vectorized",
+        "max_rss_kb": 567536,
+        "ns_per_entity_step": 176.8773193359375,
+        "p99_gap_vs_native_pct": -50.019920318725106,
+        "process_seconds": 0.2674709579987393,
+        "shader_ms": null,
+        "sim": {
+          "fps_1pct_low": 491.2295869545141,
+          "fps_median": 690.1411269590518,
+          "max": 2.2359999999999998,
+          "mean": 1.4760038134920637,
+          "median": 1.448979,
+          "min": 0.776708,
+          "n": 252,
+          "p99": 2.035708
+        },
+        "startup_ms": 1.2907919990539085,
+        "submit": {
+          "fps_1pct_low": 19230.76883399276,
+          "fps_median": 33333.33200878572,
+          "max": 0.06399999558925629,
+          "mean": 0.031186508044363962,
+          "median": 0.030000001192092896,
+          "min": 0.020999997854232788,
+          "n": 252,
+          "p99": 0.052000001072883606
+        },
+        "sustained_fps": 117.4510192460332,
+        "sustained_fps_1pct_low": 78.03634542300937,
+        "sustained_ms": 8.514187500622938,
+        "sustained_p99": 12.814541667466983,
+        "sustained_repeats": [
+          8.601416666351724,
+          8.377874999496271,
+          8.44385416712612
+        ],
+        "sustained_spread_pct": 2.625519661613021,
+        "wait": {
+          "fps_1pct_low": 370.78235016191115,
+          "fps_median": 735.023888050955,
+          "max": 2.7160000056028366,
+          "mean": 1.4518492061881318,
+          "median": 1.3605000004172325,
+          "min": 0.0,
+          "n": 252,
+          "p99": 2.697000004351139
+        },
+        "wall": {
+          "fps_1pct_low": 227.75152308831068,
+          "fps_median": 344.5973595227327,
+          "max": 4.489209,
+          "mean": 2.9663890555555557,
+          "median": 2.9019375,
+          "min": 1.373333,
+          "n": 252,
+          "p99": 4.39075
+        }
+      },
+      "native_arm64": {
+        "breakdown": {
+          "gpu_ms": 8.3501,
+          "gpu_share": 1.4404174573055026,
+          "guest_ms": 0.014,
+          "guest_share": 0.0024150422632396064,
+          "submit_ms": 0.03,
+          "submit_share": 0.005175090564084871,
+          "wait_ms": 5.756
+        },
+        "cpu_cores_used": 0.023000402507043872,
+        "cpu_gap_vs_native_pct": 0.0,
+        "cpu_ms_per_frame": 0.13333333333333333,
+        "final_hash": "01f5018d4be45bd4",
+        "first_frame_ms": 0.789,
+        "fps_ratio_vs_native": 1.0,
+        "gap_vs_native_pct": 0.0,
+        "gpu": {
+          "fps_1pct_low": 79.32164132340226,
+          "fps_median": 119.75904480185866,
+          "max": 12.8178,
+          "mean": 8.63611254901961,
+          "median": 8.3501,
+          "min": 3.6034,
+          "n": 255,
+          "p99": 12.6069
+        },
+        "max_rss_kb": 25760,
+        "ns_per_entity_step": 1.708984375,
+        "process_seconds": 0.3687192910001613,
+        "shader_ms": 1.085,
+        "sim": {
+          "fps_1pct_low": 43478.260869565216,
+          "fps_median": 71428.57142857142,
+          "max": 0.03,
+          "mean": 0.014898039215686274,
+          "median": 0.014,
+          "min": 0.011,
+          "n": 255,
+          "p99": 0.023
+        },
+        "startup_ms": 21.46,
+        "submit": {
+          "fps_1pct_low": 15384.615384615385,
+          "fps_median": 33333.333333333336,
+          "max": 0.103,
+          "mean": 0.03192941176470588,
+          "median": 0.03,
+          "min": 0.021,
+          "n": 255,
+          "p99": 0.065
+        },
+        "sustained_fps": 119.75904480185866,
+        "sustained_fps_1pct_low": 78.97958377759349,
+        "sustained_ms": 8.3501,
+        "sustained_p99": 12.6615,
+        "sustained_repeats": [
+          8.3662,
+          8.2684,
+          8.3501
+        ],
+        "sustained_spread_pct": 1.1712434581621711,
+        "wait": {
+          "fps_1pct_low": 115.24720525527256,
+          "fps_median": 173.73175816539262,
+          "max": 8.818,
+          "mean": 5.92395294117647,
+          "median": 5.756,
+          "min": 3.551,
+          "n": 255,
+          "p99": 8.677
+        },
+        "wall": {
+          "fps_1pct_low": 113.83039271485487,
+          "fps_median": 172.50301880282902,
+          "max": 8.869,
+          "mean": 5.970780392156863,
+          "median": 5.797000000000001,
+          "min": 3.607,
+          "n": 255,
+          "p99": 8.785
+        }
+      },
+      "rosetta_x86_64": {
+        "breakdown": {
+          "gpu_ms": 8.3878,
+          "gpu_share": 1.4509254454246672,
+          "guest_ms": 0.024,
+          "guest_share": 0.004151530877010898,
+          "submit_ms": 0.058,
+          "submit_share": 0.01003286628610967,
+          "wait_ms": 5.691
+        },
+        "cpu_cores_used": 0.03651809567741068,
+        "cpu_gap_vs_native_pct": -0.276004830084542,
+        "cpu_ms_per_frame": 0.2111111111111111,
+        "final_hash": "01f5018d4be45bd4",
+        "first_frame_ms": 3.901,
+        "fps_ratio_vs_native": 0.9955053768568635,
+        "gap_vs_native_pct": 0.45149159890301865,
+        "gpu": {
+          "fps_1pct_low": 79.3411510814199,
+          "fps_median": 119.2207730274923,
+          "max": 12.845,
+          "mean": 8.663889411764705,
+          "median": 8.3878,
+          "min": 3.7075,
+          "n": 255,
+          "p99": 12.6038
+        },
+        "max_rss_kb": 19992,
+        "ns_per_entity_step": 2.9296875,
+        "p99_gap_vs_native_pct": -0.056915196357436325,
+        "process_seconds": 0.3963973749996512,
+        "shader_ms": 1.729,
+        "sim": {
+          "fps_1pct_low": 30303.0303030303,
+          "fps_median": 41666.666666666664,
+          "max": 0.036,
+          "mean": 0.02532941176470588,
+          "median": 0.024,
+          "min": 0.021,
+          "n": 255,
+          "p99": 0.033
+        },
+        "startup_ms": 26.681,
+        "submit": {
+          "fps_1pct_low": 11111.111111111111,
+          "fps_median": 17241.379310344826,
+          "max": 0.28,
+          "mean": 0.06092549019607843,
+          "median": 0.058,
+          "min": 0.044,
+          "n": 255,
+          "p99": 0.09
+        },
+        "sustained_fps": 119.2207730274923,
+        "sustained_fps_1pct_low": 78.79165123663496,
+        "sustained_ms": 8.3878,
+        "sustained_p99": 12.6917,
+        "sustained_repeats": [
+          8.4318,
+          8.3878,
+          8.3331
+        ],
+        "sustained_spread_pct": 1.1767090297813598,
+        "wait": {
+          "fps_1pct_low": 114.98217776244684,
+          "fps_median": 175.71604287471447,
+          "max": 8.715,
+          "mean": 5.905890196078431,
+          "median": 5.691,
+          "min": 3.538,
+          "n": 255,
+          "p99": 8.697
+        },
+        "wall": {
+          "fps_1pct_low": 113.89521640091117,
+          "fps_median": 172.98045320878742,
+          "max": 8.811,
+          "mean": 5.992145098039216,
+          "median": 5.781,
+          "min": 3.605,
+          "n": 255,
+          "p99": 8.78
+        }
+      }
+    },
+    "mixed": {
+      "forge_pe": {
+        "breakdown": {
+          "gpu_ms": 0.30704166601935867,
+          "gpu_share": 0.20849071240121114,
+          "guest_ms": 1.440145,
+          "guest_share": 0.9779026439757246,
+          "submit_ms": 0.023000001907348633,
+          "submit_share": 0.015617707020225696,
+          "wait_ms": 0.0
+        },
+        "cpu_cores_used": 1.07217247379364,
+        "cpu_gap_vs_native_pct": 208.73951781970655,
+        "cpu_ms_per_frame": 1.5789749999999714,
+        "final_hash": "f23394f633f4da39",
+        "first_frame_ms": 1.57225,
+        "fps_ratio_vs_native": 0.36457157407800367,
+        "gap_vs_native_pct": 174.29456137083258,
+        "gpu": {
+          "fps_1pct_low": 956.3277039362787,
+          "fps_median": 3256.8869657480004,
+          "max": 1.0648333336575888,
+          "mean": 0.41133308964987403,
+          "median": 0.30704166601935867,
+          "min": 0.13108333223499358,
+          "n": 342,
+          "p99": 1.045666664140299
+        },
+        "guest_code": "mingw-gcc x86-64, scalar",
+        "max_rss_kb": 381888,
+        "ns_per_entity_step": 175.7989501953125,
+        "p99_gap_vs_native_pct": 76.34872080088986,
+        "process_seconds": 0.18324912499883794,
+        "shader_ms": null,
+        "sim": {
+          "fps_1pct_low": 642.7767957576732,
+          "fps_median": 694.3745247874346,
+          "max": 2.184207,
+          "mean": 1.4468478245614036,
+          "median": 1.440145,
+          "min": 0.772625,
+          "n": 342,
+          "p99": 1.55575
+        },
+        "startup_ms": 1.096834002964897,
+        "submit": {
+          "fps_1pct_low": 22222.221339190484,
+          "fps_median": 43478.25726399154,
+          "max": 0.11299999803304672,
+          "mean": 0.024298245403153156,
+          "median": 0.023000001907348633,
+          "min": 0.01900000125169754,
+          "n": 342,
+          "p99": 0.04500000178813934
+        },
+        "sustained_fps": 679.0306836990196,
+        "sustained_fps_1pct_low": 630.7655917369708,
+        "sustained_ms": 1.4726875000000001,
+        "sustained_p99": 1.585375,
+        "sustained_repeats": [
+          1.458583,
+          1.468604,
+          1.4834995000000002
+        ],
+        "sustained_spread_pct": 1.691906803038678,
+        "wait": {
+          "fps_1pct_low": 333333.48565638403,
+          "fps_median": null,
+          "max": 0.006000004708766937,
+          "mean": 0.0003654972067353321,
+          "median": 0.0,
+          "min": 0.0,
+          "n": 342,
+          "p99": 0.00299999862909317
+        },
+        "wall": {
+          "fps_1pct_low": 630.7655917369708,
+          "fps_median": 679.0306836990196,
+          "max": 2.212166,
+          "mean": 1.4799652777777779,
+          "median": 1.4726875000000001,
+          "min": 1.421625,
+          "n": 342,
+          "p99": 1.585375
+        }
+      },
+      "forge_pe_clang": {
+        "breakdown": {
+          "gpu_ms": 0.730874999135267,
+          "gpu_share": 0.5394574308468657,
+          "guest_ms": 1.3252715,
+          "guest_share": 0.9781803446696588,
+          "submit_ms": 0.02199999988079071,
+          "submit_share": 0.016238157589689592,
+          "wait_ms": 0.0
+        },
+        "cpu_cores_used": 1.078219820615107,
+        "cpu_gap_vs_native_pct": 184.032180293501,
+        "cpu_ms_per_frame": 1.4608083333333373,
+        "final_hash": "f23394f633f4da39",
+        "first_frame_ms": 1.383542,
+        "fps_ratio_vs_native": 0.3962848571429627,
+        "gap_vs_native_pct": 152.3437325386477,
+        "gpu": {
+          "fps_1pct_low": 946.8576178229171,
+          "fps_median": 1368.2230219711273,
+          "max": 1.5392499990412034,
+          "mean": 0.7249071638041812,
+          "median": 0.730874999135267,
+          "min": 0.2981249999720603,
+          "n": 342,
+          "p99": 1.056124998285668
+        },
+        "guest_code": "clang x86-64, auto-vectorized",
+        "max_rss_kb": 446768,
+        "ns_per_entity_step": 161.77630615234375,
+        "p99_gap_vs_native_pct": 61.50812013348165,
+        "process_seconds": 0.16924691700114636,
+        "shader_ms": null,
+        "sim": {
+          "fps_1pct_low": 704.8045823574727,
+          "fps_median": 754.5623670319629,
+          "max": 1.444668,
+          "mean": 1.330315178362573,
+          "median": 1.3252715,
+          "min": 1.273999,
+          "n": 342,
+          "p99": 1.418833
+        },
+        "startup_ms": 1.0627499977999832,
+        "submit": {
+          "fps_1pct_low": 22727.27285042282,
+          "fps_median": 45454.54570084564,
+          "max": 0.050999999046325684,
+          "mean": 0.023555555582395075,
+          "median": 0.02199999988079071,
+          "min": 0.018999993801116943,
+          "n": 342,
+          "p99": 0.04399999976158142
+        },
+        "sustained_fps": 738.098076258079,
+        "sustained_fps_1pct_low": 682.9434864264982,
+        "sustained_ms": 1.3548334999999998,
+        "sustained_p99": 1.46425,
+        "sustained_repeats": [
+          1.3634789999999999,
+          1.3600005,
+          1.340646
+        ],
+        "sustained_spread_pct": 1.6852993375200631,
+        "wait": {
+          "fps_1pct_low": 999997.9734461845,
+          "fps_median": null,
+          "max": 0.0020000040531158447,
+          "mean": 0.00038011714118963097,
+          "median": 0.0,
+          "min": 0.0,
+          "n": 342,
+          "p99": 0.0010000020265579224
+        },
+        "wall": {
+          "fps_1pct_low": 688.7251559618115,
+          "fps_median": 738.098076258079,
+          "max": 1.480459,
+          "mean": 1.3605921023391814,
+          "median": 1.3548334999999998,
+          "min": 1.302458,
+          "n": 342,
+          "p99": 1.451958
+        }
+      },
+      "native_arm64": {
+        "breakdown": {
+          "gpu_ms": 0.537,
+          "gpu_share": 1.1257861635220128,
+          "guest_ms": 0.014,
+          "guest_share": 0.029350104821802937,
+          "submit_ms": 0.025,
+          "submit_share": 0.052410901467505246,
+          "wait_ms": 0.44
+        },
+        "cpu_cores_used": 0.22187281621243884,
+        "cpu_gap_vs_native_pct": 0.0,
+        "cpu_ms_per_frame": 0.10583333333333332,
+        "final_hash": "f23394f633f4da39",
+        "first_frame_ms": 0.829,
+        "fps_ratio_vs_native": 1.0,
+        "gap_vs_native_pct": 0.0,
+        "gpu": {
+          "fps_1pct_low": 974.8488984207447,
+          "fps_median": 1862.1973929236499,
+          "max": 1.0464,
+          "mean": 0.5534678260869565,
+          "median": 0.537,
+          "min": 0.184,
+          "n": 345,
+          "p99": 1.0258
+        },
+        "max_rss_kb": 29584,
+        "ns_per_entity_step": 1.708984375,
+        "process_seconds": 0.0998183749979944,
+        "shader_ms": 1.101,
+        "sim": {
+          "fps_1pct_low": 52631.57894736842,
+          "fps_median": 71428.57142857142,
+          "max": 0.027,
+          "mean": 0.013573913043478261,
+          "median": 0.014,
+          "min": 0.011,
+          "n": 345,
+          "p99": 0.019
+        },
+        "startup_ms": 21.282,
+        "submit": {
+          "fps_1pct_low": 27027.027027027027,
+          "fps_median": 40000.0,
+          "max": 0.046,
+          "mean": 0.025637681159420292,
+          "median": 0.025,
+          "min": 0.019,
+          "n": 345,
+          "p99": 0.037
+        },
+        "sustained_fps": 1862.5442354255913,
+        "sustained_fps_1pct_low": 968.6168151879117,
+        "sustained_ms": 0.5369,
+        "sustained_p99": 1.0324,
+        "sustained_repeats": [
+          0.61,
+          0.4622,
+          0.5369
+        ],
+        "sustained_spread_pct": 27.528403799590233,
+        "wait": {
+          "fps_1pct_low": 1165.5011655011656,
+          "fps_median": 2272.7272727272725,
+          "max": 1.035,
+          "mean": 0.45226376811594204,
+          "median": 0.44,
+          "min": 0.027,
+          "n": 345,
+          "p99": 0.858
+        },
+        "wall": {
+          "fps_1pct_low": 1112.3470522803113,
+          "fps_median": 2096.4360587002097,
+          "max": 1.075,
+          "mean": 0.4914753623188406,
+          "median": 0.477,
+          "min": 0.065,
+          "n": 345,
+          "p99": 0.899
+        }
+      },
+      "rosetta_x86_64": {
+        "breakdown": {
+          "gpu_ms": 0.5067,
+          "gpu_share": 1.0920258620689656,
+          "guest_ms": 0.024,
+          "guest_share": 0.05172413793103449,
+          "submit_ms": 0.05,
+          "submit_share": 0.10775862068965518,
+          "wait_ms": 0.388
+        },
+        "cpu_cores_used": 0.36099137931034486,
+        "cpu_gap_vs_native_pct": -2.7253668763102747,
+        "cpu_ms_per_frame": 0.1675,
+        "final_hash": "f23394f633f4da39",
+        "first_frame_ms": 3.946,
+        "fps_ratio_vs_native": 1.0802816901408452,
+        "gap_vs_native_pct": -7.431551499348117,
+        "gpu": {
+          "fps_1pct_low": 1134.1726210729273,
+          "fps_median": 1973.5543714229325,
+          "max": 1.0549,
+          "mean": 0.5201518840579711,
+          "median": 0.5067,
+          "min": 0.1375,
+          "n": 345,
+          "p99": 0.8817
+        },
+        "max_rss_kb": 23900,
+        "ns_per_entity_step": 2.9296875,
+        "p99_gap_vs_native_pct": -1.3348164627363748,
+        "process_seconds": 0.11052245799874072,
+        "shader_ms": 1.718,
+        "sim": {
+          "fps_1pct_low": 31250.0,
+          "fps_median": 41666.666666666664,
+          "max": 0.039,
+          "mean": 0.02380579710144928,
+          "median": 0.024,
+          "min": 0.021,
+          "n": 345,
+          "p99": 0.032
+        },
+        "startup_ms": 27.07,
+        "submit": {
+          "fps_1pct_low": 13698.630136986303,
+          "fps_median": 20000.0,
+          "max": 0.156,
+          "mean": 0.05195072463768116,
+          "median": 0.05,
+          "min": 0.043,
+          "n": 345,
+          "p99": 0.073
+        },
+        "sustained_fps": 2012.0724346076458,
+        "sustained_fps_1pct_low": 1164.1443538998835,
+        "sustained_ms": 0.497,
+        "sustained_p99": 0.859,
+        "sustained_repeats": [
+          0.5579999999999999,
+          0.497,
+          0.4563
+        ],
+        "sustained_spread_pct": 20.46277665995975,
+        "wait": {
+          "fps_1pct_low": 1240.6947890818858,
+          "fps_median": 2577.319587628866,
+          "max": 0.831,
+          "mean": 0.40152753623188403,
+          "median": 0.388,
+          "min": 0.086,
+          "n": 345,
+          "p99": 0.806
+        },
+        "wall": {
+          "fps_1pct_low": 1127.3957158962796,
+          "fps_median": 2155.1724137931037,
+          "max": 0.9109999999999999,
+          "mean": 0.47728405797101453,
+          "median": 0.46399999999999997,
+          "min": 0.16099999999999998,
+          "n": 345,
+          "p99": 0.887
+        }
+      }
+    }
+  },
+  "configs": {
+    "cpu_bound": {
+      "entities": 65536,
+      "frames": 60,
+      "quad": 0.004,
+      "substeps": 16,
+      "work": 0
+    },
+    "gpu_heavy": {
+      "entities": 8192,
+      "frames": 90,
+      "quad": 0.1,
+      "substeps": 1,
+      "work": 1024
+    },
+    "mixed": {
+      "entities": 8192,
+      "frames": 120,
+      "quad": 0.1,
+      "substeps": 1,
+      "work": 64
+    }
+  },
+  "correctness": {
+    "cpu_bound": {
+      "hashes": {
+        "forge_pe": "bfae1c1b40a3f312",
+        "forge_pe_clang": "bfae1c1b40a3f312",
+        "native_arm64": "bfae1c1b40a3f312",
+        "rosetta_x86_64": "bfae1c1b40a3f312"
+      },
+      "match": true
+    },
+    "gpu_heavy": {
+      "hashes": {
+        "forge_pe": "01f5018d4be45bd4",
+        "forge_pe_clang": "01f5018d4be45bd4",
+        "native_arm64": "01f5018d4be45bd4",
+        "rosetta_x86_64": "01f5018d4be45bd4"
+      },
+      "match": true
+    },
+    "mixed": {
+      "hashes": {
+        "forge_pe": "f23394f633f4da39",
+        "forge_pe_clang": "f23394f633f4da39",
+        "native_arm64": "f23394f633f4da39",
+        "rosetta_x86_64": "f23394f633f4da39"
+      },
+      "match": true
+    }
+  },
+  "emulation": {
+    "frames": 2,
+    "images": {
+      "frame_win.exe": {
+        "cpu_bound": {
+          "guest_ms": 204.101792,
+          "instructions_per_frame": 92274688.0,
+          "mips": 452.1013122706929,
+          "ns_per_instruction": 2.21189360185103
+        },
+        "instructions_per_entity_step": 88.0,
+        "sizes": {
+          "1024": 180832,
+          "4096": 721504
+        }
+      },
+      "frame_win_clang.exe": {
+        "cpu_bound": {
+          "guest_ms": 189.682187,
+          "instructions_per_frame": 74448896.0,
+          "mips": 392.49281747262853,
+          "ns_per_instruction": 2.547817324248838
+        },
+        "instructions_per_entity_step": 71.0,
+        "sizes": {
+          "1024": 146107,
+          "4096": 582331
+        }
+      }
+    }
+  },
+  "generated_at": "2026-10-29T03:10:53Z",
+  "host": {
+    "chip": "Apple M2 Max",
+    "machine": "arm64",
+    "memory_mb": "34359738368",
+    "model": "Mac14,6",
+    "ncpu": "12",
+    "os": "27.2",
+    "os_build": "26B123"
+  },
+  "repeats": 3,
+  "scaling": {
+    "forge_scaling": 3.9543593204045036,
+    "native_scaling": 3.8627450980392157,
+    "rows": [
+      {
+        "entities": 16384,
+        "forge_guest_ms": 2.866823,
+        "forge_ns_per_entity_step": 174.97698974609375,
+        "frames": 24,
+        "native_ns_per_entity_step": 1.5563964843750002,
+        "native_sim_ms": 0.025500000000000002,
+        "ratio": 112.42443137254902
+      },
+      {
+        "entities": 65536,
+        "forge_guest_ms": 11.33644825,
+        "forge_ns_per_entity_step": 172.98047256469727,
+        "frames": 24,
+        "native_ns_per_entity_step": 1.50299072265625,
+        "native_sim_ms": 0.0985,
+        "ratio": 115.09084517766497
+      }
+    ],
+    "work_factor": 4.0
+  },
+  "shader_cold": {
+    "forge_host_ms": 33.68800000101328,
+    "forge_samples": [
+      35.87900000065565,
+      33.68800000101328,
+      33.53499999642372
+    ],
+    "native_arm64_ms": 34.954,
+    "native_samples": [
+      46.123,
+      34.954,
+      32.709
+    ],
+    "note": "one shader, one pipeline, no disk cache hit"
+  },
+  "toolchain": {
+    "clang": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+    "clang_path": "/usr/bin/clang",
+    "sdk": "27.0"
+  }
+}

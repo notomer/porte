@@ -1,0 +1,51 @@
+name: Bug report
+description: Something in Porte is wrong, crashes, or contradicts the documentation.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not report security vulnerabilities here; see SECURITY.md.
+        Do not attach Windows binaries you do not have the right to share.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: The observed behaviour, including the exact command.
+      placeholder: |
+        $ porte app import sample.msi --accept
+        ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction
+      description: Smallest steps. If a fixture in the repository reproduces it, name it.
+  - type: input
+    id: version
+    attributes:
+      label: Version / commit
+      placeholder: output of `git rev-parse --short HEAD`
+    validations:
+      required: true
+  - type: input
+    id: host
+    attributes:
+      label: Host
+      description: Mac model, chip, macOS version, Python version.
+      placeholder: M2 Max, macOS 27.2, Python 3.13
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Relevant output, `app` run records, or verifier output. Prefer text over screenshots.
+      render: shell

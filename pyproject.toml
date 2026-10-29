@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "porte"
+version = "0.1.0"
+description = "Experimental Windows application compatibility and binary nativeization for Apple Silicon"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Omer Khan" }]
+keywords = ["macos", "windows", "binary-translation", "arm64", "nativeization"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: MacOS",
+  "Programming Language :: Python :: 3",
+  "Topic :: Software Development :: Disassemblers",
+  "Topic :: System :: Emulators",
+]
+dependencies = [
+  "unicorn>=2.0.1",
+  "capstone>=5.0",
+  "pefile>=2023.2.7",
+]
+
+[project.urls]
+Homepage = "https://github.com/notomer/porte"
+Issues = "https://github.com/notomer/porte/issues"
+
+[project.scripts]
+porte = "porte.cli:main"
+# Deprecated alias kept for scripts written before the rename.
+forge = "porte.cli:legacy_main"
+
+[tool.setuptools]
+packages = ["porte", "porte.app", "porte.app.msi", "porte.frame", "porte.pe"]
+
+[tool.setuptools.package-data]
+"porte.app" = ["launcher.m"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

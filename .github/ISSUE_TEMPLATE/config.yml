@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/notomer/porte/security/advisories/new
+    about: Report privately; do not open a public issue.
+  - name: Design and limits
+    url: https://github.com/notomer/porte/blob/main/docs/03-roadmap.md
+    about: Read the roadmap before proposing large features.

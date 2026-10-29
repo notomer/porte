@@ -1,0 +1,27 @@
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <!-- Same payload as fixture.wxs, plus one custom action that executes the
+       packaged program during the install sequence. Porte must refuse this
+       package rather than silently install an incomplete result. -->
+  <Product Id="*" Name="Porte Custom Action Fixture" Language="1033" Version="1.0.0"
+           Manufacturer="Porte" UpgradeCode="7e2a4b3f-9d52-4c8b-a071-3d2c8e6f0b21">
+    <Package InstallerVersion="500" Compressed="yes" InstallScope="perUser"/>
+    <Media Id="1" Cabinet="fixture.cab" EmbedCab="yes"/>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="LocalAppDataFolder" Name="AppData">
+        <Directory Id="INSTALLDIR" Name="PorteFixture">
+          <Component Id="AppExe" Guid="4c5d6e7f-8091-42a3-b4c5-d6e7f8091234">
+            <File Id="PorteFixture.exe" Source="tree/PorteFixture.exe" KeyPath="yes"/>
+          </Component>
+        </Directory>
+      </Directory>
+    </Directory>
+    <CustomAction Id="FixturePost" FileKey="PorteFixture.exe" ExeCommand="--post"
+                  Execute="deferred" Return="ignore"/>
+    <InstallExecuteSequence>
+      <Custom Action="FixturePost" After="InstallFiles">NOT Installed</Custom>
+    </InstallExecuteSequence>
+    <Feature Id="Main" Level="1">
+      <ComponentRef Id="AppExe"/>
+    </Feature>
+  </Product>
+</Wix>

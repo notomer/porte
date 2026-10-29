@@ -1,0 +1,127 @@
+{
+  "application": {
+    "impl": "generic",
+    "sha256": "e451e1b7f022c52dd434828538ec012044704f556e11afbed14392972cb638d5"
+  },
+  "boundary": {
+    "alias_possible": false,
+    "calls": 1,
+    "dst": "0x7fa7b87b0000",
+    "flags": 0,
+    "n": 2000000,
+    "params": "0x6000013b40e0",
+    "q": 200000,
+    "src": "0x7fa7b8008000"
+  },
+  "facts": {
+    "rank": {
+      "max": 4095,
+      "min": 0,
+      "n": 2000000,
+      "observations": 1,
+      "span": 4096
+    }
+  },
+  "host": {
+    "chip": "Apple M2 Max",
+    "machine": "arm64",
+    "memory_mb": "34359738368",
+    "model": "Mac14,6",
+    "ncpu": "12",
+    "os": "27.2",
+    "os_build": "26B123"
+  },
+  "hottest_blocks": [
+    {
+      "ends_indirect": true,
+      "function": "cmp_i32",
+      "instructions": 10,
+      "samples": 77,
+      "start": "0x810"
+    },
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_rank_generic",
+      "instructions": 11,
+      "samples": 1,
+      "start": "0x6c0"
+    },
+    {
+      "ends_indirect": true,
+      "function": "forge_kernel_counters",
+      "instructions": 1,
+      "samples": 1,
+      "start": "0xa28"
+    },
+    {
+      "ends_indirect": true,
+      "function": "forge_kernel_counters",
+      "instructions": 1,
+      "samples": 1,
+      "start": "0xa2e"
+    }
+  ],
+  "hottest_functions": [
+    {
+      "function": "cmp_i32",
+      "image": "libforge_kernel_generic_profile.dylib",
+      "samples": 77,
+      "share": 0.9625
+    },
+    {
+      "function": "DYLD-STUB$$forge_probe_fact_minmax",
+      "image": "libforge_kernel_generic_profile.dylib",
+      "samples": 1,
+      "share": 0.0125
+    },
+    {
+      "function": "forge_kernel_rank_generic",
+      "image": "libforge_kernel_generic_profile.dylib",
+      "samples": 1,
+      "share": 0.0125
+    },
+    {
+      "function": "DYLD-STUB$$free",
+      "image": "libforge_kernel_generic_profile.dylib",
+      "samples": 1,
+      "share": 0.0125
+    }
+  ],
+  "module": {
+    "arch": "x86_64",
+    "blocks": 80,
+    "instructions": 388,
+    "path": "/Users/omer/Local_Repo/maxe/build/x86_64/libforge_kernel_generic_profile.dylib",
+    "sha256": "fa3a68e1c3f729fdfe3eb6c362b470f5706c478edbdc5b6ce362f7dbbf4532a6"
+  },
+  "raw_probe": "/Users/omer/Local_Repo/maxe/build/profiles/raw_x86_64_rank_small_range_0.txt",
+  "runtime": {
+    "arch": "x86_64",
+    "name": "rosetta"
+  },
+  "sampling": {
+    "effective_hz": 1032.9,
+    "inside_module": 80,
+    "instrumentation_overhead_pct": 5.25,
+    "kernel_ns": 141344999,
+    "kernel_ns_plain": 134292999,
+    "kernel_ns_profiled_median": 141344999,
+    "repeats": 3,
+    "requested_hz": 4000,
+    "resolved_other_images": 0,
+    "samples": 146,
+    "unmapped": 66
+  },
+  "schema": 1,
+  "toolchain": {
+    "clang": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+    "clang_path": "/usr/bin/clang",
+    "sdk": "27.0"
+  },
+  "transition_accounting": {
+    "entries_per_transition": null,
+    "host_entries": 0,
+    "host_transitions": 0
+  },
+  "workload": "rank_small_range"
+}

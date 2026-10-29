@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+build/lib/
+dist/
+
+# Generated fixtures and measurements (rebuild with fixtures/*/build.sh)
+build/
+fixtures/**/out/
+fixtures/installer/tree/*.exe
+*.dylib
+*.o
+*.obj
+*.idt
+
+# macOS
+.DS_Store
+._*
+.AppleDouble
+*.xcuserstate
+
+# Local app bundles and runtime state (not part of the repository)
+*.app/
+~/Library/

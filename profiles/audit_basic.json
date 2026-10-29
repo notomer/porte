@@ -1,0 +1,86 @@
+{
+  "application": {
+    "impl": "generic",
+    "sha256": "e451e1b7f022c52dd434828538ec012044704f556e11afbed14392972cb638d5"
+  },
+  "boundary": {
+    "alias_possible": false,
+    "calls": 1,
+    "dst": "0x7fa0a07b0000",
+    "flags": 0,
+    "n": 2000000,
+    "params": "0x600002aac0e0",
+    "q": 0,
+    "src": "0x7fa0a0008000"
+  },
+  "facts": {},
+  "host": {
+    "chip": "Apple M2 Max",
+    "machine": "arm64",
+    "memory_mb": "34359738368",
+    "model": "Mac14,6",
+    "ncpu": "12",
+    "os": "27.2",
+    "os_build": "26B123"
+  },
+  "hottest_blocks": [
+    {
+      "ends_indirect": false,
+      "function": "forge_kernel_audit",
+      "instructions": 16,
+      "samples": 6,
+      "start": "0x9b0"
+    }
+  ],
+  "hottest_functions": [
+    {
+      "function": "host_emit",
+      "image": "libforge_host.dylib",
+      "samples": 134,
+      "share": 0.9571428571428572
+    },
+    {
+      "function": "forge_kernel_audit",
+      "image": "libforge_kernel_generic_profile.dylib",
+      "samples": 6,
+      "share": 0.04285714285714286
+    }
+  ],
+  "module": {
+    "arch": "x86_64",
+    "blocks": 80,
+    "instructions": 388,
+    "path": "/Users/omer/Local_Repo/maxe/build/x86_64/libforge_kernel_generic_profile.dylib",
+    "sha256": "fa3a68e1c3f729fdfe3eb6c362b470f5706c478edbdc5b6ce362f7dbbf4532a6"
+  },
+  "raw_probe": "/Users/omer/Local_Repo/maxe/build/profiles/raw_x86_64_audit_basic_0.txt",
+  "runtime": {
+    "arch": "x86_64",
+    "name": "rosetta"
+  },
+  "sampling": {
+    "effective_hz": 3016.3,
+    "inside_module": 6,
+    "instrumentation_overhead_pct": 28.01,
+    "kernel_ns": 41319999,
+    "kernel_ns_plain": 36776999,
+    "kernel_ns_profiled_median": 47078000,
+    "repeats": 3,
+    "requested_hz": 4000,
+    "resolved_other_images": 134,
+    "samples": 142,
+    "unmapped": 2
+  },
+  "schema": 1,
+  "toolchain": {
+    "clang": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+    "clang_path": "/usr/bin/clang",
+    "sdk": "27.0"
+  },
+  "transition_accounting": {
+    "entries_per_transition": 1.0,
+    "host_entries": 2000000,
+    "host_transitions": 2000000
+  },
+  "workload": "audit_basic"
+}

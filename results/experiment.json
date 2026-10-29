@@ -1,0 +1,3794 @@
+{
+  "analysis": {
+    "arch": "x86_64",
+    "blocks": 94,
+    "hot_candidates": [
+      {
+        "function": "forge_kernel_audit_generic",
+        "instructions": 20,
+        "start": "0x770"
+      },
+      {
+        "function": "forge_kernel_audit",
+        "instructions": 20,
+        "start": "0xa60"
+      },
+      {
+        "function": "forge_kernel_rank_generic",
+        "instructions": 16,
+        "start": "0x510"
+      },
+      {
+        "function": "forge_kernel_audit_generic",
+        "instructions": 16,
+        "start": "0x7d0"
+      },
+      {
+        "function": "forge_kernel_rank",
+        "instructions": 16,
+        "start": "0x820"
+      },
+      {
+        "function": "forge_kernel_audit",
+        "instructions": 16,
+        "start": "0xac0"
+      },
+      {
+        "function": "forge_kernel_rank_generic",
+        "instructions": 15,
+        "start": "0x562"
+      },
+      {
+        "function": "forge_kernel_rank",
+        "instructions": 15,
+        "start": "0x872"
+      },
+      {
+        "function": "forge_kernel_rank_generic",
+        "instructions": 11,
+        "start": "0x5d0"
+      },
+      {
+        "function": "forge_kernel_rank",
+        "instructions": 11,
+        "start": "0x8e0"
+      }
+    ],
+    "indirect_blocks": 31,
+    "instructions": 475,
+    "path": "/Users/omer/Local_Repo/maxe/build/x86_64/libforge_kernel_generic.dylib",
+    "sha256": "1a84c0968fdd786ffaacc2221fc8a820b0ac4c7edbd3d1fa3e1858dc4181f6be"
+  },
+  "arch": "arm64",
+  "artifacts": {
+    "assumptions": [
+      "every value lies in [0,4095]",
+      "observed value span 4096 is narrow relative to n=2000000",
+      "n >= 1024",
+      "the sorted permutation is the only use of the input; queries and checksum come from the shared contract",
+      "the host advertises batch entry points at run time",
+      "no observer reads the ledger between kernel entry and exit (params[1] == 0)",
+      "the externally observable effect is the ordered sequence of ledger entries, not the number of host transitions"
+    ],
+    "dir": "/Users/omer/Local_Repo/maxe/build/spec/staging",
+    "dylib": "/Users/omer/Local_Repo/maxe/build/spec/staging/libforge_kernel_spec_arm64.dylib",
+    "dylib_sha256": "93fe053ec7f3f613c2855be880cb91845eec03e6a43fb161f394dc79ccffb0ea",
+    "plan": {
+      "forge_version": "0.1.0",
+      "plans": [
+        {
+          "assumptions": [
+            "every value lies in [0,4095]",
+            "observed value span 4096 is narrow relative to n=2000000",
+            "n >= 1024",
+            "the sorted permutation is the only use of the input; queries and checksum come from the shared contract"
+          ],
+          "facts": {
+            "max": 4095,
+            "min": 0,
+            "n": 2000000,
+            "observations": 1,
+            "span": 4096
+          },
+          "forge_version": "0.1.0",
+          "kernel": "rank",
+          "params": {
+            "window": 4096
+          },
+          "transform": "rank-counting",
+          "version": 1
+        },
+        {
+          "assumptions": [
+            "the host advertises batch entry points at run time",
+            "no observer reads the ledger between kernel entry and exit (params[1] == 0)",
+            "the externally observable effect is the ordered sequence of ledger entries, not the number of host transitions"
+          ],
+          "facts": {
+            "entries": 2000000,
+            "entries_per_transition": 1.0,
+            "transitions": 2000000
+          },
+          "forge_version": "0.1.0",
+          "kernel": "audit",
+          "params": {
+            "batch": 128
+          },
+          "transform": "host-batch",
+          "version": 1
+        }
+      ],
+      "transform": "rank-counting-v1+host-batch-v1",
+      "version": 1
+    },
+    "source": "/Users/omer/Local_Repo/maxe/build/spec/staging/generated.c",
+    "source_sha256": "d20c59c0bd916685dbdf4d9137ec8d8af5d5db527e99021bba512def21d32c2d"
+  },
+  "bench": {
+    "candidate_sha256": "93fe053ec7f3f613c2855be880cb91845eec03e6a43fb161f394dc79ccffb0ea",
+    "host": {
+      "chip": "Apple M2 Max",
+      "machine": "arm64",
+      "memory_mb": "34359738368",
+      "model": "Mac14,6",
+      "ncpu": "12",
+      "os": "27.2",
+      "os_build": "26B123"
+    },
+    "schema": 1,
+    "toolchain": {
+      "clang": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+      "clang_path": "/usr/bin/clang",
+      "sdk": "27.0"
+    },
+    "workloads": {
+      "audit_basic": {
+        "raw": {
+          "baseline-x86_64": [
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 37308000,
+              "maxrss_bytes": 51568640,
+              "sys_s": 0.011281999999999999,
+              "transitions": 2000000,
+              "user_s": 0.047771999999999995,
+              "wall_ns": 65241875
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 36286000,
+              "maxrss_bytes": 51601408,
+              "sys_s": 0.010554,
+              "transitions": 2000000,
+              "user_s": 0.048294,
+              "wall_ns": 65054625
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 36572000,
+              "maxrss_bytes": 51597312,
+              "sys_s": 0.010426,
+              "transitions": 2000000,
+              "user_s": 0.048621,
+              "wall_ns": 65012333
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 37566999,
+              "maxrss_bytes": 51580928,
+              "sys_s": 0.012105999999999999,
+              "transitions": 2000000,
+              "user_s": 0.048942,
+              "wall_ns": 66341625
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 36914000,
+              "maxrss_bytes": 51593216,
+              "sys_s": 0.011007999999999999,
+              "transitions": 2000000,
+              "user_s": 0.048498,
+              "wall_ns": 65464916
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 37157999,
+              "maxrss_bytes": 51576832,
+              "sys_s": 0.013233,
+              "transitions": 2000000,
+              "user_s": 0.048532,
+              "wall_ns": 65709042
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 37954999,
+              "maxrss_bytes": 51593216,
+              "sys_s": 0.011869,
+              "transitions": 2000000,
+              "user_s": 0.048398,
+              "wall_ns": 66582583
+            }
+          ],
+          "native-generic": [
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 17268999,
+              "maxrss_bytes": 52166656,
+              "sys_s": 0.004821,
+              "transitions": 2000000,
+              "user_s": 0.027788999999999998,
+              "wall_ns": 35047417
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 16862000,
+              "maxrss_bytes": 52166656,
+              "sys_s": 0.004327999999999999,
+              "transitions": 2000000,
+              "user_s": 0.027316,
+              "wall_ns": 34482042
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 17626999,
+              "maxrss_bytes": 52166656,
+              "sys_s": 0.00485,
+              "transitions": 2000000,
+              "user_s": 0.028443,
+              "wall_ns": 36464041
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 17218000,
+              "maxrss_bytes": 52183040,
+              "sys_s": 0.004582,
+              "transitions": 2000000,
+              "user_s": 0.027975999999999997,
+              "wall_ns": 35649375
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 17012000,
+              "maxrss_bytes": 52166656,
+              "sys_s": 0.004357,
+              "transitions": 2000000,
+              "user_s": 0.027313999999999998,
+              "wall_ns": 34400208
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 17157999,
+              "maxrss_bytes": 52183040,
+              "sys_s": 0.004215,
+              "transitions": 2000000,
+              "user_s": 0.027840999999999998,
+              "wall_ns": 35079417
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 17084000,
+              "maxrss_bytes": 52166656,
+              "sys_s": 0.0044329999999999994,
+              "transitions": 2000000,
+              "user_s": 0.027485,
+              "wall_ns": 35040542
+            }
+          ],
+          "native-generic-inline": [
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 17098999,
+              "maxrss_bytes": 52166656,
+              "sys_s": 0.004585,
+              "transitions": 2000000,
+              "user_s": 0.027888999999999997,
+              "wall_ns": 35123041
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 17203000,
+              "maxrss_bytes": 52166656,
+              "sys_s": 0.004112,
+              "transitions": 2000000,
+              "user_s": 0.027606,
+              "wall_ns": 34382083
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 17990000,
+              "maxrss_bytes": 52166656,
+              "sys_s": 0.004849,
+              "transitions": 2000000,
+              "user_s": 0.028402999999999998,
+              "wall_ns": 35617667
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 17143999,
+              "maxrss_bytes": 52166656,
+              "sys_s": 0.0042899999999999995,
+              "transitions": 2000000,
+              "user_s": 0.027809999999999998,
+              "wall_ns": 34939291
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 17338000,
+              "maxrss_bytes": 52166656,
+              "sys_s": 0.004783,
+              "transitions": 2000000,
+              "user_s": 0.027691999999999998,
+              "wall_ns": 35174667
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 17547000,
+              "maxrss_bytes": 52166656,
+              "sys_s": 0.004895,
+              "transitions": 2000000,
+              "user_s": 0.027814,
+              "wall_ns": 35489167
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 17636000,
+              "maxrss_bytes": 52166656,
+              "sys_s": 0.004253,
+              "transitions": 2000000,
+              "user_s": 0.028142,
+              "wall_ns": 35048250
+            }
+          ],
+          "nativeized": [
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 1,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 9755999,
+              "maxrss_bytes": 52232192,
+              "sys_s": 0.0044009999999999995,
+              "transitions": 15625,
+              "user_s": 0.020676999999999997,
+              "wall_ns": 28433667
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 1,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 9873999,
+              "maxrss_bytes": 52232192,
+              "sys_s": 0.004588,
+              "transitions": 15625,
+              "user_s": 0.020623,
+              "wall_ns": 27797166
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 1,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 9389000,
+              "maxrss_bytes": 52232192,
+              "sys_s": 0.004369,
+              "transitions": 15625,
+              "user_s": 0.020515,
+              "wall_ns": 27738250
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 1,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 9609000,
+              "maxrss_bytes": 52232192,
+              "sys_s": 0.00417,
+              "transitions": 15625,
+              "user_s": 0.020399,
+              "wall_ns": 27204042
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 1,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 9266999,
+              "maxrss_bytes": 52232192,
+              "sys_s": 0.004219,
+              "transitions": 15625,
+              "user_s": 0.020217,
+              "wall_ns": 27028916
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 1,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 10042999,
+              "maxrss_bytes": 52232192,
+              "sys_s": 0.004488,
+              "transitions": 15625,
+              "user_s": 0.020516,
+              "wall_ns": 27679708
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 1,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 9737999,
+              "maxrss_bytes": 52248576,
+              "sys_s": 0.004561,
+              "transitions": 15625,
+              "user_s": 0.020472999999999998,
+              "wall_ns": 27766792
+            }
+          ]
+        },
+        "repeats": 7,
+        "speedup_vs_native_generic": 1.7619635204316615,
+        "speedup_vs_native_inline": 1.7804479133752222,
+        "speedup_vs_translated_baseline": 3.815773548549348,
+        "summary": {
+          "baseline-x86_64": {
+            "arch": "x86_64",
+            "cpu_s": {
+              "max": 0.061765,
+              "median": 0.059505999999999996,
+              "min": 0.058848,
+              "n": 7,
+              "p10": 0.05896739999999999,
+              "p90": 0.061334799999999995
+            },
+            "entries": 2000000,
+            "fallback": 0,
+            "fast": 0,
+            "impl": "generic",
+            "kernel_ns": {
+              "max": 37954999,
+              "median": 37157999,
+              "min": 36286000,
+              "n": 7,
+              "p10": 36457600.0,
+              "p90": 37722199.0
+            },
+            "maxrss_bytes": {
+              "max": 51601408,
+              "median": 51593216,
+              "min": 51568640,
+              "n": 7,
+              "p10": 51573555.2,
+              "p90": 51598950.4
+            },
+            "note": "translated baseline (Rosetta)",
+            "transitions": 2000000,
+            "wall_ns": {
+              "max": 66582583,
+              "median": 65464916,
+              "min": 65012333,
+              "n": 7,
+              "p10": 65037708.2,
+              "p90": 66438008.2
+            }
+          },
+          "native-generic": {
+            "arch": "arm64",
+            "cpu_s": {
+              "max": 0.033293,
+              "median": 0.032056,
+              "min": 0.031644,
+              "n": 7,
+              "p10": 0.0316602,
+              "p90": 0.0328832
+            },
+            "entries": 2000000,
+            "fallback": 0,
+            "fast": 0,
+            "impl": "generic",
+            "kernel_ns": {
+              "max": 17626999,
+              "median": 17157999,
+              "min": 16862000,
+              "n": 7,
+              "p10": 16952000.0,
+              "p90": 17412199.0
+            },
+            "maxrss_bytes": {
+              "max": 52183040,
+              "median": 52166656,
+              "min": 52166656,
+              "n": 7,
+              "p10": 52166656.0,
+              "p90": 52183040.0
+            },
+            "note": "generic native build, same source (libc qsort)",
+            "transitions": 2000000,
+            "wall_ns": {
+              "max": 36464041,
+              "median": 35047417,
+              "min": 34400208,
+              "n": 7,
+              "p10": 34449308.4,
+              "p90": 35975241.400000006
+            }
+          },
+          "native-generic-inline": {
+            "arch": "arm64",
+            "cpu_s": {
+              "max": 0.033252,
+              "median": 0.032473999999999996,
+              "min": 0.031717999999999996,
+              "n": 7,
+              "p10": 0.031947199999999995,
+              "p90": 0.0329262
+            },
+            "entries": 2000000,
+            "fallback": 0,
+            "fast": 0,
+            "impl": "generic-inline-sort",
+            "kernel_ns": {
+              "max": 17990000,
+              "median": 17338000,
+              "min": 17098999,
+              "n": 7,
+              "p10": 17125999.0,
+              "p90": 17777600.0
+            },
+            "maxrss_bytes": {
+              "max": 52166656,
+              "median": 52166656,
+              "min": 52166656,
+              "n": 7,
+              "p10": 52166656.0,
+              "p90": 52166656.0
+            },
+            "note": "control: in-module sort, no libc comparator calls",
+            "transitions": 2000000,
+            "wall_ns": {
+              "max": 35617667,
+              "median": 35123041,
+              "min": 34382083,
+              "n": 7,
+              "p10": 34716407.8,
+              "p90": 35540567.0
+            }
+          },
+          "nativeized": {
+            "arch": "arm64",
+            "cpu_s": {
+              "max": 0.025210999999999997,
+              "median": 0.025004,
+              "min": 0.024436,
+              "n": 7,
+              "p10": 0.024515799999999997,
+              "p90": 0.025131199999999996
+            },
+            "entries": 2000000,
+            "fallback": 0,
+            "fast": 1,
+            "impl": "forge:rank-counting-v1+host-batch-v1",
+            "kernel_ns": {
+              "max": 10042999,
+              "median": 9737999,
+              "min": 9266999,
+              "n": 7,
+              "p10": 9340199.6,
+              "p90": 9941599.0
+            },
+            "maxrss_bytes": {
+              "max": 52248576,
+              "median": 52232192,
+              "min": 52232192,
+              "n": 7,
+              "p10": 52232192.0,
+              "p90": 52238745.599999994
+            },
+            "note": "Forge specialization + guard + fallback",
+            "transitions": 15625,
+            "wall_ns": {
+              "max": 28433667,
+              "median": 27738250,
+              "min": 27028916,
+              "n": 7,
+              "p10": 27133991.6,
+              "p90": 28051766.4
+            }
+          }
+        },
+        "workload": "audit_basic"
+      },
+      "audit_interleaved": {
+        "raw": {
+          "baseline-x86_64": [
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 37391999,
+              "maxrss_bytes": 51585024,
+              "sys_s": 0.01137,
+              "transitions": 2000000,
+              "user_s": 0.048112999999999996,
+              "wall_ns": 65561167
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 36710000,
+              "maxrss_bytes": 51593216,
+              "sys_s": 0.011363999999999999,
+              "transitions": 2000000,
+              "user_s": 0.04825,
+              "wall_ns": 64483708
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 37374999,
+              "maxrss_bytes": 51605504,
+              "sys_s": 0.011686,
+              "transitions": 2000000,
+              "user_s": 0.04793,
+              "wall_ns": 65700916
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 36232000,
+              "maxrss_bytes": 51576832,
+              "sys_s": 0.010452999999999999,
+              "transitions": 2000000,
+              "user_s": 0.047681999999999995,
+              "wall_ns": 63696250
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 36495000,
+              "maxrss_bytes": 51576832,
+              "sys_s": 0.010902,
+              "transitions": 2000000,
+              "user_s": 0.048017,
+              "wall_ns": 64390709
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 36443999,
+              "maxrss_bytes": 51576832,
+              "sys_s": 0.010468,
+              "transitions": 2000000,
+              "user_s": 0.048041999999999994,
+              "wall_ns": 63907958
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 36379999,
+              "maxrss_bytes": 51589120,
+              "sys_s": 0.01032,
+              "transitions": 2000000,
+              "user_s": 0.048153999999999995,
+              "wall_ns": 64139333
+            }
+          ],
+          "native-generic": [
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 17260000,
+              "maxrss_bytes": 52166656,
+              "sys_s": 0.0046229999999999995,
+              "transitions": 2000000,
+              "user_s": 0.0278,
+              "wall_ns": 35178542
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 17001000,
+              "maxrss_bytes": 52166656,
+              "sys_s": 0.004771,
+              "transitions": 2000000,
+              "user_s": 0.027712999999999998,
+              "wall_ns": 35474500
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 17284000,
+              "maxrss_bytes": 52183040,
+              "sys_s": 0.0045969999999999995,
+              "transitions": 2000000,
+              "user_s": 0.027762,
+              "wall_ns": 35302792
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 17152000,
+              "maxrss_bytes": 52166656,
+              "sys_s": 0.004332,
+              "transitions": 2000000,
+              "user_s": 0.027548999999999997,
+              "wall_ns": 35397709
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 16856999,
+              "maxrss_bytes": 52166656,
+              "sys_s": 0.004177,
+              "transitions": 2000000,
+              "user_s": 0.027794,
+              "wall_ns": 34461916
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 16857000,
+              "maxrss_bytes": 52166656,
+              "sys_s": 0.004239,
+              "transitions": 2000000,
+              "user_s": 0.02792,
+              "wall_ns": 34983500
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 17071000,
+              "maxrss_bytes": 52183040,
+              "sys_s": 0.004739,
+              "transitions": 2000000,
+              "user_s": 0.027658,
+              "wall_ns": 34562167
+            }
+          ],
+          "native-generic-inline": [
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 16880000,
+              "maxrss_bytes": 52183040,
+              "sys_s": 0.0041719999999999995,
+              "transitions": 2000000,
+              "user_s": 0.027292,
+              "wall_ns": 34086958
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 17499000,
+              "maxrss_bytes": 52183040,
+              "sys_s": 0.0043549999999999995,
+              "transitions": 2000000,
+              "user_s": 0.027930999999999997,
+              "wall_ns": 35826125
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 17939999,
+              "maxrss_bytes": 52183040,
+              "sys_s": 0.0052109999999999995,
+              "transitions": 2000000,
+              "user_s": 0.028321,
+              "wall_ns": 36545291
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 17616999,
+              "maxrss_bytes": 52183040,
+              "sys_s": 0.004510999999999999,
+              "transitions": 2000000,
+              "user_s": 0.028325,
+              "wall_ns": 36098875
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 17649999,
+              "maxrss_bytes": 52166656,
+              "sys_s": 0.004357,
+              "transitions": 2000000,
+              "user_s": 0.027821,
+              "wall_ns": 34899667
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 17969000,
+              "maxrss_bytes": 52166656,
+              "sys_s": 0.004676,
+              "transitions": 2000000,
+              "user_s": 0.029167,
+              "wall_ns": 36599000
+            },
+            {
+              "entries": 2000000,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 17062999,
+              "maxrss_bytes": 52166656,
+              "sys_s": 0.004255,
+              "transitions": 2000000,
+              "user_s": 0.027575,
+              "wall_ns": 34734583
+            }
+          ],
+          "nativeized": [
+            {
+              "entries": 2000000,
+              "fallback": 1,
+              "fast": 0,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 17687999,
+              "maxrss_bytes": 52232192,
+              "sys_s": 0.0047799999999999995,
+              "transitions": 2000000,
+              "user_s": 0.027812,
+              "wall_ns": 35223791
+            },
+            {
+              "entries": 2000000,
+              "fallback": 1,
+              "fast": 0,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 17448000,
+              "maxrss_bytes": 52215808,
+              "sys_s": 0.0050279999999999995,
+              "transitions": 2000000,
+              "user_s": 0.028131,
+              "wall_ns": 36028541
+            },
+            {
+              "entries": 2000000,
+              "fallback": 1,
+              "fast": 0,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 17146999,
+              "maxrss_bytes": 52232192,
+              "sys_s": 0.00487,
+              "transitions": 2000000,
+              "user_s": 0.027847999999999998,
+              "wall_ns": 35403958
+            },
+            {
+              "entries": 2000000,
+              "fallback": 1,
+              "fast": 0,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 17113000,
+              "maxrss_bytes": 52232192,
+              "sys_s": 0.004637,
+              "transitions": 2000000,
+              "user_s": 0.028044,
+              "wall_ns": 35459875
+            },
+            {
+              "entries": 2000000,
+              "fallback": 1,
+              "fast": 0,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 17376000,
+              "maxrss_bytes": 52232192,
+              "sys_s": 0.0046429999999999996,
+              "transitions": 2000000,
+              "user_s": 0.027807,
+              "wall_ns": 35130500
+            },
+            {
+              "entries": 2000000,
+              "fallback": 1,
+              "fast": 0,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 17574999,
+              "maxrss_bytes": 52232192,
+              "sys_s": 0.00466,
+              "transitions": 2000000,
+              "user_s": 0.028211,
+              "wall_ns": 35678333
+            },
+            {
+              "entries": 2000000,
+              "fallback": 1,
+              "fast": 0,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 17035999,
+              "maxrss_bytes": 52232192,
+              "sys_s": 0.004663,
+              "transitions": 2000000,
+              "user_s": 0.027822,
+              "wall_ns": 34916917
+            }
+          ]
+        },
+        "repeats": 7,
+        "speedup_vs_native_generic": 0.9824470534069981,
+        "speedup_vs_native_inline": 1.0138696477900553,
+        "speedup_vs_translated_baseline": 2.100310773480663,
+        "summary": {
+          "baseline-x86_64": {
+            "arch": "x86_64",
+            "cpu_s": {
+              "max": 0.059616,
+              "median": 0.058919,
+              "min": 0.05813499999999999,
+              "n": 7,
+              "p10": 0.0583384,
+              "p90": 0.059614799999999996
+            },
+            "entries": 2000000,
+            "fallback": 0,
+            "fast": 0,
+            "impl": "generic",
+            "kernel_ns": {
+              "max": 37391999,
+              "median": 36495000,
+              "min": 36232000,
+              "n": 7,
+              "p10": 36320799.4,
+              "p90": 37381799.0
+            },
+            "maxrss_bytes": {
+              "max": 51605504,
+              "median": 51585024,
+              "min": 51576832,
+              "n": 7,
+              "p10": 51576832.0,
+              "p90": 51598131.2
+            },
+            "note": "translated baseline (Rosetta)",
+            "transitions": 2000000,
+            "wall_ns": {
+              "max": 65700916,
+              "median": 64390709,
+              "min": 63696250,
+              "n": 7,
+              "p10": 63823274.8,
+              "p90": 65617066.599999994
+            }
+          },
+          "native-generic": {
+            "arch": "arm64",
+            "cpu_s": {
+              "max": 0.032484,
+              "median": 0.032359,
+              "min": 0.031881,
+              "n": 7,
+              "p10": 0.031935,
+              "p90": 0.0324474
+            },
+            "entries": 2000000,
+            "fallback": 0,
+            "fast": 0,
+            "impl": "generic",
+            "kernel_ns": {
+              "max": 17284000,
+              "median": 17071000,
+              "min": 16856999,
+              "n": 7,
+              "p10": 16856999.6,
+              "p90": 17269600.0
+            },
+            "maxrss_bytes": {
+              "max": 52183040,
+              "median": 52166656,
+              "min": 52166656,
+              "n": 7,
+              "p10": 52166656.0,
+              "p90": 52183040.0
+            },
+            "note": "generic native build, same source (libc qsort)",
+            "transitions": 2000000,
+            "wall_ns": {
+              "max": 35474500,
+              "median": 35178542,
+              "min": 34461916,
+              "n": 7,
+              "p10": 34522066.6,
+              "p90": 35428425.4
+            }
+          },
+          "native-generic-inline": {
+            "arch": "arm64",
+            "cpu_s": {
+              "max": 0.033843,
+              "median": 0.032285999999999995,
+              "min": 0.031464,
+              "n": 7,
+              "p10": 0.0316836,
+              "p90": 0.033656399999999996
+            },
+            "entries": 2000000,
+            "fallback": 0,
+            "fast": 0,
+            "impl": "generic-inline-sort",
+            "kernel_ns": {
+              "max": 17969000,
+              "median": 17616999,
+              "min": 16880000,
+              "n": 7,
+              "p10": 16989799.4,
+              "p90": 17951599.4
+            },
+            "maxrss_bytes": {
+              "max": 52183040,
+              "median": 52183040,
+              "min": 52166656,
+              "n": 7,
+              "p10": 52166656.0,
+              "p90": 52183040.0
+            },
+            "note": "control: in-module sort, no libc comparator calls",
+            "transitions": 2000000,
+            "wall_ns": {
+              "max": 36599000,
+              "median": 35826125,
+              "min": 34086958,
+              "n": 7,
+              "p10": 34475533.0,
+              "p90": 36566774.6
+            }
+          },
+          "nativeized": {
+            "arch": "arm64",
+            "cpu_s": {
+              "max": 0.033159,
+              "median": 0.032681,
+              "min": 0.03245,
+              "n": 7,
+              "p10": 0.032471,
+              "p90": 0.0329862
+            },
+            "entries": 2000000,
+            "fallback": 1,
+            "fast": 0,
+            "impl": "forge:rank-counting-v1+host-batch-v1",
+            "kernel_ns": {
+              "max": 17687999,
+              "median": 17376000,
+              "min": 17035999,
+              "n": 7,
+              "p10": 17082199.6,
+              "p90": 17620199.0
+            },
+            "maxrss_bytes": {
+              "max": 52232192,
+              "median": 52232192,
+              "min": 52215808,
+              "n": 7,
+              "p10": 52225638.4,
+              "p90": 52232192.0
+            },
+            "note": "Forge specialization + guard + fallback",
+            "transitions": 2000000,
+            "wall_ns": {
+              "max": 36028541,
+              "median": 35403958,
+              "min": 34916917,
+              "n": 7,
+              "p10": 35045066.8,
+              "p90": 35818416.2
+            }
+          }
+        },
+        "workload": "audit_interleaved"
+      },
+      "rank_small_range": {
+        "raw": {
+          "baseline-x86_64": [
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 136721999,
+              "maxrss_bytes": 27586560,
+              "sys_s": 0.0072699999999999996,
+              "transitions": 0,
+              "user_s": 0.143406,
+              "wall_ns": 156970917
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 146558000,
+              "maxrss_bytes": 27574272,
+              "sys_s": 0.007336,
+              "transitions": 0,
+              "user_s": 0.153364,
+              "wall_ns": 165991209
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 134482000,
+              "maxrss_bytes": 27578368,
+              "sys_s": 0.005934,
+              "transitions": 0,
+              "user_s": 0.14146799999999998,
+              "wall_ns": 153102667
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 134841999,
+              "maxrss_bytes": 27582464,
+              "sys_s": 0.007476,
+              "transitions": 0,
+              "user_s": 0.141585,
+              "wall_ns": 154884167
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 149734999,
+              "maxrss_bytes": 27566080,
+              "sys_s": 0.006854,
+              "transitions": 0,
+              "user_s": 0.156528,
+              "wall_ns": 169237500
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 135507000,
+              "maxrss_bytes": 27639808,
+              "sys_s": 0.008294,
+              "transitions": 0,
+              "user_s": 0.142402,
+              "wall_ns": 156999083
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 147326999,
+              "maxrss_bytes": 27590656,
+              "sys_s": 0.005906,
+              "transitions": 0,
+              "user_s": 0.15442999999999998,
+              "wall_ns": 165260084
+            }
+          ],
+          "native-generic": [
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 116333000,
+              "maxrss_bytes": 26050560,
+              "sys_s": 0.0047599999999999995,
+              "transitions": 0,
+              "user_s": 0.11298499999999999,
+              "wall_ns": 126121250
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 92277000,
+              "maxrss_bytes": 26050560,
+              "sys_s": 0.003544,
+              "transitions": 0,
+              "user_s": 0.095328,
+              "wall_ns": 101490125
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 93408000,
+              "maxrss_bytes": 26050560,
+              "sys_s": 0.003283,
+              "transitions": 0,
+              "user_s": 0.09670999999999999,
+              "wall_ns": 102851833
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 96348999,
+              "maxrss_bytes": 26050560,
+              "sys_s": 0.003972,
+              "transitions": 0,
+              "user_s": 0.099339,
+              "wall_ns": 106143667
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 95418999,
+              "maxrss_bytes": 26050560,
+              "sys_s": 0.0036929999999999997,
+              "transitions": 0,
+              "user_s": 0.09809999999999999,
+              "wall_ns": 105642625
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 93682999,
+              "maxrss_bytes": 26050560,
+              "sys_s": 0.0036049999999999997,
+              "transitions": 0,
+              "user_s": 0.096508,
+              "wall_ns": 102893583
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 93304999,
+              "maxrss_bytes": 26050560,
+              "sys_s": 0.0035359999999999996,
+              "transitions": 0,
+              "user_s": 0.096041,
+              "wall_ns": 102484416
+            }
+          ],
+          "native-generic-inline": [
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 73561000,
+              "maxrss_bytes": 26066944,
+              "sys_s": 0.0041259999999999995,
+              "transitions": 0,
+              "user_s": 0.07613,
+              "wall_ns": 83095709
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 73732000,
+              "maxrss_bytes": 26050560,
+              "sys_s": 0.004428,
+              "transitions": 0,
+              "user_s": 0.07578499999999999,
+              "wall_ns": 83847250
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 73490999,
+              "maxrss_bytes": 26050560,
+              "sys_s": 0.00441,
+              "transitions": 0,
+              "user_s": 0.07563399999999999,
+              "wall_ns": 83104667
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 78939999,
+              "maxrss_bytes": 26066944,
+              "sys_s": 0.004422,
+              "transitions": 0,
+              "user_s": 0.081882,
+              "wall_ns": 89108542
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 73347999,
+              "maxrss_bytes": 26050560,
+              "sys_s": 0.0034839999999999997,
+              "transitions": 0,
+              "user_s": 0.07653499999999999,
+              "wall_ns": 83445458
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 74073000,
+              "maxrss_bytes": 26050560,
+              "sys_s": 0.004181,
+              "transitions": 0,
+              "user_s": 0.07645199999999999,
+              "wall_ns": 83345083
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 73941000,
+              "maxrss_bytes": 26050560,
+              "sys_s": 0.004952,
+              "transitions": 0,
+              "user_s": 0.07606199999999999,
+              "wall_ns": 84842083
+            }
+          ],
+          "nativeized": [
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 1,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 5682000,
+              "maxrss_bytes": 26148864,
+              "sys_s": 0.003845,
+              "transitions": 0,
+              "user_s": 0.009174999999999999,
+              "wall_ns": 16356917
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 1,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 5065999,
+              "maxrss_bytes": 26132480,
+              "sys_s": 0.0032329999999999998,
+              "transitions": 0,
+              "user_s": 0.008544999999999999,
+              "wall_ns": 14469166
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 1,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 5066999,
+              "maxrss_bytes": 26132480,
+              "sys_s": 0.003279,
+              "transitions": 0,
+              "user_s": 0.008544,
+              "wall_ns": 14442833
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 1,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 5267000,
+              "maxrss_bytes": 26132480,
+              "sys_s": 0.0032189999999999996,
+              "transitions": 0,
+              "user_s": 0.008986,
+              "wall_ns": 14704583
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 1,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 5095000,
+              "maxrss_bytes": 26132480,
+              "sys_s": 0.0033009999999999997,
+              "transitions": 0,
+              "user_s": 0.008905,
+              "wall_ns": 15078042
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 1,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 5036000,
+              "maxrss_bytes": 26132480,
+              "sys_s": 0.0032389999999999997,
+              "transitions": 0,
+              "user_s": 0.008476,
+              "wall_ns": 14293167
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 1,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 5266000,
+              "maxrss_bytes": 26132480,
+              "sys_s": 0.003457,
+              "transitions": 0,
+              "user_s": 0.008716999999999999,
+              "wall_ns": 14859458
+            }
+          ]
+        },
+        "repeats": 7,
+        "speedup_vs_native_generic": 18.38724219823356,
+        "speedup_vs_native_inline": 14.47144259077527,
+        "speedup_vs_translated_baseline": 26.834543473994113,
+        "summary": {
+          "baseline-x86_64": {
+            "arch": "x86_64",
+            "cpu_s": {
+              "max": 0.163382,
+              "median": 0.150696,
+              "min": 0.14740199999999998,
+              "n": 7,
+              "p10": 0.1483974,
+              "p90": 0.1617728
+            },
+            "entries": 0,
+            "fallback": 0,
+            "fast": 0,
+            "impl": "generic",
+            "kernel_ns": {
+              "max": 149734999,
+              "median": 136721999,
+              "min": 134482000,
+              "n": 7,
+              "p10": 134697999.39999998,
+              "p90": 148290199.0
+            },
+            "maxrss_bytes": {
+              "max": 27639808,
+              "median": 27582464,
+              "min": 27566080,
+              "n": 7,
+              "p10": 27570995.200000003,
+              "p90": 27610316.8
+            },
+            "note": "translated baseline (Rosetta)",
+            "transitions": 0,
+            "wall_ns": {
+              "max": 169237500,
+              "median": 156999083,
+              "min": 153102667,
+              "n": 7,
+              "p10": 154171567.0,
+              "p90": 167289725.4
+            }
+          },
+          "native-generic": {
+            "arch": "arm64",
+            "cpu_s": {
+              "max": 0.11774499999999999,
+              "median": 0.100113,
+              "min": 0.098872,
+              "n": 7,
+              "p10": 0.099295,
+              "p90": 0.1090846
+            },
+            "entries": 0,
+            "fallback": 0,
+            "fast": 0,
+            "impl": "generic",
+            "kernel_ns": {
+              "max": 116333000,
+              "median": 93682999,
+              "min": 92277000,
+              "n": 7,
+              "p10": 92893799.4,
+              "p90": 104342599.4
+            },
+            "maxrss_bytes": {
+              "max": 26050560,
+              "median": 26050560,
+              "min": 26050560,
+              "n": 7,
+              "p10": 26050560.0,
+              "p90": 26050560.0
+            },
+            "note": "generic native build, same source (libc qsort)",
+            "transitions": 0,
+            "wall_ns": {
+              "max": 126121250,
+              "median": 102893583,
+              "min": 101490125,
+              "n": 7,
+              "p10": 102086699.6,
+              "p90": 114134700.20000002
+            }
+          },
+          "native-generic-inline": {
+            "arch": "arm64",
+            "cpu_s": {
+              "max": 0.08630399999999999,
+              "median": 0.08025600000000001,
+              "min": 0.08001899999999999,
+              "n": 7,
+              "p10": 0.080034,
+              "p90": 0.08312999999999998
+            },
+            "entries": 0,
+            "fallback": 0,
+            "fast": 0,
+            "impl": "generic-inline-sort",
+            "kernel_ns": {
+              "max": 78939999,
+              "median": 73732000,
+              "min": 73347999,
+              "n": 7,
+              "p10": 73433799.0,
+              "p90": 76019799.6
+            },
+            "maxrss_bytes": {
+              "max": 26066944,
+              "median": 26050560,
+              "min": 26050560,
+              "n": 7,
+              "p10": 26050560.0,
+              "p90": 26066944.0
+            },
+            "note": "control: in-module sort, no libc comparator calls",
+            "transitions": 0,
+            "wall_ns": {
+              "max": 89108542,
+              "median": 83445458,
+              "min": 83095709,
+              "n": 7,
+              "p10": 83101083.80000001,
+              "p90": 86548666.6
+            }
+          },
+          "nativeized": {
+            "arch": "arm64",
+            "cpu_s": {
+              "max": 0.013019999999999999,
+              "median": 0.012173999999999999,
+              "min": 0.011715,
+              "n": 7,
+              "p10": 0.011752799999999999,
+              "p90": 0.0125316
+            },
+            "entries": 0,
+            "fallback": 0,
+            "fast": 1,
+            "impl": "forge:rank-counting-v1+host-batch-v1",
+            "kernel_ns": {
+              "max": 5682000,
+              "median": 5095000,
+              "min": 5036000,
+              "n": 7,
+              "p10": 5053999.4,
+              "p90": 5433000.0
+            },
+            "maxrss_bytes": {
+              "max": 26148864,
+              "median": 26132480,
+              "min": 26132480,
+              "n": 7,
+              "p10": 26132480.0,
+              "p90": 26139033.6
+            },
+            "note": "Forge specialization + guard + fallback",
+            "transitions": 0,
+            "wall_ns": {
+              "max": 16356917,
+              "median": 14704583,
+              "min": 14293167,
+              "n": 7,
+              "p10": 14382966.6,
+              "p90": 15589592.0
+            }
+          }
+        },
+        "workload": "rank_small_range"
+      },
+      "rank_tiny": {
+        "raw": {
+          "baseline-x86_64": [
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 10999,
+              "maxrss_bytes": 3551232,
+              "sys_s": 0.003994999999999999,
+              "transitions": 0,
+              "user_s": 0.003198,
+              "wall_ns": 11015458
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 8000,
+              "maxrss_bytes": 3584000,
+              "sys_s": 0.002882,
+              "transitions": 0,
+              "user_s": 0.002717,
+              "wall_ns": 10217084
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 8999,
+              "maxrss_bytes": 3551232,
+              "sys_s": 0.003026,
+              "transitions": 0,
+              "user_s": 0.003348,
+              "wall_ns": 11501042
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 9999,
+              "maxrss_bytes": 3551232,
+              "sys_s": 0.0033729999999999997,
+              "transitions": 0,
+              "user_s": 0.00357,
+              "wall_ns": 11518875
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 8000,
+              "maxrss_bytes": 3551232,
+              "sys_s": 0.004445,
+              "transitions": 0,
+              "user_s": 0.0034969999999999997,
+              "wall_ns": 13967083
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 7999,
+              "maxrss_bytes": 3551232,
+              "sys_s": 0.0028599999999999997,
+              "transitions": 0,
+              "user_s": 0.003162,
+              "wall_ns": 10096542
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 9999,
+              "maxrss_bytes": 3563520,
+              "sys_s": 0.002915,
+              "transitions": 0,
+              "user_s": 0.0026769999999999997,
+              "wall_ns": 9559125
+            }
+          ],
+          "native-generic": [
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 1000,
+              "maxrss_bytes": 2015232,
+              "sys_s": 0.0018059999999999999,
+              "transitions": 0,
+              "user_s": 0.001022,
+              "wall_ns": 5111000
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 1000,
+              "maxrss_bytes": 2015232,
+              "sys_s": 0.0016879999999999998,
+              "transitions": 0,
+              "user_s": 0.000939,
+              "wall_ns": 5395459
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 1000,
+              "maxrss_bytes": 2015232,
+              "sys_s": 0.001704,
+              "transitions": 0,
+              "user_s": 0.001055,
+              "wall_ns": 4883125
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 2000,
+              "maxrss_bytes": 2015232,
+              "sys_s": 0.002022,
+              "transitions": 0,
+              "user_s": 0.001204,
+              "wall_ns": 5740708
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 1000,
+              "maxrss_bytes": 2015232,
+              "sys_s": 0.002046,
+              "transitions": 0,
+              "user_s": 0.001001,
+              "wall_ns": 5737125
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 1000,
+              "maxrss_bytes": 2015232,
+              "sys_s": 0.001567,
+              "transitions": 0,
+              "user_s": 0.000946,
+              "wall_ns": 5249208
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 1000,
+              "maxrss_bytes": 2015232,
+              "sys_s": 0.001545,
+              "transitions": 0,
+              "user_s": 0.001015,
+              "wall_ns": 5552667
+            }
+          ],
+          "native-generic-inline": [
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 1000,
+              "maxrss_bytes": 2015232,
+              "sys_s": 0.001526,
+              "transitions": 0,
+              "user_s": 0.000908,
+              "wall_ns": 4499334
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 1000,
+              "maxrss_bytes": 2015232,
+              "sys_s": 0.001571,
+              "transitions": 0,
+              "user_s": 0.000922,
+              "wall_ns": 5138750
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 1000,
+              "maxrss_bytes": 2015232,
+              "sys_s": 0.001581,
+              "transitions": 0,
+              "user_s": 0.000917,
+              "wall_ns": 4557625
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 1000,
+              "maxrss_bytes": 2015232,
+              "sys_s": 0.001609,
+              "transitions": 0,
+              "user_s": 0.000953,
+              "wall_ns": 4551000
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 1000,
+              "maxrss_bytes": 2015232,
+              "sys_s": 0.00187,
+              "transitions": 0,
+              "user_s": 0.0009429999999999999,
+              "wall_ns": 4980542
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 999,
+              "maxrss_bytes": 2015232,
+              "sys_s": 0.0018299999999999998,
+              "transitions": 0,
+              "user_s": 0.001026,
+              "wall_ns": 5179375
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 1000,
+              "maxrss_bytes": 2015232,
+              "sys_s": 0.0014969999999999998,
+              "transitions": 0,
+              "user_s": 0.0008839999999999999,
+              "wall_ns": 4301750
+            }
+          ],
+          "nativeized": [
+            {
+              "entries": 0,
+              "fallback": 1,
+              "fast": 0,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 1000,
+              "maxrss_bytes": 2080768,
+              "sys_s": 0.0015769999999999998,
+              "transitions": 0,
+              "user_s": 0.000901,
+              "wall_ns": 5259042
+            },
+            {
+              "entries": 0,
+              "fallback": 1,
+              "fast": 0,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 1000,
+              "maxrss_bytes": 2080768,
+              "sys_s": 0.0016099999999999999,
+              "transitions": 0,
+              "user_s": 0.0009339999999999999,
+              "wall_ns": 4780750
+            },
+            {
+              "entries": 0,
+              "fallback": 1,
+              "fast": 0,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 2000,
+              "maxrss_bytes": 2080768,
+              "sys_s": 0.001718,
+              "transitions": 0,
+              "user_s": 0.0010329999999999998,
+              "wall_ns": 4751458
+            },
+            {
+              "entries": 0,
+              "fallback": 1,
+              "fast": 0,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 6000,
+              "maxrss_bytes": 2080768,
+              "sys_s": 0.001813,
+              "transitions": 0,
+              "user_s": 0.001063,
+              "wall_ns": 4950208
+            },
+            {
+              "entries": 0,
+              "fallback": 1,
+              "fast": 0,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 2000,
+              "maxrss_bytes": 2080768,
+              "sys_s": 0.001588,
+              "transitions": 0,
+              "user_s": 0.0009109999999999999,
+              "wall_ns": 4901500
+            },
+            {
+              "entries": 0,
+              "fallback": 1,
+              "fast": 0,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 2000,
+              "maxrss_bytes": 2080768,
+              "sys_s": 0.001656,
+              "transitions": 0,
+              "user_s": 0.000982,
+              "wall_ns": 5368000
+            },
+            {
+              "entries": 0,
+              "fallback": 1,
+              "fast": 0,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 2000,
+              "maxrss_bytes": 2080768,
+              "sys_s": 0.001664,
+              "transitions": 0,
+              "user_s": 0.0009739999999999999,
+              "wall_ns": 4665583
+            }
+          ]
+        },
+        "repeats": 7,
+        "speedup_vs_native_generic": 0.5,
+        "speedup_vs_native_inline": 0.5,
+        "speedup_vs_translated_baseline": 4.4995,
+        "summary": {
+          "baseline-x86_64": {
+            "arch": "x86_64",
+            "cpu_s": {
+              "max": 0.007942,
+              "median": 0.0063739999999999995,
+              "min": 0.005592,
+              "n": 7,
+              "p10": 0.005596199999999999,
+              "p90": 0.0074926
+            },
+            "entries": 0,
+            "fallback": 0,
+            "fast": 0,
+            "impl": "generic",
+            "kernel_ns": {
+              "max": 10999,
+              "median": 8999,
+              "min": 7999,
+              "n": 7,
+              "p10": 7999.6,
+              "p90": 10399.0
+            },
+            "maxrss_bytes": {
+              "max": 3584000,
+              "median": 3551232,
+              "min": 3551232,
+              "n": 7,
+              "p10": 3551232.0,
+              "p90": 3571712.0
+            },
+            "note": "translated baseline (Rosetta)",
+            "transitions": 0,
+            "wall_ns": {
+              "max": 13967083,
+              "median": 11015458,
+              "min": 9559125,
+              "n": 7,
+              "p10": 9881575.2,
+              "p90": 12498158.200000001
+            }
+          },
+          "native-generic": {
+            "arch": "arm64",
+            "cpu_s": {
+              "max": 0.0032259999999999997,
+              "median": 0.002759,
+              "min": 0.002513,
+              "n": 7,
+              "p10": 0.0025411999999999995,
+              "p90": 0.0031186
+            },
+            "entries": 0,
+            "fallback": 0,
+            "fast": 0,
+            "impl": "generic",
+            "kernel_ns": {
+              "max": 2000,
+              "median": 1000,
+              "min": 1000,
+              "n": 7,
+              "p10": 1000.0,
+              "p90": 1400.0000000000005
+            },
+            "maxrss_bytes": {
+              "max": 2015232,
+              "median": 2015232,
+              "min": 2015232,
+              "n": 7,
+              "p10": 2015232.0,
+              "p90": 2015232.0
+            },
+            "note": "generic native build, same source (libc qsort)",
+            "transitions": 0,
+            "wall_ns": {
+              "max": 5740708,
+              "median": 5395459,
+              "min": 4883125,
+              "n": 7,
+              "p10": 5019850.0,
+              "p90": 5738558.2
+            }
+          },
+          "native-generic-inline": {
+            "arch": "arm64",
+            "cpu_s": {
+              "max": 0.002856,
+              "median": 0.002498,
+              "min": 0.002381,
+              "n": 7,
+              "p10": 0.0024127999999999997,
+              "p90": 0.0028302
+            },
+            "entries": 0,
+            "fallback": 0,
+            "fast": 0,
+            "impl": "generic-inline-sort",
+            "kernel_ns": {
+              "max": 1000,
+              "median": 1000,
+              "min": 999,
+              "n": 7,
+              "p10": 999.6,
+              "p90": 1000.0
+            },
+            "maxrss_bytes": {
+              "max": 2015232,
+              "median": 2015232,
+              "min": 2015232,
+              "n": 7,
+              "p10": 2015232.0,
+              "p90": 2015232.0
+            },
+            "note": "control: in-module sort, no libc comparator calls",
+            "transitions": 0,
+            "wall_ns": {
+              "max": 5179375,
+              "median": 4557625,
+              "min": 4301750,
+              "n": 7,
+              "p10": 4420300.4,
+              "p90": 5155000.0
+            }
+          },
+          "nativeized": {
+            "arch": "arm64",
+            "cpu_s": {
+              "max": 0.002876,
+              "median": 0.0026379999999999997,
+              "min": 0.0024779999999999997,
+              "n": 7,
+              "p10": 0.0024906,
+              "p90": 0.002801
+            },
+            "entries": 0,
+            "fallback": 1,
+            "fast": 0,
+            "impl": "forge:rank-counting-v1+host-batch-v1",
+            "kernel_ns": {
+              "max": 6000,
+              "median": 2000,
+              "min": 1000,
+              "n": 7,
+              "p10": 1000.0,
+              "p90": 3600.000000000002
+            },
+            "maxrss_bytes": {
+              "max": 2080768,
+              "median": 2080768,
+              "min": 2080768,
+              "n": 7,
+              "p10": 2080768.0,
+              "p90": 2080768.0
+            },
+            "note": "Forge specialization + guard + fallback",
+            "transitions": 0,
+            "wall_ns": {
+              "max": 5368000,
+              "median": 4901500,
+              "min": 4665583,
+              "n": 7,
+              "p10": 4717108.0,
+              "p90": 5302625.2
+            }
+          }
+        },
+        "workload": "rank_tiny"
+      },
+      "rank_unaligned": {
+        "raw": {
+          "baseline-x86_64": [
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 134004999,
+              "maxrss_bytes": 27586560,
+              "sys_s": 0.0073999999999999995,
+              "transitions": 0,
+              "user_s": 0.141228,
+              "wall_ns": 154655375
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 133695000,
+              "maxrss_bytes": 27586560,
+              "sys_s": 0.006319,
+              "transitions": 0,
+              "user_s": 0.1409,
+              "wall_ns": 153142709
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 133012000,
+              "maxrss_bytes": 27553792,
+              "sys_s": 0.005862,
+              "transitions": 0,
+              "user_s": 0.14010799999999998,
+              "wall_ns": 151298792
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 135502999,
+              "maxrss_bytes": 27578368,
+              "sys_s": 0.006784999999999999,
+              "transitions": 0,
+              "user_s": 0.142342,
+              "wall_ns": 154535625
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 138994000,
+              "maxrss_bytes": 27578368,
+              "sys_s": 0.008202,
+              "transitions": 0,
+              "user_s": 0.146137,
+              "wall_ns": 158714167
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 134072000,
+              "maxrss_bytes": 27566080,
+              "sys_s": 0.006869,
+              "transitions": 0,
+              "user_s": 0.14099399999999998,
+              "wall_ns": 153335250
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 134901999,
+              "maxrss_bytes": 27574272,
+              "sys_s": 0.006535999999999999,
+              "transitions": 0,
+              "user_s": 0.14206,
+              "wall_ns": 153696125
+            }
+          ],
+          "native-generic": [
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 93673999,
+              "maxrss_bytes": 26050560,
+              "sys_s": 0.0038959999999999997,
+              "transitions": 0,
+              "user_s": 0.096236,
+              "wall_ns": 102700500
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 93020000,
+              "maxrss_bytes": 26050560,
+              "sys_s": 0.003885,
+              "transitions": 0,
+              "user_s": 0.09595999999999999,
+              "wall_ns": 102249625
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 94683999,
+              "maxrss_bytes": 26066944,
+              "sys_s": 0.004683,
+              "transitions": 0,
+              "user_s": 0.09729199999999999,
+              "wall_ns": 104454000
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 94183999,
+              "maxrss_bytes": 26050560,
+              "sys_s": 0.0043549999999999995,
+              "transitions": 0,
+              "user_s": 0.096755,
+              "wall_ns": 104120250
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 95180000,
+              "maxrss_bytes": 26050560,
+              "sys_s": 0.003803,
+              "transitions": 0,
+              "user_s": 0.097926,
+              "wall_ns": 104371583
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 95341000,
+              "maxrss_bytes": 26066944,
+              "sys_s": 0.004304,
+              "transitions": 0,
+              "user_s": 0.097393,
+              "wall_ns": 104514834
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 93203000,
+              "maxrss_bytes": 26050560,
+              "sys_s": 0.0040089999999999995,
+              "transitions": 0,
+              "user_s": 0.095717,
+              "wall_ns": 102368167
+            }
+          ],
+          "native-generic-inline": [
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 73459999,
+              "maxrss_bytes": 26050560,
+              "sys_s": 0.004181,
+              "transitions": 0,
+              "user_s": 0.076044,
+              "wall_ns": 82761917
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 73354000,
+              "maxrss_bytes": 26050560,
+              "sys_s": 0.004484,
+              "transitions": 0,
+              "user_s": 0.07596599999999999,
+              "wall_ns": 82609417
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 74975999,
+              "maxrss_bytes": 26050560,
+              "sys_s": 0.003606,
+              "transitions": 0,
+              "user_s": 0.077944,
+              "wall_ns": 84492000
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 76968000,
+              "maxrss_bytes": 26050560,
+              "sys_s": 0.004578,
+              "transitions": 0,
+              "user_s": 0.079082,
+              "wall_ns": 86598500
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 73713999,
+              "maxrss_bytes": 26050560,
+              "sys_s": 0.004742,
+              "transitions": 0,
+              "user_s": 0.07595299999999999,
+              "wall_ns": 82963959
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 75794000,
+              "maxrss_bytes": 26066944,
+              "sys_s": 0.00584,
+              "transitions": 0,
+              "user_s": 0.076928,
+              "wall_ns": 85879417
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 75639999,
+              "maxrss_bytes": 26050560,
+              "sys_s": 0.005637,
+              "transitions": 0,
+              "user_s": 0.076719,
+              "wall_ns": 85352708
+            }
+          ],
+          "nativeized": [
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 1,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 4862000,
+              "maxrss_bytes": 26132480,
+              "sys_s": 0.0031379999999999997,
+              "transitions": 0,
+              "user_s": 0.008589,
+              "wall_ns": 14587958
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 1,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 4961999,
+              "maxrss_bytes": 26132480,
+              "sys_s": 0.003212,
+              "transitions": 0,
+              "user_s": 0.008523,
+              "wall_ns": 15278208
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 1,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 5262999,
+              "maxrss_bytes": 26116096,
+              "sys_s": 0.003018,
+              "transitions": 0,
+              "user_s": 0.008839999999999999,
+              "wall_ns": 14559666
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 1,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 5323000,
+              "maxrss_bytes": 26148864,
+              "sys_s": 0.0032909999999999997,
+              "transitions": 0,
+              "user_s": 0.008964,
+              "wall_ns": 15120167
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 1,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 5333000,
+              "maxrss_bytes": 26116096,
+              "sys_s": 0.003109,
+              "transitions": 0,
+              "user_s": 0.008997999999999999,
+              "wall_ns": 14752292
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 1,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 5319999,
+              "maxrss_bytes": 26132480,
+              "sys_s": 0.003492,
+              "transitions": 0,
+              "user_s": 0.008901,
+              "wall_ns": 15611667
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 1,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 5588000,
+              "maxrss_bytes": 26132480,
+              "sys_s": 0.003743,
+              "transitions": 0,
+              "user_s": 0.008929,
+              "wall_ns": 15459583
+            }
+          ]
+        },
+        "repeats": 7,
+        "speedup_vs_native_generic": 17.70376253830123,
+        "speedup_vs_native_inline": 14.093235543841267,
+        "speedup_vs_translated_baseline": 25.201508496524152,
+        "summary": {
+          "baseline-x86_64": {
+            "arch": "x86_64",
+            "cpu_s": {
+              "max": 0.15433899999999998,
+              "median": 0.14859599999999998,
+              "min": 0.14597,
+              "n": 7,
+              "p10": 0.1467194,
+              "p90": 0.1512118
+            },
+            "entries": 0,
+            "fallback": 0,
+            "fast": 0,
+            "impl": "generic",
+            "kernel_ns": {
+              "max": 138994000,
+              "median": 134072000,
+              "min": 133012000,
+              "n": 7,
+              "p10": 133421800.0,
+              "p90": 136899399.4
+            },
+            "maxrss_bytes": {
+              "max": 27586560,
+              "median": 27578368,
+              "min": 27553792,
+              "n": 7,
+              "p10": 27561164.799999997,
+              "p90": 27586560.0
+            },
+            "note": "translated baseline (Rosetta)",
+            "transitions": 0,
+            "wall_ns": {
+              "max": 158714167,
+              "median": 153696125,
+              "min": 151298792,
+              "n": 7,
+              "p10": 152405142.20000002,
+              "p90": 156278891.8
+            }
+          },
+          "native-generic": {
+            "arch": "arm64",
+            "cpu_s": {
+              "max": 0.10197499999999998,
+              "median": 0.10110999999999999,
+              "min": 0.099726,
+              "n": 7,
+              "p10": 0.0997974,
+              "p90": 0.10182739999999998
+            },
+            "entries": 0,
+            "fallback": 0,
+            "fast": 0,
+            "impl": "generic",
+            "kernel_ns": {
+              "max": 95341000,
+              "median": 94183999,
+              "min": 93020000,
+              "n": 7,
+              "p10": 93129800.0,
+              "p90": 95244400.0
+            },
+            "maxrss_bytes": {
+              "max": 26066944,
+              "median": 26050560,
+              "min": 26050560,
+              "n": 7,
+              "p10": 26050560.0,
+              "p90": 26066944.0
+            },
+            "note": "generic native build, same source (libc qsort)",
+            "transitions": 0,
+            "wall_ns": {
+              "max": 104514834,
+              "median": 104120250,
+              "min": 102249625,
+              "n": 7,
+              "p10": 102320750.2,
+              "p90": 104478333.6
+            }
+          },
+          "native-generic-inline": {
+            "arch": "arm64",
+            "cpu_s": {
+              "max": 0.08366,
+              "median": 0.08155,
+              "min": 0.080225,
+              "n": 7,
+              "p10": 0.08035999999999999,
+              "p90": 0.0831248
+            },
+            "entries": 0,
+            "fallback": 0,
+            "fast": 0,
+            "impl": "generic-inline-sort",
+            "kernel_ns": {
+              "max": 76968000,
+              "median": 74975999,
+              "min": 73354000,
+              "n": 7,
+              "p10": 73417599.4,
+              "p90": 76263600.0
+            },
+            "maxrss_bytes": {
+              "max": 26066944,
+              "median": 26050560,
+              "min": 26050560,
+              "n": 7,
+              "p10": 26050560.0,
+              "p90": 26057113.6
+            },
+            "note": "control: in-module sort, no libc comparator calls",
+            "transitions": 0,
+            "wall_ns": {
+              "max": 86598500,
+              "median": 84492000,
+              "min": 82609417,
+              "n": 7,
+              "p10": 82700917.0,
+              "p90": 86167050.2
+            }
+          },
+          "nativeized": {
+            "arch": "arm64",
+            "cpu_s": {
+              "max": 0.012672,
+              "median": 0.012107,
+              "min": 0.011727,
+              "n": 7,
+              "p10": 0.011731799999999999,
+              "p90": 0.0125046
+            },
+            "entries": 0,
+            "fallback": 0,
+            "fast": 1,
+            "impl": "forge:rank-counting-v1+host-batch-v1",
+            "kernel_ns": {
+              "max": 5588000,
+              "median": 5319999,
+              "min": 4862000,
+              "n": 7,
+              "p10": 4921999.4,
+              "p90": 5435000.0
+            },
+            "maxrss_bytes": {
+              "max": 26148864,
+              "median": 26132480,
+              "min": 26116096,
+              "n": 7,
+              "p10": 26116096.0,
+              "p90": 26139033.6
+            },
+            "note": "Forge specialization + guard + fallback",
+            "transitions": 0,
+            "wall_ns": {
+              "max": 15611667,
+              "median": 15120167,
+              "min": 14559666,
+              "n": 7,
+              "p10": 14576641.2,
+              "p90": 15520416.600000001
+            }
+          }
+        },
+        "workload": "rank_unaligned"
+      },
+      "rank_wide": {
+        "raw": {
+          "baseline-x86_64": [
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 272918999,
+              "maxrss_bytes": 27607040,
+              "sys_s": 0.007575999999999999,
+              "transitions": 0,
+              "user_s": 0.278837,
+              "wall_ns": 291756208
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 249716999,
+              "maxrss_bytes": 27607040,
+              "sys_s": 0.007891,
+              "transitions": 0,
+              "user_s": 0.255748,
+              "wall_ns": 269363209
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 248880999,
+              "maxrss_bytes": 27566080,
+              "sys_s": 0.007633999999999999,
+              "transitions": 0,
+              "user_s": 0.25523599999999996,
+              "wall_ns": 268504583
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 271517000,
+              "maxrss_bytes": 27566080,
+              "sys_s": 0.008109,
+              "transitions": 0,
+              "user_s": 0.27696699999999996,
+              "wall_ns": 290933209
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 248961000,
+              "maxrss_bytes": 27578368,
+              "sys_s": 0.0071979999999999995,
+              "transitions": 0,
+              "user_s": 0.255073,
+              "wall_ns": 267494375
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 274277999,
+              "maxrss_bytes": 27541504,
+              "sys_s": 0.008161999999999999,
+              "transitions": 0,
+              "user_s": 0.279984,
+              "wall_ns": 293895917
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 248093000,
+              "maxrss_bytes": 27566080,
+              "sys_s": 0.007751,
+              "transitions": 0,
+              "user_s": 0.253999,
+              "wall_ns": 267660209
+            }
+          ],
+          "native-generic": [
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 176999000,
+              "maxrss_bytes": 26050560,
+              "sys_s": 0.005606,
+              "transitions": 0,
+              "user_s": 0.17790899999999998,
+              "wall_ns": 186492666
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 177261000,
+              "maxrss_bytes": 26050560,
+              "sys_s": 0.006039999999999999,
+              "transitions": 0,
+              "user_s": 0.177967,
+              "wall_ns": 186574500
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 177511000,
+              "maxrss_bytes": 26050560,
+              "sys_s": 0.0064459999999999995,
+              "transitions": 0,
+              "user_s": 0.177729,
+              "wall_ns": 186894208
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 175989000,
+              "maxrss_bytes": 26050560,
+              "sys_s": 0.004689,
+              "transitions": 0,
+              "user_s": 0.178052,
+              "wall_ns": 185423500
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 176372999,
+              "maxrss_bytes": 26050560,
+              "sys_s": 0.006082,
+              "transitions": 0,
+              "user_s": 0.176984,
+              "wall_ns": 185737375
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 176766999,
+              "maxrss_bytes": 26050560,
+              "sys_s": 0.006333,
+              "transitions": 0,
+              "user_s": 0.176984,
+              "wall_ns": 186136667
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic",
+              "kernel_ns": 176300999,
+              "maxrss_bytes": 26050560,
+              "sys_s": 0.005689,
+              "transitions": 0,
+              "user_s": 0.17719,
+              "wall_ns": 186176417
+            }
+          ],
+          "native-generic-inline": [
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 107729999,
+              "maxrss_bytes": 26050560,
+              "sys_s": 0.00492,
+              "transitions": 0,
+              "user_s": 0.10936699999999999,
+              "wall_ns": 117098584
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 106921999,
+              "maxrss_bytes": 26050560,
+              "sys_s": 0.00434,
+              "transitions": 0,
+              "user_s": 0.109358,
+              "wall_ns": 116334708
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 108534999,
+              "maxrss_bytes": 26050560,
+              "sys_s": 0.005516999999999999,
+              "transitions": 0,
+              "user_s": 0.109736,
+              "wall_ns": 118217125
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 106449999,
+              "maxrss_bytes": 26050560,
+              "sys_s": 0.003147,
+              "transitions": 0,
+              "user_s": 0.109688,
+              "wall_ns": 115634792
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 107244999,
+              "maxrss_bytes": 26050560,
+              "sys_s": 0.004742,
+              "transitions": 0,
+              "user_s": 0.10914,
+              "wall_ns": 116477375
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 106260000,
+              "maxrss_bytes": 26050560,
+              "sys_s": 0.004462,
+              "transitions": 0,
+              "user_s": 0.108528,
+              "wall_ns": 115820500
+            },
+            {
+              "entries": 0,
+              "fallback": 0,
+              "fast": 0,
+              "impl": "generic-inline-sort",
+              "kernel_ns": 108240000,
+              "maxrss_bytes": 26050560,
+              "sys_s": 0.004925,
+              "transitions": 0,
+              "user_s": 0.109757,
+              "wall_ns": 117239583
+            }
+          ],
+          "nativeized": [
+            {
+              "entries": 0,
+              "fallback": 1,
+              "fast": 0,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 177412000,
+              "maxrss_bytes": 26116096,
+              "sys_s": 0.005516999999999999,
+              "transitions": 0,
+              "user_s": 0.17837899999999998,
+              "wall_ns": 186853542
+            },
+            {
+              "entries": 0,
+              "fallback": 1,
+              "fast": 0,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 176907000,
+              "maxrss_bytes": 26116096,
+              "sys_s": 0.00612,
+              "transitions": 0,
+              "user_s": 0.177251,
+              "wall_ns": 186147458
+            },
+            {
+              "entries": 0,
+              "fallback": 1,
+              "fast": 0,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 177593000,
+              "maxrss_bytes": 26116096,
+              "sys_s": 0.0058779999999999995,
+              "transitions": 0,
+              "user_s": 0.17840399999999998,
+              "wall_ns": 187112625
+            },
+            {
+              "entries": 0,
+              "fallback": 1,
+              "fast": 0,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 176893000,
+              "maxrss_bytes": 26116096,
+              "sys_s": 0.005501,
+              "transitions": 0,
+              "user_s": 0.177941,
+              "wall_ns": 186047958
+            },
+            {
+              "entries": 0,
+              "fallback": 1,
+              "fast": 0,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 181035000,
+              "maxrss_bytes": 26116096,
+              "sys_s": 0.006298,
+              "transitions": 0,
+              "user_s": 0.181396,
+              "wall_ns": 190882792
+            },
+            {
+              "entries": 0,
+              "fallback": 1,
+              "fast": 0,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 178414000,
+              "maxrss_bytes": 26116096,
+              "sys_s": 0.005233,
+              "transitions": 0,
+              "user_s": 0.179827,
+              "wall_ns": 187539792
+            },
+            {
+              "entries": 0,
+              "fallback": 1,
+              "fast": 0,
+              "impl": "forge:rank-counting-v1+host-batch-v1",
+              "kernel_ns": 178998999,
+              "maxrss_bytes": 26116096,
+              "sys_s": 0.0059429999999999995,
+              "transitions": 0,
+              "user_s": 0.17934799999999998,
+              "wall_ns": 188576166
+            }
+          ]
+        },
+        "repeats": 7,
+        "speedup_vs_native_generic": 0.9953489101484856,
+        "speedup_vs_native_inline": 0.6038807779585907,
+        "speedup_vs_translated_baseline": 1.4061196049393838,
+        "summary": {
+          "baseline-x86_64": {
+            "arch": "x86_64",
+            "cpu_s": {
+              "max": 0.288146,
+              "median": 0.26363899999999996,
+              "min": 0.26175,
+              "n": 7,
+              "p10": 0.2620626,
+              "p90": 0.28710620000000003
+            },
+            "entries": 0,
+            "fallback": 0,
+            "fast": 0,
+            "impl": "generic",
+            "kernel_ns": {
+              "max": 274277999,
+              "median": 249716999,
+              "min": 248093000,
+              "n": 7,
+              "p10": 248565799.40000004,
+              "p90": 273462599.0
+            },
+            "maxrss_bytes": {
+              "max": 27607040,
+              "median": 27566080,
+              "min": 27541504,
+              "n": 7,
+              "p10": 27556249.6,
+              "p90": 27607040.0
+            },
+            "note": "translated baseline (Rosetta)",
+            "transitions": 0,
+            "wall_ns": {
+              "max": 293895917,
+              "median": 269363209,
+              "min": 267494375,
+              "n": 7,
+              "p10": 267593875.4,
+              "p90": 292612091.6
+            }
+          },
+          "native-generic": {
+            "arch": "arm64",
+            "cpu_s": {
+              "max": 0.184175,
+              "median": 0.183317,
+              "min": 0.182741,
+              "n": 7,
+              "p10": 0.18282379999999998,
+              "p90": 0.1840742
+            },
+            "entries": 0,
+            "fallback": 0,
+            "fast": 0,
+            "impl": "generic",
+            "kernel_ns": {
+              "max": 177511000,
+              "median": 176766999,
+              "min": 175989000,
+              "n": 7,
+              "p10": 176176199.4,
+              "p90": 177361000.0
+            },
+            "maxrss_bytes": {
+              "max": 26050560,
+              "median": 26050560,
+              "min": 26050560,
+              "n": 7,
+              "p10": 26050560.0,
+              "p90": 26050560.0
+            },
+            "note": "generic native build, same source (libc qsort)",
+            "transitions": 0,
+            "wall_ns": {
+              "max": 186894208,
+              "median": 186176417,
+              "min": 185423500,
+              "n": 7,
+              "p10": 185611825.0,
+              "p90": 186702383.2
+            }
+          },
+          "native-generic-inline": {
+            "arch": "arm64",
+            "cpu_s": {
+              "max": 0.115253,
+              "median": 0.113882,
+              "min": 0.11283499999999999,
+              "n": 7,
+              "p10": 0.112928,
+              "p90": 0.1149104
+            },
+            "entries": 0,
+            "fallback": 0,
+            "fast": 0,
+            "impl": "generic-inline-sort",
+            "kernel_ns": {
+              "max": 108534999,
+              "median": 107244999,
+              "min": 106260000,
+              "n": 7,
+              "p10": 106373999.4,
+              "p90": 108357999.6
+            },
+            "maxrss_bytes": {
+              "max": 26050560,
+              "median": 26050560,
+              "min": 26050560,
+              "n": 7,
+              "p10": 26050560.0,
+              "p90": 26050560.0
+            },
+            "note": "control: in-module sort, no libc comparator calls",
+            "transitions": 0,
+            "wall_ns": {
+              "max": 118217125,
+              "median": 116477375,
+              "min": 115634792,
+              "n": 7,
+              "p10": 115746216.80000001,
+              "p90": 117630599.8
+            }
+          },
+          "nativeized": {
+            "arch": "arm64",
+            "cpu_s": {
+              "max": 0.187694,
+              "median": 0.18428199999999997,
+              "min": 0.18337099999999998,
+              "n": 7,
+              "p10": 0.1834136,
+              "p90": 0.18625219999999998
+            },
+            "entries": 0,
+            "fallback": 1,
+            "fast": 0,
+            "impl": "forge:rank-counting-v1+host-batch-v1",
+            "kernel_ns": {
+              "max": 181035000,
+              "median": 177593000,
+              "min": 176893000,
+              "n": 7,
+              "p10": 176901400.0,
+              "p90": 179813399.39999998
+            },
+            "maxrss_bytes": {
+              "max": 26116096,
+              "median": 26116096,
+              "min": 26116096,
+              "n": 7,
+              "p10": 26116096.0,
+              "p90": 26116096.0
+            },
+            "note": "Forge specialization + guard + fallback",
+            "transitions": 0,
+            "wall_ns": {
+              "max": 190882792,
+              "median": 187112625,
+              "min": 186047958,
+              "n": 7,
+              "p10": 186107658.0,
+              "p90": 189498816.4
+            }
+          }
+        },
+        "workload": "rank_wide"
+      }
+    }
+  },
+  "cache": {
+    "environment": {
+      "application_sha256": "383c8a07b0e28bac71aac1e4082d6cec7070c91845012563610c7e6fb6f7a538",
+      "arch": "arm64",
+      "corpus_digest": "0470c37f2be0bcebfc325862c6fd8ae93368f5ca824ccb423e278213e421f96b",
+      "forge_version": "0.1.0",
+      "host": {
+        "chip": "Apple M2 Max",
+        "machine": "arm64",
+        "memory_mb": "34359738368",
+        "model": "Mac14,6",
+        "ncpu": "12",
+        "os": "27.2",
+        "os_build": "26B123"
+      },
+      "module_sha256": "e4995c46b02f048905c17ccff868a841604aafe40f3d2b3da26d4eb5dc424f30",
+      "profile_digest": "88645d96b1d5b88483fe652a2a7409f6d44352668272c0caef1c6a7332d20807",
+      "schema": 3,
+      "toolchain": {
+        "clang": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+        "clang_path": "/usr/bin/clang",
+        "sdk": "27.0"
+      },
+      "transform": "rank-counting-v1+host-batch-v1",
+      "transform_source_sha256": "d20c59c0bd916685dbdf4d9137ec8d8af5d5db527e99021bba512def21d32c2d",
+      "transform_version": 1
+    },
+    "key": "c1785936a00fdd36fe49df8e7e19c466",
+    "reasons_on_module_change": [
+      "module_sha256: 'e4995c46b02f048905c17ccff868a841604aafe40f3d2b3da26d4eb5dc424f30' -> '0000000000000000000000000000000000000000000000000000000000000000'"
+    ],
+    "reasons_on_os_change": [
+      "host: {'model': 'Mac14,6', 'chip': 'Apple M2 Max', 'ncpu': '12', 'memory_mb': '34359738368', 'os': '27.2', 'os_build': '26B123', 'machine': 'arm64'} -> {'model': 'Mac14,6', 'chip': 'Apple M2 Max', 'ncpu': '12', 'memory_mb': '34359738368', 'os': '27.2', 'os_build': '26B123-sim', 'machine': 'arm64'}"
+    ]
+  },
+  "cold": {
+    "bench_ns": 15011812042,
+    "build_ns": 46580000,
+    "compile_ns": 119447167,
+    "profile_ns": 2151893625,
+    "verify_ns": 1629370583
+  },
+  "cold_start": {
+    "native_arm64_control": {
+      "arch": "arm64",
+      "cold_start_overhead_ns": 124477791,
+      "cold_wall_ns": 226774666,
+      "copies": 2,
+      "first_run_kernel_ns": 99256000,
+      "warm_wall_ns": 102296875,
+      "workload": "rank_small_range"
+    },
+    "translated_x86_64": {
+      "arch": "x86_64",
+      "cold_start_overhead_ns": 390078792,
+      "cold_wall_ns": 557457792,
+      "copies": 2,
+      "first_run_kernel_ns": 135304000,
+      "warm_wall_ns": 167379000,
+      "workload": "rank_small_range"
+    }
+  },
+  "host": {
+    "chip": "Apple M2 Max",
+    "machine": "arm64",
+    "memory_mb": "34359738368",
+    "model": "Mac14,6",
+    "ncpu": "12",
+    "os": "27.2",
+    "os_build": "26B123"
+  },
+  "oracle_mutation": {
+    "dylib": "/Users/omer/Local_Repo/maxe/build/mutation/libforge_kernel_mutant_arm64.dylib",
+    "failed_checks": [
+      "fast_path_taken",
+      "output_matches_baseline",
+      "output_matches_native",
+      "return_matches_baseline",
+      "return_matches_native"
+    ],
+    "mutant": "rank-counting with prefix sums starting at 1",
+    "oracle_rejected": true
+  },
+  "plans": [
+    {
+      "assumptions": [
+        "every value lies in [0,4095]",
+        "observed value span 4096 is narrow relative to n=2000000",
+        "n >= 1024",
+        "the sorted permutation is the only use of the input; queries and checksum come from the shared contract"
+      ],
+      "facts": {
+        "max": 4095,
+        "min": 0,
+        "n": 2000000,
+        "observations": 1,
+        "span": 4096
+      },
+      "forge_version": "0.1.0",
+      "kernel": "rank",
+      "params": {
+        "window": 4096
+      },
+      "transform": "rank-counting",
+      "version": 1
+    },
+    {
+      "assumptions": [
+        "the host advertises batch entry points at run time",
+        "no observer reads the ledger between kernel entry and exit (params[1] == 0)",
+        "the externally observable effect is the ordered sequence of ledger entries, not the number of host transitions"
+      ],
+      "facts": {
+        "entries": 2000000,
+        "entries_per_transition": 1.0,
+        "transitions": 2000000
+      },
+      "forge_version": "0.1.0",
+      "kernel": "audit",
+      "params": {
+        "batch": 128
+      },
+      "transform": "host-batch",
+      "version": 1
+    }
+  ],
+  "profiles": {
+    "audit_basic": {
+      "boundary": {
+        "alias_possible": false,
+        "calls": 1,
+        "dst": "0x7fa0a07b0000",
+        "flags": 0,
+        "n": 2000000,
+        "params": "0x600002aac0e0",
+        "q": 0,
+        "src": "0x7fa0a0008000"
+      },
+      "facts": {},
+      "hottest_blocks": [
+        {
+          "ends_indirect": false,
+          "function": "forge_kernel_audit",
+          "instructions": 16,
+          "samples": 6,
+          "start": "0x9b0"
+        }
+      ],
+      "hottest_functions": [
+        {
+          "function": "host_emit",
+          "image": "libforge_host.dylib",
+          "samples": 134,
+          "share": 0.9571428571428572
+        },
+        {
+          "function": "forge_kernel_audit",
+          "image": "libforge_kernel_generic_profile.dylib",
+          "samples": 6,
+          "share": 0.04285714285714286
+        }
+      ],
+      "runtime": {
+        "arch": "x86_64",
+        "name": "rosetta"
+      },
+      "sampling": {
+        "effective_hz": 3016.3,
+        "inside_module": 6,
+        "instrumentation_overhead_pct": 28.01,
+        "kernel_ns": 41319999,
+        "kernel_ns_plain": 36776999,
+        "kernel_ns_profiled_median": 47078000,
+        "repeats": 3,
+        "requested_hz": 4000,
+        "resolved_other_images": 134,
+        "samples": 142,
+        "unmapped": 2
+      },
+      "transition_accounting": {
+        "entries_per_transition": 1.0,
+        "host_entries": 2000000,
+        "host_transitions": 2000000
+      }
+    },
+    "rank_small_range": {
+      "boundary": {
+        "alias_possible": false,
+        "calls": 1,
+        "dst": "0x7fa7b87b0000",
+        "flags": 0,
+        "n": 2000000,
+        "params": "0x6000013b40e0",
+        "q": 200000,
+        "src": "0x7fa7b8008000"
+      },
+      "facts": {
+        "rank": {
+          "max": 4095,
+          "min": 0,
+          "n": 2000000,
+          "observations": 1,
+          "span": 4096
+        }
+      },
+      "hottest_blocks": [
+        {
+          "ends_indirect": true,
+          "function": "cmp_i32",
+          "instructions": 10,
+          "samples": 77,
+          "start": "0x810"
+        },
+        {
+          "ends_indirect": false,
+          "function": "forge_kernel_rank_generic",
+          "instructions": 11,
+          "samples": 1,
+          "start": "0x6c0"
+        },
+        {
+          "ends_indirect": true,
+          "function": "forge_kernel_counters",
+          "instructions": 1,
+          "samples": 1,
+          "start": "0xa28"
+        },
+        {
+          "ends_indirect": true,
+          "function": "forge_kernel_counters",
+          "instructions": 1,
+          "samples": 1,
+          "start": "0xa2e"
+        }
+      ],
+      "hottest_functions": [
+        {
+          "function": "cmp_i32",
+          "image": "libforge_kernel_generic_profile.dylib",
+          "samples": 77,
+          "share": 0.9625
+        },
+        {
+          "function": "DYLD-STUB$$forge_probe_fact_minmax",
+          "image": "libforge_kernel_generic_profile.dylib",
+          "samples": 1,
+          "share": 0.0125
+        },
+        {
+          "function": "forge_kernel_rank_generic",
+          "image": "libforge_kernel_generic_profile.dylib",
+          "samples": 1,
+          "share": 0.0125
+        },
+        {
+          "function": "DYLD-STUB$$free",
+          "image": "libforge_kernel_generic_profile.dylib",
+          "samples": 1,
+          "share": 0.0125
+        }
+      ],
+      "runtime": {
+        "arch": "x86_64",
+        "name": "rosetta"
+      },
+      "sampling": {
+        "effective_hz": 1032.9,
+        "inside_module": 80,
+        "instrumentation_overhead_pct": 5.25,
+        "kernel_ns": 141344999,
+        "kernel_ns_plain": 134292999,
+        "kernel_ns_profiled_median": 141344999,
+        "repeats": 3,
+        "requested_hz": 4000,
+        "resolved_other_images": 0,
+        "samples": 146,
+        "unmapped": 66
+      },
+      "transition_accounting": {
+        "entries_per_transition": null,
+        "host_entries": 0,
+        "host_transitions": 0
+      }
+    }
+  },
+  "schema": 1,
+  "toolchain": {
+    "clang": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+    "clang_path": "/usr/bin/clang",
+    "sdk": "27.0"
+  },
+  "total_ns": 22751587625,
+  "verdict": "admitted",
+  "verification": {
+    "candidate_dylib": "/Users/omer/Local_Repo/maxe/build/spec/staging/libforge_kernel_spec_arm64.dylib",
+    "candidate_sha256": "93fe053ec7f3f613c2855be880cb91845eec03e6a43fb161f394dc79ccffb0ea",
+    "cases": [
+      {
+        "baseline": {
+          "ledger_bytes": 0,
+          "out_digest": "5c2d757acd3abaab",
+          "ret": 551150700
+        },
+        "candidate": {
+          "fallback": 0,
+          "fast": 1,
+          "impl": "forge:rank-counting-v1+host-batch-v1",
+          "out_digest": "5c2d757acd3abaab",
+          "ret": 551150700
+        },
+        "candidate_ledger_bytes": 0,
+        "checks": {
+          "fast_path_taken": true,
+          "ledger_matches_baseline": true,
+          "ledger_matches_native": true,
+          "native_matches_baseline": true,
+          "output_matches_baseline": true,
+          "output_matches_native": true,
+          "return_matches_baseline": true,
+          "return_matches_native": true
+        },
+        "expected_fast": true,
+        "kernel": "rank",
+        "native": {
+          "ledger_bytes": 0,
+          "out_digest": "5c2d757acd3abaab",
+          "ret": 551150700
+        },
+        "ok": true,
+        "workload": "rank_small_range"
+      },
+      {
+        "baseline": {
+          "ledger_bytes": 0,
+          "out_digest": "c52f02c4e5e9a11b",
+          "ret": 4191542759
+        },
+        "candidate": {
+          "fallback": 1,
+          "fast": 0,
+          "impl": "forge:rank-counting-v1+host-batch-v1",
+          "out_digest": "c52f02c4e5e9a11b",
+          "ret": 4191542759
+        },
+        "candidate_ledger_bytes": 0,
+        "checks": {
+          "fallback_taken": true,
+          "ledger_matches_baseline": true,
+          "ledger_matches_native": true,
+          "native_matches_baseline": true,
+          "output_matches_baseline": true,
+          "output_matches_native": true,
+          "return_matches_baseline": true,
+          "return_matches_native": true
+        },
+        "expected_fast": false,
+        "kernel": "rank",
+        "native": {
+          "ledger_bytes": 0,
+          "out_digest": "c52f02c4e5e9a11b",
+          "ret": 4191542759
+        },
+        "ok": true,
+        "workload": "rank_wide"
+      },
+      {
+        "baseline": {
+          "ledger_bytes": 0,
+          "out_digest": "5c2d757acd3abaab",
+          "ret": 551150700
+        },
+        "candidate": {
+          "fallback": 0,
+          "fast": 1,
+          "impl": "forge:rank-counting-v1+host-batch-v1",
+          "out_digest": "5c2d757acd3abaab",
+          "ret": 551150700
+        },
+        "candidate_ledger_bytes": 0,
+        "checks": {
+          "fast_path_taken": true,
+          "ledger_matches_baseline": true,
+          "ledger_matches_native": true,
+          "native_matches_baseline": true,
+          "output_matches_baseline": true,
+          "output_matches_native": true,
+          "return_matches_baseline": true,
+          "return_matches_native": true
+        },
+        "expected_fast": true,
+        "kernel": "rank",
+        "native": {
+          "ledger_bytes": 0,
+          "out_digest": "5c2d757acd3abaab",
+          "ret": 551150700
+        },
+        "ok": true,
+        "workload": "rank_unaligned"
+      },
+      {
+        "baseline": {
+          "ledger_bytes": 0,
+          "out_digest": "33eba75dd8c08b5d",
+          "ret": 1345771299
+        },
+        "candidate": {
+          "fallback": 1,
+          "fast": 0,
+          "impl": "forge:rank-counting-v1+host-batch-v1",
+          "out_digest": "33eba75dd8c08b5d",
+          "ret": 1345771299
+        },
+        "candidate_ledger_bytes": 0,
+        "checks": {
+          "fallback_taken": true,
+          "ledger_matches_baseline": true,
+          "ledger_matches_native": true,
+          "native_matches_baseline": true,
+          "output_matches_baseline": true,
+          "output_matches_native": true,
+          "return_matches_baseline": true,
+          "return_matches_native": true
+        },
+        "expected_fast": false,
+        "kernel": "rank",
+        "native": {
+          "ledger_bytes": 0,
+          "out_digest": "33eba75dd8c08b5d",
+          "ret": 1345771299
+        },
+        "ok": true,
+        "workload": "rank_tiny"
+      },
+      {
+        "baseline": {
+          "ledger_bytes": 32000000,
+          "out_digest": "64c6775ff010843f",
+          "ret": 4290974976217135
+        },
+        "candidate": {
+          "fallback": 0,
+          "fast": 1,
+          "impl": "forge:rank-counting-v1+host-batch-v1",
+          "out_digest": "64c6775ff010843f",
+          "ret": 4290974976217135
+        },
+        "candidate_ledger_bytes": 32000000,
+        "checks": {
+          "fast_path_taken": true,
+          "ledger_matches_baseline": true,
+          "ledger_matches_native": true,
+          "native_matches_baseline": true,
+          "output_matches_baseline": true,
+          "output_matches_native": true,
+          "return_matches_baseline": true,
+          "return_matches_native": true
+        },
+        "expected_fast": true,
+        "kernel": "audit",
+        "native": {
+          "ledger_bytes": 32000000,
+          "out_digest": "64c6775ff010843f",
+          "ret": 4290974976217135
+        },
+        "ok": true,
+        "workload": "audit_basic"
+      },
+      {
+        "baseline": {
+          "ledger_bytes": 32000000,
+          "out_digest": "81a6b5260bbb9f03",
+          "ret": 4290974976217135
+        },
+        "candidate": {
+          "fallback": 1,
+          "fast": 0,
+          "impl": "forge:rank-counting-v1+host-batch-v1",
+          "out_digest": "81a6b5260bbb9f03",
+          "ret": 4290974976217135
+        },
+        "candidate_ledger_bytes": 32000000,
+        "checks": {
+          "fallback_taken": true,
+          "ledger_matches_baseline": true,
+          "ledger_matches_native": true,
+          "native_matches_baseline": true,
+          "output_matches_baseline": true,
+          "output_matches_native": true,
+          "return_matches_baseline": true,
+          "return_matches_native": true
+        },
+        "expected_fast": false,
+        "kernel": "audit",
+        "native": {
+          "ledger_bytes": 32000000,
+          "out_digest": "81a6b5260bbb9f03",
+          "ret": 4290974976217135
+        },
+        "ok": true,
+        "workload": "audit_interleaved"
+      }
+    ],
+    "corpus": [
+      "rank_small_range",
+      "rank_wide",
+      "rank_unaligned",
+      "rank_tiny",
+      "audit_basic",
+      "audit_interleaved"
+    ],
+    "corpus_digest": "0470c37f2be0bcebfc325862c6fd8ae93368f5ca824ccb423e278213e421f96b",
+    "host": {
+      "chip": "Apple M2 Max",
+      "machine": "arm64",
+      "memory_mb": "34359738368",
+      "model": "Mac14,6",
+      "ncpu": "12",
+      "os": "27.2",
+      "os_build": "26B123"
+    },
+    "passed": true,
+    "schema": 1,
+    "when": {
+      "clang": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+      "clang_path": "/usr/bin/clang",
+      "sdk": "27.0"
+    }
+  },
+  "warm": {
+    "cache_load_ns": 345208,
+    "smoke_passed": true,
+    "smoke_verify_ns": 509734584
+  }
+}
