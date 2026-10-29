@@ -814,14 +814,25 @@ class WineBackend:
     # ---- MSI installation ----------------------------------------------
     def install_msi(self, path: Path, *, dest: Path | None = None,
                     force: bool = False, accept: bool = True,
-                    timeout: float = 1800.0) -> dict:
+                    timeout: float = 1800.0,
+                    on_stage=None) -> dict:
         from ..app import bundle as bundle_mod
         from ..app import environment
 
+        def stage(message: str) -> None:
+            if on_stage is not None:
+                on_stage(message)
+
         path = Path(path).expanduser().resolve()
         runtime = self.runtime
+        msiexec = runtime.wine.parent / "msiexec"
+        if not msiexec.exists():
+            raise BackendError(
+                f"the Wine runtime at {runtime.wine} has no Windows Installer "
+                f"(expected {msiexec}), so it cannot install .msi packages")
         name = _msi_product_name(path)
         key = _product_key_for(path, name)
+        stage("Preparing the Windows environment…")
         prefix = ensure_bottle(runtime, key)
         logs = environment.product_dir(key) / "logs"
         logs.mkdir(parents=True, exist_ok=True)
@@ -829,6 +840,7 @@ class WineBackend:
 
         command = [str(runtime.wine), "msiexec", "/i", str(path),
                    "/qn", "/norestart", "/l*v", str(log_path)]
+        stage("Running the Windows Installer…")
         started = time.perf_counter()
         result = run_captured(command, env=clean_env(prefix), timeout=timeout)
         elapsed_ms = (time.perf_counter() - started) * 1000.0
@@ -840,6 +852,7 @@ class WineBackend:
                 f"{result['returncode']}; see {log_path}")
         # The registry lives in a text file the wineserver flushes in its own
         # time; reading it immediately after msiexec can catch it mid-write.
+        stage("Finding the installed programs…")
         programs: list[dict] = []
         deadline = time.time() + 45.0
         while not programs and time.time() < deadline:
@@ -856,6 +869,7 @@ class WineBackend:
             raise BackendError(
                 "the installer reported success but registered no program: "
                 f"see {log_path}")
+        stage("Creating the macOS application…")
         bundles = self._bundles_for_programs(
             prefix, programs, dest=dest, force=force,
             package=path, product_key=key)
@@ -1058,7 +1072,10 @@ def _launchable_executable(prefix: Path, program: dict) -> tuple[Path, str] | No
                 _, _, machine, subsystem = _import_dlls(exe)
             except Exception:
                 continue
-            if machine != 0x8664 or subsystem != 2:
+            # Wine runs 32-bit Windows programs through WoW64, so an x86
+            # program is as launchable as an x86-64 one. Anything else (arm64,
+            # drivers, native images) is not a windowed Windows program.
+            if machine not in (0x8664, 0x14C) or subsystem != 2:
                 continue
             size = exe.stat().st_size
             if best is None or size > best[0]:

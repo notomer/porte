@@ -17,7 +17,7 @@ what of it is implemented, what is measured, and what is refused and why.
 | format | Porte behaviour | state |
 | --- | --- | --- |
 | `.exe` | static import analysis; if every import is served by a host stub, bundle it and run it. If it looks like an installer (user32/ole32/msi.dll imports), refuse with the missing names | implemented before this phase; unchanged |
-| `.msi` | parse the database, extract embedded or external cabinets, install file/registry/shortcut tables into an isolated environment, generate bundles for the executables the engine can run | **implemented in this phase** |
+| `.msi` | with a compatibility runtime: hand the package to its Windows Installer (`msiexec /i`), then discover the installed programs and bundle them. Without one: parse the database, extract cabinets, apply the file/registry/shortcut tables into an isolated environment | runtime path preferred; native path is the fallback |
 | `.msix`, `.appx` | validate the ZIP container against `AppxBlockMap.xml`, read `AppxManifest.xml`, extract into an environment, generate bundles for declared applications the engine can run | **implemented in this phase** |
 | `.bat`, `.cmd` | refused: no `cmd.exe` interpreter | not implemented (was optional) |
 
@@ -29,16 +29,18 @@ Windows Installer is a database plus a script. Porte implements the database
 half natively and refuses the parts of the script half it cannot honour.
 
 The brief suggested routing actions through a Windows Installer–compatible
-engine such as Wine's `msiexec`. Both paths now exist and they are chosen
-explicitly. When a compatibility runtime is available, `auto` hands the package
-to the runtime's own `msiexec`, so vendor custom actions run as they were
-designed to (see [`docs/10-windows-runtime.md`](10-windows-runtime.md)); the
-natively-read tables remain the fallback when no runtime is installed, because
-reading them keeps every write attributable and testable. What this module
-documents is the native path and, importantly, its refusal boundary:
-compressed payloads it cannot decode are reported during analysis, so the
-caller can route the package to `msiexec` instead of discovering the limit
-halfway through an install.
+engine such as Wine's `msiexec`. Both paths exist, and the runtime path wins
+whenever a runtime is present: `auto` in the CLI and the GUI both hand the
+package to `msiexec`, so vendor install sequences, conditions, registry writes
+and custom actions run as they were designed to (see
+[`docs/10-windows-runtime.md`](10-windows-runtime.md)). This reader is what
+inspects the package and what installs it on a machine with no runtime; it is
+never a gate in front of the runtime. A package it cannot parse at all (an
+unsupported container layout, a compression method it does not decode) is
+still offered to the runtime — analysis reports "Porte's own reader cannot
+parse this package" and installs it through `msiexec`. What this module
+documents is the native path and its refusal boundary: compressed payloads it
+cannot decode are reported during analysis, with the compression name.
 
 ### 2.1 Reading the package
 

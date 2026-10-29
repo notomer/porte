@@ -510,31 +510,54 @@ class Bridge:
 
         if suffix == ".msi":
             from ..app.msi import install as msi_install
+            from ..backends import wine as wine_backend
 
+            parse_error: str | None = None
             try:
                 info = msi_install.inspect_package(path)
             except Exception as exc:
+                # A package Porte's own reader cannot parse is not therefore
+                # unusable: the Windows Installer in the runtime reads it from
+                # its own database. The parser is inspection, not a gate.
+                info = {}
+                parse_error = f"{type(exc).__name__}: {exc}"
+            if parse_error and not wine_backend.backend().status().available:
                 base.update(kind="msi-invalid",
-                            notes=[f"Porte could not read this package: {exc}"],
+                            notes=[f"Porte could not read this package: "
+                                   f"{parse_error}"],
                             summary="Unreadable Windows Installer package.")
                 return base
-            importer_supported = bool(info.get("supported"))
-            from ..backends import wine as wine_backend
+            importer_supported = bool(info.get("supported")) and not parse_error
 
             wine_status = wine_backend.backend().status()
-            supported = importer_supported or wine_status.available
+            # The Windows Installer inside the runtime is the real installation
+            # engine: it runs the package's own sequences, conditions, custom
+            # actions and registry writes. Porte's importer reads the same
+            # tables for inspection, but it is only the fallback for a machine
+            # with no runtime, so it never outranks a runtime that can execute
+            # the package the way Windows does.
+            wine_available = bool(wine_status.available)
+            supported = wine_available or importer_supported
+            blockers: list[str] = []
+            if not supported:
+                blockers = ["Windows compatibility runtime required"]
+                blockers.extend(wine_status.reasons)
+                blockers.extend(info.get("blockers") or [])
             base.update(
                 kind="msi",
                 name=info.get("name") or path.stem,
                 supported=supported,
                 install_supported=supported,
-                runtime="engine" if importer_supported else
-                        ("wine" if wine_status.available else None),
-                runtime_name="Porte importer" if importer_supported else
-                             ("Wine" if wine_status.available else None),
-                blockers=list(info.get("blockers") or [])
-                if not supported else [],
-                warnings=list(info.get("warnings") or []),
+                runtime=("wine" if wine_available else
+                         ("engine" if importer_supported else None)),
+                runtime_name=("Wine" if wine_available else
+                              ("Porte importer" if importer_supported else None)),
+                blockers=blockers,
+                # The importer's caveats are about Porte applying the tables
+                # itself. When the runtime installs the package they do not
+                # apply, so they are only reported on the fallback path.
+                warnings=([] if wine_available
+                          else list(info.get("warnings") or [])),
                 package={
                     "format": "msi",
                     "version": info.get("version"),
@@ -548,11 +571,17 @@ class Bridge:
                 summary=(f"Windows Installer package “{info.get('name')}” "
                          f"{info.get('version') or ''}".strip()),
             )
+            if parse_error and wine_available:
+                base["notes"].append(
+                    "Porte's own reader cannot parse this package, so it is "
+                    "installed by the Windows Installer inside the Wine "
+                    "runtime, which reads the package from its own database."
+                    f"\nParser: {parse_error}")
             if not supported:
                 base["summary"] = "Windows Installer package with unsupported features."
+            elif parse_error:
+                base["summary"] = (f"Windows Installer package “{path.stem}”")
             elif not importer_supported:
-                base["summary"] = (f"Windows Installer package “{info.get('name')}” "
-                                   f"{info.get('version') or ''}".strip())
                 base["notes"].append(
                     "Porte's own importer cannot apply this package, so the "
                     "installation runs the package through the Windows Installer "
@@ -561,8 +590,13 @@ class Bridge:
                 base["warnings"].extend(
                     "Porte importer: " + blocker
                     for blocker in (info.get("blockers") or [])[:3])
-                if wine_status.version:
-                    base["runtime_version"] = wine_status.version
+            else:
+                base["notes"].append(
+                    "The package is installed by the Windows Installer inside "
+                    "the Wine runtime, which runs its install sequences, "
+                    "conditions, registry writes and custom actions.")
+            if wine_available and wine_status.version:
+                base["runtime_version"] = wine_status.version
             if installed:
                 base["notes"].append(
                     f"Already installed as “{installed['name']}”.")
@@ -859,16 +893,22 @@ class Bridge:
 
             use_wine = preferred == "wine" or (
                 preferred in ("auto", None, "") and
-                report.get("runtime") != "engine")
+                report.get("runtime") == "wine")
             if use_wine:
                 backend_used = "wine"
                 self._emit(request_id, "log",
                            message="Running the package through the Windows "
                                    "Installer inside the Wine runtime")
                 result = wine_backend.backend().install_msi(
-                    path, dest=dest, force=force, accept=True)
+                    path, dest=dest, force=force, accept=True,
+                    on_stage=lambda message: self._emit(
+                        request_id, "log", message=message))
             else:
                 backend_used = "engine"
+                self._emit(request_id, "log",
+                           message="No Windows runtime is available, so Porte "
+                                   "applies the package's own file, registry "
+                                   "and shortcut tables")
                 result = msi_install.install(
                     path, accept=True, force=force, dest=dest,
                     ignore_custom_actions=bool(args.get("allow_custom_actions")))
@@ -1109,8 +1149,18 @@ class Bridge:
 
             product = self._find_product(str(identifier))
             manifest = environment.read_manifest(product["product_key"]) or {}
-            engine = msi_install if manifest.get("kind") == "msi" else msix
-            result = engine.uninstall(product["product_key"])
+            kind = manifest.get("kind")
+            if kind == "wine-msi":
+                # Installed by the runtime's own Windows Installer, so it is
+                # removed by the same engine (msiexec /x) rather than by a
+                # Porte importer that never touched it.
+                from ..backends import wine as wine_backend
+
+                result = wine_backend.backend().uninstall_msi(
+                    product["product_key"])
+            else:
+                engine = msi_install if kind == "msi" else msix
+                result = engine.uninstall(product["product_key"])
         else:
             from ..app import bundle
 
@@ -1127,10 +1177,16 @@ class Bridge:
 
         product = self._find_product(str(args.get("product") or args.get("id") or ""))
         manifest = environment.read_manifest(product["product_key"]) or {}
-        engine = msi_install if manifest.get("kind") == "msi" else msix
+        kind = manifest.get("kind")
         self._emit(request_id, "state", state=STATE_INSTALLING,
                    message="Verifying installed files…")
-        result = engine.repair(product["product_key"])
+        if kind == "wine-msi":
+            from ..backends import wine as wine_backend
+
+            result = wine_backend.backend().repair_msi(product["product_key"])
+        else:
+            engine = msi_install if kind == "msi" else msix
+            result = engine.repair(product["product_key"])
         self._emit(request_id, "state", state=STATE_COMPLETED,
                    message="Repair complete.")
         return result

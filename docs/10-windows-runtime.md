@@ -97,6 +97,10 @@ Finder-equivalent Launch Services opens.
 | MSI | `msiexec` status 0, product registered, `7-Zip 26.05 (x64 edition).app` created in `~/Applications`, bundle launched `7zFM.exe` with a real window |
 | Relaunch | the generated `.app` starts the guest with no Porte window; the manager was not running |
 | Finder path | `.exe` and `.msi` are associated with `~/Applications/Porte.app`; `open file.exe` / `open file.msi` reach Porte, are analyzed (`exe-portable`, `msi`), and install through the same code path the GUI uses |
+| GUI, cold launch | Porte quit, `.msi` opened through Launch Services: `open_received` → analysis (`msi`, Wine) → Install → `msiexec` → `7-Zip 26.05 (x64 edition).app` in `~/Applications` in 27 s |
+| GUI, relaunch | that bundle opened with Porte still quit: `7zFM.exe` as a real process with its own 1288×779 window on screen |
+| GUI, unparseable package | Epic Games Launcher MSI: Porte's own reader fails (`CompoundFileError`), the package is still handed to `msiexec` and installs in 54 s, and its bundle is generated; the launcher itself then aborts inside Wine's `virtual.c:1502` assertion (exit 46), which is reported as a failed run rather than as success |
+| GUI, removal | Uninstall on the MSI-installed product runs `msiexec /x` (status 0) and removes the bundle and prefix |
 
 No screenshot is included: this session has no Screen Recording permission
 (`screencapture` fails with "could not create image from display"), so window
@@ -110,11 +114,16 @@ message checks, and from files the guest wrote and saved.
 - **x86-64 through Rosetta.** This is real Windows code, but not native ARM64:
   speed is Rosetta-class, not native. Rosetta's support horizon is why the cache
   and profiler stay translator-agnostic.
-- **MSI importer vs. runtime installer.** Porte's own MSI reader supports
-  uncompressed and MSZIP cabinets only. A package whose payload needs LZX or
-  Quantum (7-Zip's, for example) is now reported as such during analysis, and
-  `auto` routes the install to `msiexec` in the runtime instead of failing
-  halfway. The importer itself still refuses those packages.
+- **MSI importer vs. runtime installer.** Whenever a runtime is present the
+  package is installed by `msiexec`, including packages Porte's own reader
+  cannot parse at all (Epic's) and packages whose payload needs LZX or Quantum
+  (7-Zip's). The reader is inspection and the no-runtime fallback, never a gate.
+  It still refuses containers it cannot decode when it is the one installing.
+- **Programs that reach into the kernel still fail.** Epic Games Launcher
+  installs, and its bundle launches, but the Unreal binary aborts in Wine's
+  virtual-memory manager (`create_view` assertion). No amount of bundling
+  changes that; the app reports exit 46 and Porte says the program did not run
+  to completion.
 - **The common file dialog is not driven by the probe.** Wine 11.20 implements
   `GetOpenFileName` with its own modal loop; driving it from another process can
   wedge the whole prefix (later processes stop starting). The probe therefore

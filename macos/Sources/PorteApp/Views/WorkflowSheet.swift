@@ -83,7 +83,9 @@ struct WorkflowSheet: View {
         Grid(alignment: .leading, horizontalSpacing: 18, verticalSpacing: 6) {
             GridRow {
                 Text("Compatibility").foregroundStyle(.secondary)
-                Text(report.supported ? "Supported by the Porte engine" : "Not supported yet")
+                Text(report.supported
+                     ? "Supported by " + (report.runtimeLabel ?? "the Porte engine")
+                     : "Not supported yet")
             }
             GridRow {
                 Text("Size").foregroundStyle(.secondary)

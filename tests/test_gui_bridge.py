@@ -260,7 +260,16 @@ class BridgeInstallerTests(unittest.TestCase):
             (app / "Contents" / "Resources" / "PorteApp.json").read_text())
         self.assertTrue(metadata["bundle_id"].startswith("com.notomer.porte.windows."))
         self.assertIn("runtime", metadata)
-        self.assertTrue(any(data["skipped_executables"]))
+        # With a Windows runtime present the package is installed by its own
+        # Windows Installer, so every detected program is launchable. Only the
+        # importer fallback (no runtime on this machine) leaves executables
+        # that it could not turn into applications.
+        self.assertIn(data["runtime"], ("wine", "engine"))
+        if data["runtime"] == "wine":
+            self.assertFalse(data["skipped_executables"])
+            self.assertEqual(metadata["runtime"]["kind"], "wine")
+        else:
+            self.assertTrue(any(data["skipped_executables"]))
 
         library = self.bridge.request("library", {"dest": str(self.dest)})["message"]["data"]
         names = {app["name"] for app in library["applications"]}

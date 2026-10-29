@@ -114,7 +114,7 @@ open -a "Porte Frame Demo"
 | input | behaviour |
 | --- | --- |
 | `.exe` | portable image: import analysis, bundle, run. Installer-like EXEs (user32/ole32/msi.dll) are refused with the missing imports |
-| `.msi` | Windows Installer database + embedded/external cabinets read natively; file, registry and shortcut tables applied into an isolated per-product environment; executables discovered and bundled |
+| `.msi` | installed by the runtime's own Windows Installer (`msiexec /i`), then the installed programs are discovered and bundled. With no runtime present, Porte reads the database itself and applies the file, registry and shortcut tables into an isolated per-product environment |
 | `.msix`, `.appx` | ZIP validated against `AppxBlockMap.xml`, manifest parsed, payload extracted, declared applications bundled |
 | `.bat`, `.cmd` | refused: Porte has no `cmd.exe` |
 
@@ -172,10 +172,14 @@ Verified on this host: a stopped app receives an MSI handed over by macOS and
 reaches the installation analysis; a running app receives an EXE and analyzes it;
 `open file.exe` reaches Porte when it is the default handler; a package installs
 into a valid arm64 `.app` that runs without the manager; a missing runtime sends
-the app back to setup instead of showing a broken library. What the GUI cannot do
-is exactly what the engine cannot do: installer-shaped EXEs and images outside
-the host stubs are reported as unsupported, and MSIs with custom actions are
-refused. Details, protocol and the manual gesture checklist:
+the app back to setup instead of showing a broken library. An `.msi` double-clicked
+in Finder is installed by `msiexec` in the runtime whenever one is present —
+including packages Porte's own reader cannot parse — and the installed program
+becomes a launchable app. What neither path can do is make Windows APIs that no
+runtime implements exist: installer-shaped EXEs outside the host stubs are
+reported as unsupported, and a program that needs drivers, services, anti-cheat
+or kernel extensions fails inside the runtime with its own status rather than
+being reported as working. Details, protocol and the manual gesture checklist:
 [`docs/09-macos-gui.md`](docs/09-macos-gui.md).
 
 ## Phase 2 result: opaque Windows PE
