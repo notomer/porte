@@ -71,9 +71,18 @@ class EngineBackend:
         from ..app import install
 
         facts = install.inspect_pe(path)
+        # The engine executes images whose imports it serves, through
+        # `porte.gui.runner`. Saying so here is what lets the caller pick the
+        # backend on capability instead of assuming one; a program the engine
+        # can read but not run must not be advertised as runnable.
+        runnable = bool(facts["supported"])
         facts.update({
             "backend": ENGINE,
             "backend_name": NAME,
+            "run_supported": runnable,
+            # An installer-shaped image is a program to run, not a package to
+            # bundle: its own setup UI decides what gets installed.
+            "install_supported": runnable and not facts["installer_like"],
             "reason": ("the engine has host stubs for every import this image "
                        "uses" if facts["supported"] else
                        "the engine has no stub for " +
