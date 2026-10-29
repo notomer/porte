@@ -127,6 +127,56 @@ private struct CompatibilitySettings: View {
             }
 
             Section {
+                ForEach(model.backends) { backend in
+                    LabeledContent(backend.name) {
+                        HStack(spacing: 6) {
+                            Circle()
+                                .fill(backend.available ? Color.green : Color.orange)
+                                .frame(width: 8, height: 8)
+                            Text(backend.available
+                                 ? (backend.version.map { "Ready · \($0)" } ?? "Ready")
+                                 : "Unavailable")
+                        }
+                    }
+                    if let path = backend.path {
+                        LabeledContent("Location", value: path)
+                    }
+                    Text(backend.license)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    ForEach(backend.reasons, id: \.self) { reason in
+                        Text(reason)
+                            .font(.caption)
+                            .foregroundStyle(.orange)
+                    }
+                    ForEach(backend.warnings, id: \.self) { warning in
+                        Text(warning)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                HStack(spacing: 8) {
+                    Button("Verify Runtime") { model.verifyCompatibilityRuntime() }
+                    Button("Choose Wine Runtime…") { model.chooseCompatibilityRuntime() }
+                }
+                if !model.compatibilityReport.isEmpty {
+                    ForEach(model.compatibilityReport, id: \.self) { line in
+                        Text(line)
+                            .font(.caption.monospaced())
+                            .foregroundStyle(.secondary)
+                            .textSelection(.enabled)
+                    }
+                }
+                Text("Porte does not download or install a compatibility runtime. "
+                     + "It runs the Wine distribution already on this Mac and "
+                     + "records its version with every installed application.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            } header: {
+                Text("Execution Backends")
+            }
+
+            Section {
                 LabeledContent("Default profile", value: "Automatic")
                 Text("Porte picks a profile per executable from the Windows APIs it "
                      + "imports: console or Metal frame. It is not a user setting "

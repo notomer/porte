@@ -6,10 +6,13 @@ SwiftUI/AppKit utility, not a mockup: its actions call the same engine modules a
 the CLI, through a structured process protocol, and it generates the same real
 `.app` bundles the CLI does.
 
-Guiding boundary: Porte can only run what the Windows compatibility engine can
-run. The GUI makes that surface usable from macOS and says so honestly when a
-file is beyond the engine. It does not add Windows APIs, and it does not turn an
-unsupported installer into a working one.
+Guiding boundary: the GUI can only do what a backend can do. Two exist — the
+engine, and a Windows compatibility runtime that Porte discovers on the machine
+(never one it downloads or ships). The app makes that surface usable from macOS
+and says honestly which backend would run a file and what neither can do. It
+does not add Windows APIs, and it does not turn an unsupported installer into a
+working one. See [`docs/10-windows-runtime.md`](10-windows-runtime.md) for the
+runtime decision and the end-to-end evidence.
 
 ---
 

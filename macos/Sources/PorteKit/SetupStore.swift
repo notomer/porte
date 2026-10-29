@@ -11,14 +11,20 @@ public struct SetupState: Codable, Equatable, Sendable {
     public var runtime: RuntimeDescriptor?
     /// "unset", "set", "declined" or "unavailable"
     public var fileAssociations: String
+    /// Where the user said their compatibility runtime is, when it is not in a
+    /// location Porte discovers on its own. Passed to the engine as
+    /// `PORTE_WINE_ROOT`; it is a pointer, never a copy or a download.
+    public var compatibilityRuntimePath: String?
 
     public init(schema: Int = 1, completedAt: Date? = nil,
                 runtime: RuntimeDescriptor? = nil,
-                fileAssociations: String = "unset") {
+                fileAssociations: String = "unset",
+                compatibilityRuntimePath: String? = nil) {
         self.schema = schema
         self.completedAt = completedAt
         self.runtime = runtime
         self.fileAssociations = fileAssociations
+        self.compatibilityRuntimePath = compatibilityRuntimePath
     }
 
     public var isComplete: Bool { completedAt != nil && runtime != nil }

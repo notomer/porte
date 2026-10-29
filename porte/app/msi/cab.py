@@ -78,6 +78,26 @@ class Cabinet:
                                  offset=offset))
         return files
 
+    def unsupported_folders(self) -> list[str]:
+        """Describe folders this reader cannot decode, without decompressing.
+
+        Used during inspection: the caller must be able to tell whether the
+        package can be applied *before* anything is written, and to route the
+        package to a runtime that does implement the codec.
+        """
+        problems: list[str] = []
+        for index, folder in enumerate(self.folders):
+            method = folder["method"]
+            if method in (COMPRESS_NONE, COMPRESS_MSZIP):
+                continue
+            label = {COMPRESS_QUANTUM: "Quantum", COMPRESS_LZX: "LZX"}.get(
+                method, f"method {method}")
+            problems.append(
+                f"{self.name}: folder {index} uses {label} compression, which "
+                f"Porte does not decode; MSZIP or uncompressed cabinets are "
+                f"supported")
+        return problems
+
     def _folder_stream(self, index: int) -> bytes:
         folder = self.folders[index]
         method = folder["method"]

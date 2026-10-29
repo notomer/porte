@@ -38,7 +38,8 @@ layer that turns supported Windows executables and packages into ordinary macOS
 | macOS `.app` generation (launcher, Dock identity, icon, state) | **Implemented, verified** on this host | `docs/06-app-integration.md` |
 | Native macOS application (SwiftUI, Finder and Open With) | **Implemented, verified** end to end | `docs/09-macos-gui.md` |
 | Package importing: `.msi`, `.msix`/`.appx`, portable `.exe` | **Implemented, verified** end to end | `docs/07-package-importer.md` |
-| Win32 GUI, D3D, guest threads, real games | **Roadmap only** — not implemented | `docs/03-roadmap.md` |
+| Real Windows x86-64 GUI programs (via a runtime Porte discovers) | **Implemented, verified** with 7-Zip 26.05 and Notepad++ 8.9.8.1 | `results/runtime_verification.json`, `docs/10-windows-runtime.md` |
+| D3D, anti-cheat, games | **Roadmap only** — not implemented or tested | `docs/03-roadmap.md` |
 | Near-native CPU-bound performance | **Not achieved**; the gap is measured and attributed | `docs/04-native-performance-plan.md`, `docs/05-native-baseline.md` |
 
 No near-native performance claim is made beyond the GPU-bound case, and no
@@ -70,6 +71,9 @@ Read first:
 - [`docs/09-macos-gui.md`](docs/09-macos-gui.md) — the native macOS app:
   architecture, the JSON bridge protocol, Finder/Launch Services integration,
   setup, what is verified, and what still depends on the Windows engine.
+- [`docs/10-windows-runtime.md`](docs/10-windows-runtime.md) — where execution
+  used to stop, why the runtime backend is a discovered Wine distribution, and
+  the exact evidence for a real Windows application running with a real window.
 - [`docs/90-opaque-pe-experiment.md`](docs/90-opaque-pe-experiment.md) — prior
   phase: stripped Windows PEs executed and nativeized from the binary alone.
 
@@ -133,11 +137,16 @@ from 1.0.0 to 1.1.0 replace the old environment, a package with a code custom
 action is refused, a tampered MSIX is rejected on a block hash, and uninstall
 removes product, apps and state.
 
-This packages what the engine can already run — it is **not** general Windows
-compatibility: no D3D, no threads, no user32, no window bridge, no `msiexec`
-script engine, no services or drivers, and no Authenticode verification. Details:
-[`docs/06-app-integration.md`](docs/06-app-integration.md),
-[`docs/07-package-importer.md`](docs/07-package-importer.md).
+Two execution backends sit behind that description. The engine path packages
+what the engine can run and is not general Windows compatibility (no user32, no
+window manager, no `msiexec` script engine). The runtime path — a Wine
+distribution Porte discovers on the machine, never one it ships — executes
+unmodified Windows x86-64 programs, including GUI programs with real windows and
+real keyboard input, and installs `.msi` packages through the runtime's own
+Windows Installer. Neither path claims D3D, anti-cheat, drivers, services or
+Authenticode. Details: [`docs/06-app-integration.md`](docs/06-app-integration.md),
+[`docs/07-package-importer.md`](docs/07-package-importer.md),
+[`docs/10-windows-runtime.md`](docs/10-windows-runtime.md).
 
 ## Native macOS application
 
@@ -281,6 +290,8 @@ The experiment prints a summary and writes `results/experiment.json`,
 | `porte app package-info <pkg>` | inspect an MSI/MSIX without installing |
 | `porte app products` | installed Windows products and their environments |
 | `porte app repair\|uninstall <product>` | verify and re-extract, or remove product + apps |
+| `porte runtime verify` | report the compatibility runtime Porte found and whether it is usable |
+| `porte runtime verify-e2e` | drive a Win32 fixture, Notepad++ and 7-Zip's MSI end to end, writing `results/runtime_verification.json` |
 
 ## How it works (30 seconds)
 

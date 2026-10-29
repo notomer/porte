@@ -151,8 +151,54 @@ static uint64_t gProcessStartNs = 0;
 - (NSString *)pePath {
     NSString *relative = self.metadata[@"pe"];
     if (!relative) return nil;
+    /* A program installed by a Windows installer lives in its own prefix; the
+     * bundle only records the Windows path. */
+    if ([self.metadata[@"pe_location"] isEqualToString:@"prefix"]) return nil;
     return [[[NSBundle mainBundle] bundlePath]
         stringByAppendingPathComponent:[@"Contents/Resources" stringByAppendingPathComponent:relative]];
+}
+
+/* A bundle must be able to start before it starts: a missing compatibility
+ * runtime or environment is reported here, with what to do about it, instead
+ * of failing inside the guest with a confusing error. */
+- (BOOL)validateRuntime {
+    NSDictionary *runtime = self.metadata[@"runtime"];
+    NSString *kind = runtime[@"kind"] ?: @"engine";
+    NSFileManager *fm = [NSFileManager defaultManager];
+
+    if ([kind isEqualToString:@"wine"]) {
+        NSString *wine = runtime[@"wine"];
+        NSString *bottle = runtime[@"bottle"];
+        if (![wine isKindOfClass:[NSString class]] || !wine.length ||
+            !([fm isExecutableFileAtPath:wine] || [fm fileExistsAtPath:wine])) {
+            [self failWithTitle:@"Compatibility runtime missing"
+                        message:[NSString stringWithFormat:
+                            @"This application needs the Wine runtime recorded at:\n%@\n\n"
+                             "Porte does not download runtimes. Install one and "
+                             "re-run Porte setup, or reinstall this application.",
+                            wine ?: @"(no runtime recorded)"]];
+            return NO;
+        }
+        if (![bottle isKindOfClass:[NSString class]] || !bottle.length ||
+            ![fm fileExistsAtPath:bottle]) {
+            [self failWithTitle:@"Compatibility environment missing"
+                        message:[NSString stringWithFormat:
+                            @"This application's Windows environment is gone:\n%@\n\n"
+                             "Its files lived there. Reinstall the application.",
+                            bottle ?: @"(none recorded)"]];
+            return NO;
+        }
+        return YES;
+    }
+
+    NSString *pe = [self pePath];
+    if (!pe || ![fm fileExistsAtPath:pe]) {
+        [self failWithTitle:@"Windows executable missing"
+                    message:[NSString stringWithFormat:@"Expected %@ inside the bundle.",
+                        pe ?: @"a PE recorded in PorteApp.json"]];
+        return NO;
+    }
+    return YES;
 }
 
 - (NSArray<NSString *> *)runtimeCommand:(NSString *)bundlePath {
@@ -201,18 +247,23 @@ static uint64_t gProcessStartNs = 0;
     self.window.contentView = scroll;
     self.window.delegate = (id)self;
     [self.window center];
-    [self.window makeKeyAndOrderFront:nil];
+
+    /* A Windows GUI program brings its own window. Showing Porte's log window
+     * as well would put a second, unrelated macOS window in front of it, so for
+     * a compatibility-runtime bundle the log window stays off-screen and is
+     * only kept as the transcript for diagnostics. */
+    BOOL compatibilityRuntime =
+        [self.metadata[@"runtime"][@"kind"] isEqualToString:@"wine"];
+    if (!compatibilityRuntime) {
+        [self.window makeKeyAndOrderFront:nil];
+    }
     [NSApp activateIgnoringOtherApps:YES];
 
     self.supportDir = [self supportPath];
     [[NSFileManager defaultManager] createDirectoryAtPath:self.supportDir
                               withIntermediateDirectories:YES attributes:nil error:nil];
 
-    NSString *pe = [self pePath];
-    if (!pe || ![[NSFileManager defaultManager] fileExistsAtPath:pe]) {
-        [self failWithTitle:@"Windows executable missing"
-                    message:[NSString stringWithFormat:@"Expected %@ inside the bundle.",
-                        pe ?: @"a PE recorded in PorteApp.json"]];
+    if (![self validateRuntime]) {
         return;
     }
     if (![self ensureConsent]) {
@@ -270,8 +321,10 @@ static uint64_t gProcessStartNs = 0;
     task.terminationHandler = ^(NSTask *finished) {
         PorteAppDelegate *strong = weakSelf;
         if (!strong) return;
+        NSString *kind = strong.metadata[@"runtime"][@"kind"];
+        BOOL compatibilityRuntime = [kind isEqualToString:@"wine"];
         [strong appendLine:[NSString stringWithFormat:
-            @"\nPorte runtime exited with status %d. Quit with ⌘Q.",
+            @"\nPorte runtime exited with status %d.",
             finished.terminationStatus]];
         if (finished.terminationStatus != 0) {
             NSAlert *alert = [[NSAlert alloc] init];
@@ -282,6 +335,12 @@ static uint64_t gProcessStartNs = 0;
                 finished.terminationStatus, strong.supportDir];
             [alert addButtonWithTitle:@"OK"];
             [alert runModal];
+        }
+        /* A windowed Windows program owns the user's attention, not this log
+         * window: when the guest exits, the application exits with it. Engine
+         * bundles keep their window because their output is the result. */
+        if (compatibilityRuntime) {
+            [NSApp terminate:nil];
         }
     };
     NSError *launchError = nil;

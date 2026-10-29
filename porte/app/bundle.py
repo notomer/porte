@@ -139,7 +139,16 @@ def _write_plist(path: Path, spec: AppSpec, exe_name: str) -> None:
 
 def _write_metadata(path: Path, spec: AppSpec, *, pe_relative: str,
                     runtime_root: Path, python: Path, pythonpath: list[str],
-                    icon: dict, extra: dict) -> None:
+                    icon: dict, extra: dict, runtime: dict | None = None,
+                    pe_location: str = "bundle") -> None:
+    runtime_doc = {
+        "kind": "engine",
+        "python": str(python),
+        "pythonpath": pythonpath,
+        "root": str(runtime_root),
+        "module": "porte.app.runtime",
+    }
+    runtime_doc.update(runtime or {})
     doc = {
         "schema": SCHEMA,
         "bundle_id": spec.bundle_id,
@@ -148,17 +157,12 @@ def _write_metadata(path: Path, spec: AppSpec, *, pe_relative: str,
         "profile": spec.profile,
         "arguments": spec.arguments,
         "pe": pe_relative,
+        "pe_location": pe_location,
         "pe_display_path": extra.get("pe_display_path", str(spec.pe_path)),
         "pe_sha256": util.sha256_file(spec.pe_path),
         "pe_size": spec.pe_path.stat().st_size,
         "icon": icon,
-        "runtime": {
-            "kind": "python",
-            "python": str(python),
-            "pythonpath": pythonpath,
-            "root": str(runtime_root),
-            "module": "porte.app.runtime",
-        },
+        "runtime": runtime_doc,
         "created_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "porte_schema": SCHEMA,
         "bundled_files": extra.get("bundled_files", []),
@@ -169,7 +173,10 @@ def _write_metadata(path: Path, spec: AppSpec, *, pe_relative: str,
 def build_app(spec: AppSpec, *, dest_dir: Path | None = None,
               runtime_root: Path | None = None, python: Path | None = None,
               force: bool = False, bundled_files: list[Path] | None = None,
-              pe_display_path: str | None = None) -> dict:
+              pe_display_path: str | None = None,
+              runtime: dict | None = None,
+              pe_location: str = "bundle",
+              pe_override: str | None = None) -> dict:
     dest_dir = Path(dest_dir) if dest_dir else Path.home() / "Applications"
     runtime_root = Path(runtime_root) if runtime_root else util.ROOT
     default_python, pythonpath = runtime_interpreter()
@@ -188,9 +195,19 @@ def build_app(spec: AppSpec, *, dest_dir: Path | None = None,
     for path in (macos, windows):
         path.mkdir(parents=True, exist_ok=True)
 
-    pe_relative = Path("windows") / spec.pe_path.name
-    shutil.copy2(spec.pe_path, resources / pe_relative)
-    copied = [str(pe_relative)]
+    if pe_location not in ("bundle", "prefix"):
+        raise ValueError(f"unknown pe_location {pe_location!r}")
+    if pe_location == "prefix":
+        # An installed product keeps its files in its own Windows prefix; the
+        # bundle holds identity, icon, launcher and the recorded Windows path.
+        if not pe_override:
+            raise ValueError("pe_location='prefix' needs the Windows path")
+        pe_relative = pe_override
+        copied: list[str] = []
+    else:
+        pe_relative = Path("windows") / spec.pe_path.name
+        shutil.copy2(spec.pe_path, resources / pe_relative)
+        copied = [str(pe_relative)]
     for extra in bundled_files or []:
         src = Path(extra)
         if not src.exists():
@@ -221,7 +238,8 @@ def build_app(spec: AppSpec, *, dest_dir: Path | None = None,
                     pe_relative=str(pe_relative), runtime_root=runtime_root,
                     python=python, pythonpath=pythonpath, icon=icon_info,
                     extra={"pe_display_path": pe_display_path or str(spec.pe_path),
-                           "bundled_files": copied})
+                           "bundled_files": copied},
+                    runtime=runtime, pe_location=pe_location)
     _write_plist(contents / "Info.plist", spec, exe_name)
 
     # Ad-hoc signature: arm64 executables must be signed to run, and a stable
@@ -259,6 +277,8 @@ def build_app(spec: AppSpec, *, dest_dir: Path | None = None,
         "state_dir": str(state),
         "profile": spec.profile,
         "arguments": spec.arguments,
+        "runtime_kind": (runtime or {}).get("kind", "engine"),
+        "pe_location": pe_location,
     }
 
 
@@ -306,8 +326,10 @@ def inspect_app(app_path: Path) -> dict:
         "signed": "code object is not signed" not in signed.stderr,
         "icon": (app_path / "Contents" / "Resources" / "AppIcon.icns").exists(),
         "pe": meta.get("pe"),
+        "pe_location": meta.get("pe_location") or "bundle",
         "pe_sha256": meta.get("pe_sha256"),
         "runtime": meta.get("runtime"),
+        "runtime_kind": (meta.get("runtime") or {}).get("kind"),
         "profile": meta.get("profile"),
         "arguments": meta.get("arguments"),
         "state_dir": str(state),

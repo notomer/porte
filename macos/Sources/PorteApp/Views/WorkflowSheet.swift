@@ -246,6 +246,9 @@ struct WorkflowSheet: View {
             VStack(alignment: .leading, spacing: 6) {
                 Text("File: \(workflow.fileURL.path)")
                 if let report = workflow.report {
+                    if let runtime = report.runtimeLabel {
+                        Text("Runtime: \(runtime)")
+                    }
                     Text("Kind: \(report.kind) · profile: \(report.profile ?? "none")")
                     if !report.imports.isEmpty {
                         Text("Imports: \(report.imports.joined(separator: ", "))")

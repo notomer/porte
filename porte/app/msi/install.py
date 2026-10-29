@@ -159,6 +159,22 @@ def load_plan(msi_path: Path) -> tuple[MSIDatabase, Plan]:
     if db.rows("ServiceInstall") or db.rows("ServiceControl"):
         plan.blockers.append("package installs Windows services, which have no "
                              "supported equivalent in this environment")
+    # Cabinet compression is part of whether this package can be applied at all,
+    # so it is reported here rather than discovered halfway through extracting.
+    # A package whose payload needs LZX/Quantum is refused by the importer and
+    # can still be installed by the Windows Installer inside the Wine runtime.
+    try:
+        cabinets = _cab_streams(db, msi_path)
+    except (MSIError, OSError) as exc:
+        plan.blockers.append(f"package payload is unavailable: {exc}")
+        cabinets = {}
+    for cab_name, data in cabinets.items():
+        try:
+            cabinet = Cabinet(data, cab_name)
+        except CabError as exc:
+            plan.blockers.append(str(exc))
+            continue
+        plan.blockers.extend(cabinet.unsupported_folders())
     if not plan.files and not plan.registry:
         plan.blockers.append("package installs no files and no registry values")
     ignored = len(actions) - len(code_actions)

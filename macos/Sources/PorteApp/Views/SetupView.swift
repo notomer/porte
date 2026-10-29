@@ -11,6 +11,7 @@ struct SetupView: View {
             header
             Form {
                 runtimeSection
+                compatibilitySection
                 associationSection
             }
             .formStyle(.grouped)
@@ -84,6 +85,12 @@ struct SetupView: View {
                 if let version = model.hello?.version {
                     LabeledContent("Engine", value: "Porte \(version)")
                 }
+                ForEach(model.backends) { backend in
+                    LabeledContent(backend.name) {
+                        Text(backend.summary)
+                            .foregroundStyle(backend.available ? .secondary : Color.orange)
+                    }
+                }
             }
         } header: {
             Text("Compatibility Runtime")
@@ -91,6 +98,56 @@ struct SetupView: View {
             Text("Porte uses the compatibility runtime already installed on this Mac. "
                  + "Setup checks that the engine and its toolchain work; it does not "
                  + "download anything, and it needs no administrator privileges.")
+                .font(.footnote)
+        }
+    }
+
+    /// The runtime that executes real Windows GUI programs. It is reported
+    /// separately from the engine because it is a separate thing: an external
+    /// Wine distribution the user installed, which Porte discovers and verifies
+    /// but never downloads.
+    @ViewBuilder
+    private var compatibilitySection: some View {
+        Section {
+            HStack(alignment: .top, spacing: 12) {
+                Image(systemName: model.compatibilityRuntimeReady
+                      ? "checkmark.circle.fill" : "exclamationmark.circle.fill")
+                    .font(.title2)
+                    .foregroundStyle(model.compatibilityRuntimeReady ? Color.green : Color.orange)
+                    .accessibilityHidden(true)
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(model.compatibilityRuntimeReady
+                         ? "Windows applications runtime ready"
+                         : "Windows applications need a Wine runtime")
+                        .font(.headline)
+                    Text(model.compatibilityRuntimeDetail)
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .textSelection(.enabled)
+                }
+                Spacer(minLength: 8)
+                Button("Verify") { model.verifyCompatibilityRuntime() }
+                    .disabled(model.hello == nil)
+                Button("Choose…") { model.chooseCompatibilityRuntime() }
+            }
+
+            if !model.compatibilityReport.isEmpty {
+                ForEach(model.compatibilityReport, id: \.self) { line in
+                    Text(line)
+                        .font(.caption.monospaced())
+                        .foregroundStyle(.secondary)
+                        .textSelection(.enabled)
+                }
+            }
+        } header: {
+            Text("Windows Applications Runtime")
+        } footer: {
+            Text("Porte does not download or install a compatibility runtime. "
+                 + "It uses a Wine distribution you installed: put it in "
+                 + "Applications or choose it here. Without one, Porte can still "
+                 + "inspect Windows files and run the console images its own engine "
+                 + "supports.")
                 .font(.footnote)
         }
     }

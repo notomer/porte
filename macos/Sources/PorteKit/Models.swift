@@ -74,6 +74,48 @@ public enum WorkflowState: String, Codable, CaseIterable, Sendable {
     }
 }
 
+// MARK: - Runtime backends
+
+/// One execution backend, exactly as the engine reports it.
+///
+/// Porte has two: its own experimental engine, and an external Wine runtime it
+/// discovers but never downloads. The UI shows both because "can Porte run this
+/// file?" has a different answer per backend.
+public struct RuntimeBackendStatus: Codable, Equatable, Sendable, Identifiable {
+    public var id: String
+    public var name: String
+    public var available: Bool
+    public var version: String?
+    public var path: String?
+    public var usableForGUI: Bool
+    public var reasons: [String]
+    public var warnings: [String]
+    public var license: String
+    public var requiresRosetta: Bool
+    public var rosettaAvailable: Bool
+
+    private enum CodingKeys: String, CodingKey {
+        case id, name, available, version, path, reasons, warnings, license
+        case usableForGUI = "usable_for_gui"
+        case requiresRosetta = "requires_rosetta"
+        case rosettaAvailable = "rosetta_available"
+    }
+
+    public var isCompatibilityRuntime: Bool { id == "wine" }
+
+    public var statusLabel: String {
+        if available { return "Ready" }
+        return "Unavailable"
+    }
+
+    public var summary: String {
+        if let version, !version.isEmpty {
+            return available ? "\(name) \(version)" : "\(name) (unavailable)"
+        }
+        return name
+    }
+}
+
 // MARK: - Hello
 
 public struct HealthReport: Codable, Equatable, Sendable {
@@ -104,6 +146,7 @@ public struct HelloInfo: Codable, Equatable, Sendable {
     public var appsRoot: String
     public var health: HealthReport
     public var capabilities: [String: Bool]
+    public var backends: [RuntimeBackendStatus]?
     public var host: JSONValue
 
     private enum CodingKeys: String, CodingKey {
@@ -161,8 +204,26 @@ public struct AnalysisReport: Codable, Equatable, Sendable {
     public var package: PackageFacts?
     public var actions: [String]
     public var summary: String
+    /// Which backend would execute this file, and why.
+    public var runtime: String?
+    public var runtimeName: String?
+    public var backends: [AnalysisBackend]?
 
     public var fileURL: URL { URL(fileURLWithPath: path) }
+
+    public var runtimeLabel: String? {
+        guard let runtimeName else { return nil }
+        if let backend = backends?.first(where: { $0.id == runtime }),
+           let version = backend.version, !version.isEmpty {
+            return "\(runtimeName) \(version)"
+        }
+        return runtimeName
+    }
+
+    /// The backend that would run this file, for the details view.
+    public var selectedBackend: AnalysisBackend? {
+        backends?.first { $0.id == runtime }
+    }
 
     public var kindLabel: String {
         switch kind {
@@ -180,6 +241,27 @@ public struct AnalysisReport: Codable, Equatable, Sendable {
 
     public var canRunNow: Bool { runSupported && actions.contains("run") }
     public var canInstall: Bool { installSupported && actions.contains("install") }
+}
+
+/// One backend's verdict on one file, as reported by the analysis itself.
+/// It is narrower than `RuntimeBackendStatus`: an analysis says whether this
+/// particular file is supported, not whether the runtime is installed.
+public struct AnalysisBackend: Codable, Equatable, Sendable, Identifiable {
+    public var id: String
+    public var name: String?
+    public var available: Bool?
+    public var supported: Bool
+    public var version: String?
+    public var reason: String?
+    public var blockers: [String]?
+    public var warnings: [String]?
+
+    public var isAvailable: Bool { available ?? true }
+    public var summary: String {
+        let label = name ?? id
+        if supported { return version.map { "\(label) \($0)" } ?? label }
+        return reason ?? "\(label) cannot run this file"
+    }
 }
 
 public struct InstalledBundleRef: Codable, Equatable, Sendable {
@@ -232,6 +314,7 @@ public struct InstalledApplication: Codable, Equatable, Sendable, Identifiable {
     public var lastRun: String?
     public var productKey: String?
     public var arguments: [String]
+    public var runtimeKind: String?
 
     public var isReady: Bool { status == "ready" }
     public var statusLabel: String {

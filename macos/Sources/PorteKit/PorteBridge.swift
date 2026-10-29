@@ -21,6 +21,9 @@ public actor PorteBridge {
     }
 
     private let runtime: RuntimeDescriptor
+    /// Extra environment for the engine process, such as the user's choice of
+    /// compatibility runtime (`PORTE_WINE_ROOT`).
+    private let environmentOverrides: [String: String]
     private var process: Process?
     private var input: FileHandle?
     private var stdoutHandle: FileHandle?
@@ -34,8 +37,10 @@ public actor PorteBridge {
     private var stderrTail: [String] = []
     private var isShuttingDown = false
 
-    public init(runtime: RuntimeDescriptor) {
+    public init(runtime: RuntimeDescriptor,
+                environment: [String: String] = [:]) {
         self.runtime = runtime
+        self.environmentOverrides = environment
     }
 
     public var descriptor: RuntimeDescriptor { runtime }
@@ -90,6 +95,9 @@ public actor PorteBridge {
         environment["PYTHONPATH"] = path.joined(separator: ":")
         environment["PYTHONUNBUFFERED"] = "1"
         environment["PORTE_GUI"] = "1"
+        for (key, value) in environmentOverrides where !value.isEmpty {
+            environment[key] = value
+        }
         process.environment = environment
 
         let stdinPipe = Pipe()

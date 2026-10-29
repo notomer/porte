@@ -42,6 +42,8 @@ final class AppModel: ObservableObject {
     @Published private(set) var phase: Phase = .launching
     @Published private(set) var runtime: RuntimeDescriptor?
     @Published private(set) var hello: HelloInfo?
+    @Published private(set) var backends: [RuntimeBackendStatus] = []
+    @Published private(set) var compatibilityReport: [String] = []
     @Published private(set) var library = LibrarySnapshot()
     @Published private(set) var associations: [AssociationStatus] = []
     @Published private(set) var isRefreshing = false
@@ -93,6 +95,24 @@ final class AppModel: ObservableObject {
         return hello.health.engine && hello.health.writable
     }
 
+    /// The backend that runs real third-party Windows GUI programs.
+    var compatibilityRuntime: RuntimeBackendStatus? {
+        backends.first { $0.isCompatibilityRuntime }
+    }
+
+    var compatibilityRuntimeDetail: String {
+        guard let status = compatibilityRuntime else {
+            return "No compatibility runtime has been reported yet."
+        }
+        if status.available {
+            let version = status.version.map { " \($0)" } ?? ""
+            return "Wine\(version) at \(status.path ?? "an unknown location")"
+        }
+        return status.reasons.first ?? "No Wine runtime was found on this Mac."
+    }
+
+    var compatibilityRuntimeReady: Bool { compatibilityRuntime?.available == true }
+
     var runtimeDetail: String {
         if let runtimeError { return runtimeError }
         guard let hello, let runtime else {
@@ -132,6 +152,7 @@ final class AppModel: ObservableObject {
         do {
             let info = try await helloInfo()
             hello = info
+            backends = info.backends ?? []
             runtimeError = nil
             updateAssociations()
             events.record("runtime_ready", [
@@ -170,10 +191,77 @@ final class AppModel: ObservableObject {
         guard let runtime else {
             throw RuntimeSelectionError(SetupRuntimeMessage.missing)
         }
-        let bridge = PorteBridge(runtime: runtime)
+        var environment: [String: String] = ["PORTE_GUI": "1"]
+        if let chosen = setupState.compatibilityRuntimePath, !chosen.isEmpty {
+            environment["PORTE_WINE_ROOT"] = chosen
+        }
+        let bridge = PorteBridge(runtime: runtime, environment: environment)
         _ = try await bridge.start()
         self.bridge = bridge
         return bridge
+    }
+
+    // MARK: - Compatibility runtime
+
+    /// Point Porte at a Wine runtime the user installed themselves.
+    ///
+    /// Porte deliberately does not download or install one: the picker records
+    /// a path, and the engine verifies the runtime before it is used.
+    func chooseCompatibilityRuntime() {
+        let panel = NSOpenPanel()
+        panel.title = "Choose a Wine Runtime"
+        panel.message = """
+        Select a Wine application (for example “Wine Staging.app”) or its wine \
+        binary. Porte uses the runtime you already installed; it never downloads \
+        or copies one.
+        """
+        panel.prompt = "Use Runtime"
+        panel.canChooseFiles = true
+        panel.canChooseDirectories = true
+        panel.allowsMultipleSelection = false
+        guard panel.runModal() == .OK, let url = panel.url else { return }
+        var state = setupState
+        state.compatibilityRuntimePath = url.path
+        try? store.save(state)
+        setupState = state
+        bridge = nil
+        compatibilityReport = []
+        events.record("compatibility_runtime_selected", [
+            "path": .string(url.path),
+        ])
+        Task { await connect() }
+    }
+
+    /// Ask the engine to verify the runtime and execute a harmless guest
+    /// program; the report is real output, not a progress animation.
+    func verifyCompatibilityRuntime() {
+        Task {
+            do {
+                let bridge = try await requireBridge()
+                let document = try await bridge.request("runtime", args: [
+                    "action": .string("verify"),
+                    "backend": .string("wine"),
+                    "smoke": .bool(true),
+                ])
+                var lines: [String] = []
+                if let data = document.objectValue,
+                   let checks = data["checks"]?.arrayValue {
+                    for check in checks {
+                        let name = check.objectValue?["check"]?.stringValue ?? "check"
+                        let ok = check.objectValue?["ok"]?.boolValue ?? false
+                        let detail = check.objectValue?["detail"]?.stringValue ?? ""
+                        lines.append("\(ok ? "ok" : "failed")  \(name): \(detail)")
+                    }
+                }
+                compatibilityReport = lines.isEmpty
+                    ? ["The engine returned no checks."] : lines
+                events.record("compatibility_verified", [
+                    "ok": .bool(compatibilityRuntimeReady),
+                ])
+            } catch {
+                compatibilityReport = [error.localizedDescription]
+            }
+        }
     }
 
     // MARK: - Setup

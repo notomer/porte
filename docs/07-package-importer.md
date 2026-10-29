@@ -29,13 +29,16 @@ Windows Installer is a database plus a script. Porte implements the database
 half natively and refuses the parts of the script half it cannot honour.
 
 The brief suggested routing actions through a Windows Installer–compatible
-engine such as Wine's `msiexec`. That was not used here: this host has no Wine
-(`which wine` is empty), and handing the package to `msiexec` would execute
-vendor custom actions as opaque Windows code inside a second compatibility
-layer, which is exactly what this project's evidence model forbids. Reading the
-tables natively keeps every write attributable and testable. A Wine-backed
-executor remains the path for packages whose custom actions are load-bearing;
-it is listed as future work, not claimed.
+engine such as Wine's `msiexec`. Both paths now exist and they are chosen
+explicitly. When a compatibility runtime is available, `auto` hands the package
+to the runtime's own `msiexec`, so vendor custom actions run as they were
+designed to (see [`docs/10-windows-runtime.md`](10-windows-runtime.md)); the
+natively-read tables remain the fallback when no runtime is installed, because
+reading them keeps every write attributable and testable. What this module
+documents is the native path and, importantly, its refusal boundary:
+compressed payloads it cannot decode are reported during analysis, so the
+caller can route the package to `msiexec` instead of discovering the limit
+halfway through an install.
 
 ### 2.1 Reading the package
 
@@ -87,6 +90,12 @@ control characters, so a hostile package cannot write outside its environment.
 `--allow-custom-actions` downgrades the custom-action refusal to a warning and
 proceeds with the table install; the action itself is still **not executed**, and
 the manifest records that the install is partial.
+
+The cabinet method is checked while the plan is built, not while extracting, so
+`porte app package-info` on a package such as 7-Zip 26.05 reports
+`product.cab: folder 0 uses LZX compression, which Porte does not decode` and
+`supported: false` before anything is written. The GUI then reports the package
+as supported *through the runtime* and installs it with `msiexec`.
 
 ### 2.4 Installing
 

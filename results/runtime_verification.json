@@ -1,0 +1,23 @@
+{
+  "7zip": {
+    "checks": 18,
+    "failures": [],
+    "passed": true,
+    "probe": true,
+    "probe_checks": 10
+  },
+  "fixture": {
+    "checks": 25,
+    "failures": [],
+    "passed": true,
+    "probe": true,
+    "probe_checks": 19
+  },
+  "notepadpp": {
+    "checks": 16,
+    "failures": [],
+    "passed": true,
+    "probe": true,
+    "probe_checks": 11
+  }
+}

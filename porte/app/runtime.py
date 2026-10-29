@@ -123,11 +123,135 @@ def _run_frame(pe: Path, args: list[str], config: dict) -> dict:
     }
 
 
+def _pe_for_bundle(app: Path, metadata: dict) -> Path | None:
+    """Where the Windows image actually lives.
+
+    A portable executable is shipped inside the bundle. A program installed by
+    a real Windows installer keeps its files in its own prefix, and the bundle
+    records the Windows path; nothing is copied out of the product tree.
+    """
+    recorded = metadata.get("pe") or ""
+    if metadata.get("pe_location") == "prefix":
+        from ..backends import wine as wine_backend
+
+        prefix = (metadata.get("runtime") or {}).get("bottle")
+        if not prefix:
+            return None
+        return wine_backend.dos_to_unix(Path(prefix), recorded)
+    return app / "Contents" / "Resources" / recorded
+
+
+def _write_wine_record(state: Path, record: dict) -> None:
+    stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
+    util.write_json(state / "logs" / f"run-{stamp}-{os.getpid()}.json", record)
+    with open(state / "logs" / "runs.jsonl", "a", encoding="utf-8") as handle:
+        handle.write(json.dumps(record, sort_keys=True) + "\n")
+    previous = util.read_json(state / "state.json") \
+        if (state / "state.json").exists() else {}
+    util.write_json(state / "state.json", {
+        "bundle_id": record["bundle_id"],
+        "pe_sha256": record["pe_sha256"],
+        "runs": int(previous.get("runs", 0)) + 1,
+        "first_run": previous.get("first_run", record["finished_at"]),
+        "last_run": record["finished_at"],
+        "last_exit": record["exit_code"],
+        "last_total_ms": record["total_ms"],
+        "logs": str(state / "logs"),
+    })
+
+
+def _run_wine(app: Path, metadata: dict, pe: Path, args: list[str],
+              state: Path, bundle_id: str, sha: str, entry_t: float,
+              launched: float | None, spawned: float | None,
+              launcher_ms: float | None,
+              launcher_to_runtime_ms: float | None) -> int:
+    """Execute the guest with the Wine runtime, as a real child process.
+
+    Wine owns the guest's window, message loop, file dialogs and exit status.
+    This function only supervises it and records what happened; the macOS
+    application identity still belongs to the launcher that started us.
+    """
+    import subprocess
+
+    from ..backends import wine as wine_backend
+
+    runtime = metadata.get("runtime") or {}
+    wine = Path(runtime.get("wine") or "")
+    prefix = Path(runtime.get("bottle") or "")
+    if not wine.exists():
+        print(f"error: the Wine runtime recorded for this application is "
+              f"missing: {wine}", file=sys.stderr)
+        print("Open Porte, re-run setup, or reinstall the application. No "
+              "component was downloaded or guessed.", file=sys.stderr)
+        return 69
+    if not prefix.exists():
+        print(f"error: the compatibility environment recorded for this "
+              f"application is missing: {prefix}", file=sys.stderr)
+        print("Reinstall the application; its Windows files live in that "
+              "environment.", file=sys.stderr)
+        return 69
+
+    windows_target = (metadata.get("pe") or "") \
+        if metadata.get("pe_location") == "prefix" else str(pe)
+    command = [str(wine), windows_target] + [str(a) for a in args]
+    print(f"Porte runtime: {wine_backend.NAME} "
+          f"{runtime.get('wine_version') or 'unknown version'}")
+    print(f"compatibility environment: {prefix}")
+    print(f"Windows program: {metadata.get('pe_display_path') or windows_target}")
+
+    load_t = _now()
+    proc = subprocess.run(command, env=wine_backend.clean_env(prefix),
+                          cwd=str(pe.parent))
+    run_ms = (_now() - load_t) * 1000.0
+    total_ms = (_now() - entry_t) * 1000.0
+    finished_at = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+
+    record = {
+        "bundle_id": bundle_id,
+        "name": metadata.get("name"),
+        "profile": metadata.get("profile"),
+        "backend": "wine",
+        "wine_version": runtime.get("wine_version"),
+        "bottle": str(prefix),
+        "pe_sha256": sha,
+        "arguments": args,
+        "exit_code": proc.returncode,
+        "fault": None,
+        "frames": None,
+        "frame_ms_median": None,
+        "gpu_ms": None,
+        "guest_ms": run_ms,
+        "load_ms": run_ms,
+        "total_ms": total_ms,
+        "launcher_ms": launcher_ms,
+        "launcher_to_runtime_ms": launcher_to_runtime_ms,
+        "bundle_start_ms": ((time.time() - launched) * 1000.0)
+                            if launched else None,
+        "api_calls": {},
+        "output_sha256": None,
+        "output_preview": "",
+        "output_bytes": 0,
+        "cache": None,
+        "finished_at": finished_at,
+    }
+    print(f"guest process: exit {proc.returncode}, {run_ms:.0f} ms")
+    if launcher_ms is not None and launcher_to_runtime_ms is not None:
+        print(f"startup: launcher {launcher_ms:.1f} ms + interpreter "
+              f"{launcher_to_runtime_ms:.1f} ms = "
+              f"{launcher_ms + launcher_to_runtime_ms:.1f} ms before the "
+              "guest process")
+    _write_wine_record(state, record)
+    print(f"run record: {state / 'logs'}")
+    return int(proc.returncode & 0xFF)
+
+
 def main(argv: list[str] | None = None) -> int:
     argv = list(sys.argv[1:] if argv is None else argv)
     app = _bundle_path(argv).resolve()
     metadata = _load_metadata(app)
     bundle_id = metadata["bundle_id"]
+    runtime_doc = metadata.get("runtime") or {}
+    runtime_kind = runtime_doc.get("kind") or "engine"
     state = bundle.app_state_dir(bundle_id)
     (state / "logs").mkdir(parents=True, exist_ok=True)
     (state / "cache").mkdir(parents=True, exist_ok=True)
@@ -144,8 +268,8 @@ def main(argv: list[str] | None = None) -> int:
     if launcher_to_runtime_ms is not None:
         print(f"launcher→runtime (process start): {launcher_to_runtime_ms:.1f} ms")
 
-    pe = app / "Contents" / "Resources" / metadata["pe"]
-    if not pe.exists():
+    pe = _pe_for_bundle(app, metadata)
+    if pe is None or not pe.exists():
         print(f"error: Windows image missing: {pe}", file=sys.stderr)
         return 66
     sha = util.sha256_file(pe)
@@ -166,6 +290,11 @@ def main(argv: list[str] | None = None) -> int:
               file=sys.stderr)
         return 65
     args = [str(a) for a in (config.get("arguments") or metadata.get("arguments") or [])]
+
+    if runtime_kind == "wine":
+        return _run_wine(app, metadata, pe, args, state, bundle_id, sha,
+                         entry_t, launched, spawned, launcher_ms,
+                         launcher_to_runtime_ms)
 
     profile = metadata.get("profile", "console")
     cached = _cached_profile(state, sha)

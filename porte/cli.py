@@ -255,6 +255,124 @@ def _cmd_frame(args) -> int:
     return 0
 
 
+def _cmd_runtime(args) -> int:
+    from .backends import describe, wine as wine_backend
+    from .backends import bench as bench_mod
+    from .backends import verify as verify_mod
+
+    if args.action == "list":
+        rows = describe()
+        print(f"{'backend':8s} {'available':10s} {'version':14s} license")
+        for row in rows:
+            print(f"{row['id']:8s} {str(row['available']):10s} "
+                  f"{str(row['version'])[:14]:14s} {row['license']}")
+            if row.get("path"):
+                print(f"         runtime: {row['path']}")
+            for warning in row.get("warnings") or []:
+                print(f"         note: {warning}")
+            for reason in row.get("reasons") or []:
+                print(f"         problem: {reason}")
+        print()
+        print("Porte does not download or install a compatibility runtime. "
+              "Install Wine yourself (for example Wine Staging from the "
+              "WineHQ macOS builds) and it is discovered automatically, or "
+              f"point {wine_backend.ROOT_ENV} at it.")
+        return 0
+
+    if args.action == "verify":
+        if args.backend == "engine":
+            from .backends import engine as engine_backend
+
+            status = engine_backend.backend().status()
+            print(f"engine: {'available' if status.available else 'unavailable'}")
+            for reason in status.reasons:
+                print(f"  problem: {reason}")
+            return 0 if status.available else 1
+        status = wine_backend.backend().status()
+        ok = status.available
+        print(f"wine: {'available' if ok else 'unavailable'} "
+              f"{status.version or ''}")
+        if status.path:
+            print(f"  binary:  {status.path}")
+        print(f"  license: {status.license}")
+        print(f"  Rosetta 2: {'present' if status.rosetta_available else 'missing'}")
+        for warning in status.warnings:
+            print(f"  note: {warning}")
+        for reason in status.reasons:
+            print(f"  problem: {reason}")
+        if args.smoke and status.available:
+            runtime = wine_backend.select()
+            prefix = wine_backend.ensure_bottle(runtime, "verify-smoke")
+            proc = wine_backend.run_command(
+                [str(runtime.wine), "cmd", "/c", "echo porte-runtime-ok"],
+                env=wine_backend.clean_env(prefix), timeout=300)
+            ok = ok and "porte-runtime-ok" in (proc.stdout or "")
+            print(f"  guest program: {proc.stdout.strip() or proc.stderr.strip()[:200]}")
+        return 0 if ok else 1
+
+    if args.action == "verify-e2e":
+        verify_mod.require_fixtures()
+        wanted = args.only or ["fixture", "notepadpp", "7zip"]
+        reports = {}
+        exit_code = 0
+        if "fixture" in wanted:
+            report = verify_mod.verify_gui_fixture(keep=args.keep)
+            reports["fixture"] = verify_mod.collect(report)
+            exit_code |= 0 if report["passed"] else 1
+            print(f"fixture: {'PASS' if report['passed'] else 'FAIL'} "
+                  f"({len(report['checks'])} checks)")
+            for failure in report["failures"]:
+                print(f"  FAIL {failure['name']}: {failure['detail']}")
+        third = verify_mod.THIRD_PARTY
+        npp = third / "npp" / "notepad++.exe"
+        if "notepadpp" in wanted:
+            if npp.exists():
+                report = verify_mod.verify_portable_gui(
+                    npp, "Notepad++", keep=args.keep,
+                    accuracy_note="Notepad++ portable, third-party")
+                reports["notepadpp"] = verify_mod.collect(report)
+                exit_code |= 0 if report["passed"] else 1
+                print(f"notepad++: {'PASS' if report['passed'] else 'FAIL'} "
+                      f"({len(report['checks'])} checks)")
+                for failure in report["failures"]:
+                    print(f"  FAIL {failure['name']}: {failure['detail']}")
+            else:
+                print("notepad++: skipped (run fixtures/win32/fetch_third_party.py)")
+                reports["notepadpp"] = {"skipped": True}
+        msi = third / "7z2605-x64.msi"
+        if "7zip" in wanted:
+            if msi.exists():
+                report = verify_mod.verify_msi(
+                    msi, keep=args.keep, launch_title="7-Zip",
+                    cli_exe=r"C:\Program Files\7-Zip\7z.exe", cli_args=["i"])
+                reports["7zip"] = verify_mod.collect(report)
+                exit_code |= 0 if report["passed"] else 1
+                print(f"7-zip (msi): {'PASS' if report['passed'] else 'FAIL'} "
+                      f"({len(report['checks'])} checks)")
+                for failure in report["failures"]:
+                    print(f"  FAIL {failure['name']}: {failure['detail']}")
+            else:
+                print("7-zip: skipped (run fixtures/win32/fetch_third_party.py)")
+                reports["7zip"] = {"skipped": True}
+        from . import util as util_mod
+
+        util_mod.write_json(util_mod.RESULTS / "runtime_verification.json",
+                            reports)
+        return exit_code
+
+    if args.action == "bench":
+        report = bench_mod.measure(repeats=args.repeats,
+                                   iterations=args.iterations,
+                                   include_gui_startup=not args.no_gui)
+        print(bench_mod.summarise(report))
+        path = bench_mod.write(report)
+        print(f"\nwrote {path}")
+        return 0
+
+    print(f"unknown runtime action {args.action}", file=sys.stderr)
+    return 2
+
+
 def _resolve_product(identifier: str) -> str:
     from .app import environment
 
@@ -277,18 +395,41 @@ def _cmd_app(args) -> int:
         common = dict(accept=args.accept, force=args.force,
                       dest=Path(args.dest).expanduser() if args.dest else None,
                       generate_bundles=not args.no_bundles)
+        preferred = args.runtime or "auto"
         try:
             if suffix == ".exe":
-                result = install.install(
-                    package, name=args.name, arguments=args.args or None,
-                    accept=args.accept, force=args.force,
-                    dest=common["dest"], include_dlls=not args.no_dlls)
+                from .backends import choose_for_install
+
+                backend, _document = choose_for_install(package, preferred)
+                kwargs = dict(name=args.name, arguments=args.args or None,
+                              accept=args.accept, force=args.force,
+                              dest=common["dest"],
+                              include_dlls=not args.no_dlls)
+                if backend.id == "wine":
+                    kwargs["include_siblings"] = not args.no_siblings
+                result = backend.install(package, **kwargs)
             elif suffix == ".msi":
                 from .app.msi import install as msi_install
+                from .backends import wine as wine_backend
 
-                result = msi_install.install(
-                    package, ignore_custom_actions=args.allow_custom_actions,
-                    **common)
+                use_wine = preferred == "wine"
+                if preferred in ("auto", None, ""):
+                    try:
+                        msi_install.inspect_package(package)
+                    except Exception:
+                        use_wine = wine_backend.backend().status().available
+                    else:
+                        info = msi_install.inspect_package(package)
+                        use_wine = (not info.get("supported") and
+                                    wine_backend.backend().status().available)
+                if use_wine:
+                    result = wine_backend.backend().install_msi(
+                        package, dest=common["dest"], force=args.force,
+                        accept=args.accept)
+                else:
+                    result = msi_install.install(
+                        package, ignore_custom_actions=args.allow_custom_actions,
+                        **common)
             elif suffix in (".msix", ".appx"):
                 from .app import msix
 
@@ -372,14 +513,33 @@ def _cmd_app(args) -> int:
         return 0
     if args.action == "install":
         try:
-            result = install.install(
-                Path(args.exe), name=args.name, bundle_id=args.bundle_id,
-                dest=Path(args.dest).expanduser() if args.dest else None,
-                arguments=args.args or None, accept=args.accept,
-                force=args.force, include_dlls=not args.no_dlls)
+            exe_path = Path(args.exe)
+            preferred = args.runtime or "auto"
+            if preferred == "wine":
+                from .backends import wine as wine_backend
+
+                result = wine_backend.backend().install(
+                    exe_path, name=args.name,
+                    dest=Path(args.dest).expanduser() if args.dest else None,
+                    arguments=args.args or None, accept=args.accept,
+                    force=args.force, include_dlls=not args.no_dlls,
+                    include_siblings=not args.no_siblings)
+            else:
+                result = install.install(
+                    exe_path, name=args.name, bundle_id=args.bundle_id,
+                    dest=Path(args.dest).expanduser() if args.dest else None,
+                    arguments=args.args or None, accept=args.accept,
+                    force=args.force, include_dlls=not args.no_dlls)
         except (NotImplementedError, PermissionError, FileExistsError) as exc:
             print(str(exc), file=sys.stderr)
             return 2
+        except Exception as exc:
+            from .backends.base import BackendError
+
+            if isinstance(exc, BackendError):
+                print(str(exc), file=sys.stderr)
+                return 2
+            raise
         print(json.dumps(result, indent=2))
         print(f"\nInstalled {result['app']}\n"
               f"Launch it with: open \"{result['app']}\"")
@@ -502,6 +662,12 @@ def main(argv=None) -> int:
                    help="record user consent without an interactive prompt")
     a.add_argument("--force", action="store_true")
     a.add_argument("--no-dlls", action="store_true")
+    a.add_argument("--runtime", default="auto",
+                   choices=["auto", "engine", "wine"],
+                   help="which runtime executes the program")
+    a.add_argument("--no-siblings", action="store_true",
+                   help="copy only DLLs next to the executable, not its "
+                        "whole portable folder")
     a.set_defaults(fn=_cmd_app)
     a = app_sub.add_parser("list", help="list installed Porte applications")
     a.set_defaults(fn=_cmd_app)
@@ -527,6 +693,12 @@ def main(argv=None) -> int:
     a.add_argument("--allow-custom-actions", action="store_true",
                    help="install an MSI that declares custom actions anyway "
                         "(the actions themselves are still not executed)")
+    a.add_argument("--runtime", default="auto",
+                   choices=["auto", "engine", "wine"],
+                   help="'wine' runs the package through the Windows "
+                        "Installer instead of Porte's own importer")
+    a.add_argument("--no-siblings", action="store_true",
+                   help="copy only DLLs next to a portable executable")
     a.set_defaults(fn=_cmd_app)
     a = app_sub.add_parser("products",
                            help="list installed Windows products")
@@ -546,6 +718,31 @@ def main(argv=None) -> int:
     a.add_argument("--purge", action="store_true",
                    help="also delete the application's state and cache")
     a.set_defaults(fn=_cmd_app)
+
+    p = sub.add_parser("runtime",
+                       help="runtime backends: status, verification, benchmarks")
+    rsub = p.add_subparsers(dest="action", required=True)
+    r = rsub.add_parser("list", help="which runtimes are available")
+    r.set_defaults(fn=_cmd_runtime)
+    r = rsub.add_parser("verify", help="check a runtime's dependencies")
+    r.add_argument("--backend", default="wine", choices=["engine", "wine"])
+    r.add_argument("--path", help="a specific runtime to check")
+    r.add_argument("--smoke", action="store_true",
+                   help="also execute a guest program")
+    r.set_defaults(fn=_cmd_runtime)
+    r = rsub.add_parser("verify-e2e",
+                        help="install, launch and drive real Windows programs")
+    r.add_argument("--only", action="append",
+                   choices=["fixture", "notepadpp", "7zip"])
+    r.add_argument("--keep", action="store_true",
+                   help="keep the generated bundles for inspection")
+    r.set_defaults(fn=_cmd_runtime)
+    r = rsub.add_parser("bench",
+                        help="measure translation, API, startup and memory")
+    r.add_argument("--repeats", type=int, default=5)
+    r.add_argument("--iterations", type=int, default=20000000)
+    r.add_argument("--no-gui", action="store_true")
+    r.set_defaults(fn=_cmd_runtime)
 
     p = sub.add_parser("frame",
                        help="measure the frame-path gap against native ARM64")
