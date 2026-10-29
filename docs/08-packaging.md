@@ -18,6 +18,12 @@ documentation. Committed measurements in `results/` and `profiles/` were produce
 under the old name and are left as recorded; they are evidence, not branding.
 The `forge` console script remains as a warning alias for one release cycle.
 
+There is no automatic migration of Forge-era installations. Applications
+created under `com.forge.windows.*` and products under
+`~/Library/Application Support/Forge/` are left untouched; `porte app list`
+will not show them, and `porte` will not reuse their state. Remove them with
+`forge app remove <name>` (alias) or by hand, then re-import the package.
+
 Not renamed: third-party project names in the prior-art and roadmap documents,
 and the C ABI of the research fixtures beyond the `porte_` prefix (the fixture
 contract, kernel entry points and probe are all consistently `porte_*`).
