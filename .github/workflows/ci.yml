@@ -48,9 +48,8 @@ jobs:
           .venv/bin/porte --help > /dev/null
           .venv/bin/forge --help > /dev/null 2>&1
 
-      - name: Unit tests
-        run: .venv/bin/python -m unittest discover -s tests -v
-
+      # Fixtures first: the GUI bridge tests install and run real images and
+      # skip (rather than silently pass) when they are absent.
       - name: Installer importer, end to end
         run: |
           ./fixtures/installer/build.sh
@@ -60,6 +59,10 @@ jobs:
         run: |
           .venv/bin/porte build --force
           .venv/bin/porte selftest
+          .venv/bin/python fixtures/opaque/gen.py --clean
+
+      - name: Unit tests
+        run: .venv/bin/python -m unittest discover -s tests -v
 
       - name: Build the native application
         run: ./macos/build.sh
@@ -78,5 +81,6 @@ jobs:
           path: |
             build/
             macos/.build/
+            ~/Library/Application Support/Porte/GUI/
           retention-days: 3
           if-no-files-found: ignore

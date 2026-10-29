@@ -172,10 +172,18 @@ class BridgeTests(unittest.TestCase):
         self.assertFalse(response["message"]["data"]["supported"])
 
     def test_install_and_run_require_consent(self):
-        response = self.bridge.request("install", {"path": str(CRC_EXE)})
-        self.assertEqual(response["message"]["code"], "consent_required")
-        response = self.bridge.request("run", {"path": str(CRC_EXE)})
-        self.assertEqual(response["message"]["code"], "consent_required")
+        # Any existing file is enough: consent is checked before the image is
+        # inspected, and this must hold on a checkout without built fixtures.
+        with tempfile.NamedTemporaryFile(suffix=".exe", delete=False) as handle:
+            handle.write(b"MZ" + b"\0" * 128)
+            path = handle.name
+        try:
+            for op in ("install", "run"):
+                response = self.bridge.request(op, {"path": path})
+                self.assertEqual(response["message"]["event"], "error")
+                self.assertEqual(response["message"]["code"], "consent_required")
+        finally:
+            os.unlink(path)
 
     def test_unknown_operation_is_typed(self):
         response = self.bridge.request("teleport", {})
