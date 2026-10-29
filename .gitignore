@@ -1,4 +1,6 @@
-# Python
+# Python and Swift build products
+.build
+.swiftpm
 __pycache__/
 *.py[cod]
 *.egg-info/

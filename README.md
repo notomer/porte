@@ -36,6 +36,7 @@ layer that turns supported Windows executables and packages into ordinary macOS
 | Opaque Windows PE profiling and specialization | **Implemented, measured** on five stripped PEs | `docs/90-opaque-pe-experiment.md` |
 | Frame-path baseline vs native ARM64 + Metal | **Measured**: parity only when the GPU is the limiter | `docs/05-native-baseline.md` |
 | macOS `.app` generation (launcher, Dock identity, icon, state) | **Implemented, verified** on this host | `docs/06-app-integration.md` |
+| Native macOS application (SwiftUI, Finder and Open With) | **Implemented, verified** end to end | `docs/09-macos-gui.md` |
 | Package importing: `.msi`, `.msix`/`.appx`, portable `.exe` | **Implemented, verified** end to end | `docs/07-package-importer.md` |
 | Win32 GUI, D3D, guest threads, real games | **Roadmap only** — not implemented | `docs/03-roadmap.md` |
 | Near-native CPU-bound performance | **Not achieved**; the gap is measured and attributed | `docs/04-native-performance-plan.md`, `docs/05-native-baseline.md` |
@@ -66,6 +67,9 @@ Read first:
 - [`docs/07-package-importer.md`](docs/07-package-importer.md) — `.exe`, `.msi`
   and `.msix`/`.appx` importing: the MSI database and cabinet path, MSIX block
   map validation, upgrades, repair, refusals, and the measured end-to-end run.
+- [`docs/09-macos-gui.md`](docs/09-macos-gui.md) — the native macOS app:
+  architecture, the JSON bridge protocol, Finder/Launch Services integration,
+  setup, what is verified, and what still depends on the Windows engine.
 - [`docs/90-opaque-pe-experiment.md`](docs/90-opaque-pe-experiment.md) — prior
   phase: stripped Windows PEs executed and nativeized from the binary alone.
 
@@ -135,6 +139,36 @@ script engine, no services or drivers, and no Authenticode verification. Details
 [`docs/06-app-integration.md`](docs/06-app-integration.md),
 [`docs/07-package-importer.md`](docs/07-package-importer.md).
 
+## Native macOS application
+
+Porte also ships a native SwiftUI application, so the product is usable without
+the terminal. `./macos/build.sh` assembles `build/Porte.app`; on first launch it
+validates the runtime, optionally makes itself the handler for `.exe` and `.msi`
+through the documented Launch Services API, and then routes Finder double-clicks,
+Open With, Dock drops, in-window drops and File ▸ Open to the existing engine.
+
+The app talks to the engine through a structured newline-delimited JSON protocol
+(`porte/gui/bridge.py`), not by parsing terminal output, and it reports typed
+states: analyzing, preparing, installing, launching, running, completed, failed,
+unsupported. Installs create the same real `.app` bundles as the CLI; the
+resulting app launches from Applications without any Porte window.
+
+```bash
+./macos/build.sh
+open build/Porte.app
+./macos/verify.sh          # build, checks, and drive the real app end to end
+```
+
+Verified on this host: a stopped app receives an MSI handed over by macOS and
+reaches the installation analysis; a running app receives an EXE and analyzes it;
+`open file.exe` reaches Porte when it is the default handler; a package installs
+into a valid arm64 `.app` that runs without the manager; a missing runtime sends
+the app back to setup instead of showing a broken library. What the GUI cannot do
+is exactly what the engine cannot do: installer-shaped EXEs and images outside
+the host stubs are reported as unsupported, and MSIs with custom actions are
+refused. Details, protocol and the manual gesture checklist:
+[`docs/09-macos-gui.md`](docs/09-macos-gui.md).
+
 ## Phase 2 result: opaque Windows PE
 
 Five independently compiled, symbol-stripped Windows x86-64 executables with no
@@ -199,8 +233,8 @@ fully native port.
 ## Install
 
 Requirements: macOS on Apple Silicon, Xcode command line tools (clang, objdump,
-nm, atos), Python 3.10+, Rosetta installed (the translated baseline runs x86-64
-Mach-O images through it).
+nm, atos) plus a Swift 6 toolchain to build the macOS app, Python 3.10+, Rosetta
+installed (the translated baseline runs x86-64 Mach-O images through it).
 
 ```bash
 python3 -m venv .venv
@@ -273,6 +307,8 @@ fixtures/app/     deterministic workload driver (same source, both arches)
 fixtures/kernel/  generic baseline (libc qsort) and the in-module-sort control
 fixtures/host/    host effect sink with single and batched entry points
 porte/app/        bundle generator, AppKit launcher, runtime, MSI/MSIX importers
+porte/gui/        structured bridge and out-of-process runner for the macOS app
+macos/            SwiftUI application, Launch Services tooling, checks, verifier
 fixtures/frame/   Windows PE + native + Rosetta frame benchmark, one Metal scene
 fixtures/installer/  MSI/MSIX fixtures, payloads, end-to-end verifier
 docs/             prior art, architecture, reports, baselines, app integration

@@ -34,6 +34,8 @@ contract, kernel entry points and probe are all consistently `porte_*`).
 porte/                 Python package: profiler, specializer, oracle, cache, CLI
 porte/app/             bundle generator, AppKit launcher, runtime, MSI/MSIX importers
 porte/app/msi/         CFB reader, MSI table reader, CAB reader, install engine
+porte/gui/             JSON bridge and out-of-process runner used by the macOS app
+macos/                 SwiftUI app, Launch Services tooling, checks, end-to-end verifier
 porte/frame/           frame-path experiment (Windows PE vs native Metal)
 porte/pe/              opaque PE lifter, profiler, dispatcher, pipeline
 runtime/               C probe and the shared kernel/host contract
@@ -47,17 +49,25 @@ build/                 generated output (git-ignored)
 
 ## Continuous integration
 
-`.github/workflows/ci.yml` runs on `macos-14` (Apple Silicon) for pushes to
-`main` and every pull request:
+`.github/workflows/ci.yml` runs on `macos-15` (Apple Silicon) for pushes to
+`main` and every pull request. The retired `macos-14` image is no longer used:
 
 1. syntax check (`compileall`) over the package, importer fixtures and tests;
 2. both CLI entry points (`porte`, and the deprecated `forge` alias);
-3. `unittest` suite — identifiers, path safety, CLI, MSI/MSIX parsing;
+3. `unittest` suite — identifiers, path safety, CLI, MSI/MSIX parsing, and the
+   GUI bridge protocol (consent, analysis, a real MSI install, uninstall);
 4. `fixtures/installer/build.sh` + `fixtures/installer/verify.py` — the end-to-end
    importer check (tables, cabinet, registry, upgrade, repair, refusals, MSIX
    block map, bundle generation, headless launch, uninstall);
 5. `porte build --force` + `porte selftest` — the engine fixtures and the oracle
-   mutation check.
+   mutation check;
+6. `macos/build.sh` + `porte-check` — build the SwiftUI app and run the Swift
+   checks (bridge handshake, setup state, Info.plist document types, file-open
+   queue);
+7. `macos/verify.sh` — the native end-to-end pass: Launch Services registration,
+   file-open delivery to a running and a stopped app, missing-runtime recovery,
+   install to a real `.app`, launch from Applications without the manager, and
+   uninstall.
 
 The workflow installs `msitools` and `mingw-w64` with Homebrew because the MSI
 and PE fixtures are authored with reference toolchains rather than by Porte's own
@@ -76,8 +86,10 @@ committed deliberately.
 4. `THIRD_PARTY.md` is re-read: no dependency added since the last release without
    a licensing note.
 5. No generated artifacts are committed (`build/`, EXEs, MSIs, MSIXs, `.app`).
-6. Generated bundles are ad-hoc signed only; the release notes must not imply
-   notarization or Gatekeeper approval.
+6. Generated bundles and `Porte.app` are ad-hoc signed only; the release notes
+   must not imply notarization or Gatekeeper approval. `Porte.app` embeds a
+   `porte-runtime.json` pointer to the build host's runtime, so it is a developer
+   build, not a redistributable installer.
 7. If a binary distribution includes Unicorn, the GPLv2 obligations in
    `THIRD_PARTY.md` apply; a source-only GitHub release does not trigger them.
 
@@ -88,6 +100,7 @@ python3 -m venv .venv
 .venv/bin/pip install -e .
 .venv/bin/python -m unittest discover -s tests -v
 ./fixtures/installer/build.sh && .venv/bin/python fixtures/installer/verify.py
+./macos/build.sh && ./macos/verify.sh
 ```
 
 `verify.py` points `PORTE_ENV_ROOT` and `PORTE_SUPPORT_ROOT` at a temporary tree,

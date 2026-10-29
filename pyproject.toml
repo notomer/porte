@@ -37,7 +37,7 @@ porte = "porte.cli:main"
 forge = "porte.cli:legacy_main"
 
 [tool.setuptools]
-packages = ["porte", "porte.app", "porte.app.msi", "porte.frame", "porte.pe"]
+packages = ["porte", "porte.app", "porte.app.msi", "porte.frame", "porte.gui", "porte.pe"]
 
 [tool.setuptools.package-data]
 "porte.app" = ["launcher.m"]

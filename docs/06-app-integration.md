@@ -177,10 +177,11 @@ deliver, in the order they matter:
   window bridge, no menus/context menus/clipboard/notifications/file dialogs, no
   accessibility metadata. The launcher window is a supervisor console, not a
   transformed Windows UI.
-- **Seamless importing (Milestone E).** Installation is `porte app install` or
-  `porte app import <package>`. There is no Porte.app document handler, no
-  Open With/drag-and-drop association for `.msi`/`.msix`, no watched import
-  folder, and no Finder Quick Action. The `.app` itself has no document types.
+- **Seamless importing (Milestone E).** This document covers the CLI-driven
+  proof of concept; the native application in [`09-macos-gui.md`](09-macos-gui.md)
+  now provides the document handler, Open With, drag-and-drop and setup that this
+  phase lacked. There is still no watched import folder or Finder Quick Action.
+  Generated application bundles themselves still declare no document types.
 - **Games (Milestone F).** No D3D backend, no shader translation, no controller
   or fullscreen handling; the Metal workload is an offscreen frame benchmark.
 - **General Windows compatibility.** No threads/TLS, no user32/gdi32, no file

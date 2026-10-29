@@ -15,9 +15,11 @@ concurrency:
 
 jobs:
   macos-arm64:
-    name: checks (macOS 14, ARM64)
-    runs-on: macos-14
-    timeout-minutes: 40
+    name: checks (macOS 15, ARM64)
+    # macos-14 is retired on 2 November 2026; macos-15 is a supported Apple
+    # Silicon image with Xcode 16/26 and the Swift toolchain.
+    runs-on: macos-15
+    timeout-minutes: 60
     steps:
       - name: Check out
         uses: actions/checkout@v5
@@ -59,11 +61,22 @@ jobs:
           .venv/bin/porte build --force
           .venv/bin/porte selftest
 
+      - name: Build the native application
+        run: ./macos/build.sh
+
+      - name: Swift checks (bridge client, setup state, Info.plist)
+        run: swift run --package-path macos -c debug porte-check
+
+      - name: Native application, end to end
+        run: ./macos/verify.sh
+
       - name: Upload verifier output on failure
         if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: ci-logs
-          path: build/
+          path: |
+            build/
+            macos/.build/
           retention-days: 3
           if-no-files-found: ignore
