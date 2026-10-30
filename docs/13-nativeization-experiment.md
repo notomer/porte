@@ -246,7 +246,7 @@ unmodified backend on a real Windows program, with correctness.*
 | --- | --- | --- |
 | 1 | a real third-party program is specialized | **met** — 7-Zip 26.05 x64, official MSI, no source |
 | 2 | the win reproduces | **met** — 1.03–1.11× wall over four runs, ≥ 1.06× CPU |
-| 3 | correctness holds | **met for this workload** — byte-identical archives over 20/20 runs, integrity checks pass |
+| 3 | correctness holds | **met for this workload** — every repeat of four evaluation runs (36 archives) was byte-identical between baseline and specialized, and every archive passed its integrity check |
 | 4 | the guard refuses unsafe cases | **met** — 0 candidates at `-mmt=4` (parallelism 1.39) |
 | 5 | the specialization persists | **met** — record cached by program digest, reloaded by `adaptive.load` |
 | 6 | no FEX fork | **met** — stock MetalSharp Wine 4.0, environment variables only |
