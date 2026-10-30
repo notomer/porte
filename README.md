@@ -39,6 +39,8 @@ layer that turns supported Windows executables and packages into ordinary macOS
 | Native macOS application (SwiftUI, Finder and Open With) | **Implemented, verified** end to end | `docs/09-macos-gui.md` |
 | Package importing: `.msi`, `.msix`/`.appx`, portable `.exe` | **Implemented, verified** end to end | `docs/07-package-importer.md` |
 | Real Windows x86-64 GUI programs (via a runtime Porte discovers) | **Implemented, verified** with 7-Zip 26.05 and Notepad++ 8.9.8.1 | `results/runtime_verification.json`, `docs/10-windows-runtime.md` |
+| Verified semantics specialization of a real Windows program | **Implemented, measured**: 1.089× wall and CPU on 7-Zip against the same runtime, byte-identical output, guard refuses the multi-threaded case | `results/arm64_specialization_record.json`, `docs/14-arm64-wine-benchmark.md` |
+| Cross-runtime workload benchmark (Rosetta Wine / native ARM64 Wine / native arm64) | **Implemented, measured** on one real program and one workload | `results/arm64_wine_bench.json`, `docs/14-arm64-wine-benchmark.md` |
 | D3D, anti-cheat, games | **Roadmap only** — not implemented or tested | `docs/03-roadmap.md` |
 | Near-native CPU-bound performance | **Not achieved**; the gap is measured and attributed | `docs/04-native-performance-plan.md`, `docs/05-native-baseline.md` |
 
@@ -54,24 +56,31 @@ implements the same shape on top of Wine, DXMT and D3DMetal with an open CC0
 compatibility database. Porte's only unclaimed asset is its guarded,
 profile-driven nativeization with a differential oracle.
 
-Measurements in this repository bound what that asset can do on macOS today:
+An earlier phase concluded from a Rosetta probe that native code could never join
+a Wine process. That was architecture-specific and wrong as a general claim:
+**native ARM64 Wine with FEX now exists on macOS** (MetalSharp Wine 4.0,
+CodeWeavers' ARM64 preview), the process is arm64, ARM64EC modules load into an
+x86-64 guest, and FEX publishes a perf map of translated blocks. Measurements in
+this repository bound what that changes:
 
-- A Rosetta-translated process **cannot load arm64 code** (verified with
-  `dlopen`), so native code cannot be injected into a Wine process.
-- Profiling a genuine third-party Windows program under Wine shows ≈49% of
-  executing samples inside Rosetta's runtime, but the guest's hot code is
-  reported only as anonymous `Rosetta JIT` addresses — it cannot be mapped back
-  to the program's functions.
+- Native ARM64 Wine is **not faster** than Rosetta on a CPU-bound workload: 0.97×.
+  Native arm64 is 1.57× faster than the same program under FEX.
+- The memory-ordering emulation FEX performs can be removed when no two guest
+  threads ever run at once. Porte measures that, proves the change byte-exact, and
+  keeps the record: **1.089× wall and CPU on 7-Zip 26.05**, refused at `-mmt=4`.
+- FEX's perf map names 6,277 translated blocks for that run, but none of the
+  sampled hot addresses falls inside a named range, so per-function profile-guided
+  work is still blocked — by an implementation gap, not by the platform.
 - Porte's own generated ARM64 code, verified byte-exact against an interpreter,
   is still 1.3×–19.5× slower than a native build on the same workloads.
 
-So Porte does not ship a faster execution path today. The next milestone is the
-narrow one that can still be won: run one real Windows **console** program in the
-engine and require byte-identical output plus at least Wine parity before
-claiming anything. Details, including the go/no-go bar:
-[`docs/11-competitive-analysis.md`](docs/11-competitive-analysis.md),
+So Porte ships one measured specialization today, and not near-native execution.
+The next milestone is the narrow one that can still be won: reproduce the win on a
+second, different program, and refuse if it does not. Details, including the
+go/no-go bar: [`docs/11-competitive-analysis.md`](docs/11-competitive-analysis.md),
 [`docs/12-technical-direction.md`](docs/12-technical-direction.md),
-[`docs/13-nativeization-experiment.md`](docs/13-nativeization-experiment.md).
+[`docs/13-nativeization-experiment.md`](docs/13-nativeization-experiment.md),
+[`docs/14-arm64-wine-benchmark.md`](docs/14-arm64-wine-benchmark.md).
 
 Read first:
 

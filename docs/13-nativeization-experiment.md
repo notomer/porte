@@ -1,21 +1,38 @@
-# 13 — The experiment: can Porte accelerate real Windows code on this Mac?
+# 13 — The experiment: can Porte make real Windows code run faster on this Mac?
 
 The claim under test is the one the product depends on: *Porte can make a real
-Windows program run measurably better than an existing compatibility runtime by
-generating its own native code.* Three measurements decide it. All were run on
-this host: Apple M2 Max, macOS 27.2 (26B123), Wine Staging 11.20, Rosetta 2
-present, 7-Zip 26.05 (x64, official MSI) as the third-party program.
+Windows program run measurably better than the compatibility runtime that would
+otherwise run it, without changing what the program does.*
 
-Everything here is reproducible from this repository; the commands are quoted.
+Phase 3 answered "no" and named a platform constraint. Phase 4 found that the
+constraint was true of one execution architecture and false of the other, built
+the missing instrument, and produced a verified win. This document keeps the
+Phase 3 experiments (they are still correct, now scoped) and adds the ones that
+replaced its conclusion.
+
+Host: Apple M2 Max, macOS 27.2 (26B123). Runtimes: Wine Staging 11.20 (x86-64
+under Rosetta 2) and MetalSharp Wine 4.0 (Wine 11.20 native arm64 + FEX-2610).
+Program: 7-Zip 26.05 x64, installed from the official MSI, no source.
 
 ---
 
-## 1. Experiment 1 — can native ARM64 code run inside a Wine process?
+## 0. What the Phase 3 conclusion got wrong
 
-**Hypothesis (C1):** Porte can replace hot Windows functions with native ARM64
-code inside the process the compatibility runtime starts.
+Phase 3 measured that a Rosetta process cannot load an arm64 dylib (§1) and
+concluded that native code could never join a Wine process on macOS. The first
+half is a fact about Rosetta. The second half assumed Rosetta was the only way
+Wine runs here — which stopped being true when Wine itself was built for arm64
+and given a macOS port of FEX (`docs/11` §3). In that process the guest is JIT
+output inside an **arm64** process, and native code is welcome.
 
-**Method.** A Rosetta (x86-64) program that tries to load a native arm64 dylib:
+The correction is not a technicality: it decides whether strategy C1 is
+impossible or merely unbuilt (`docs/12` §4).
+
+---
+
+## 1. Experiment 1 — arm64 code inside a Rosetta process (architecture R)
+
+**Method.**
 
 ```bash
 clang -dynamiclib -arch arm64 -o libnative.dylib native.c
@@ -30,178 +47,277 @@ dlopen failed: ... (mach-o file, but is an incompatible architecture
 (have 'arm64', need 'x86_64'))
 ```
 
-**Conclusion.** Refuted. A Rosetta-translated process cannot host ARM64 code, so
-C1 cannot be implemented on macOS with any amount of engineering. This is a
-platform property, not a Porte limitation.
+**Conclusion (unchanged, scoped).** Under Rosetta, native ARM64 code cannot enter
+the process. Any plan that assumes it can, in *that* architecture, is wrong.
 
 ---
 
-## 2. Experiment 2 — where does a real Windows program's time actually go?
+## 2. Experiment 2 — where a Rosetta guest's time goes (architecture R)
 
-**Question.** If C1 is impossible, is there anything else worth optimizing, and
-can it be located?
+**Instrument:** `porte/backends/profile.py`, `porte runtime profile`.
 
-**Instrument** (new in this phase): `porte/backends/profile.py`, exposed as
+**Result** (7-Zip LZMA, 28,739 samples): 56.3% of samples are threads waiting,
+22.3% are Rosetta's own runtime routines, 21.3% are translated guest code — so
+≈49% of *executing* samples are translation overhead. The sampler reports the
+guest as `Rosetta JIT` with no mapping back to `7z.exe`, and Wine's Win32 modules
+are translated into the same region.
 
-```bash
-porte runtime profile 'C:\Program Files\7-Zip\7z.exe' \
-  --windows-path 'C:\Program Files\7-Zip\7z.exe' \
-  --bottle 7-zip-26-05-x64-edition-96360287 \
-  --arg=a --arg=-t7z --arg=-mx=9 --arg=-mmt=off \
-  --arg='C:\out4.7z' --arg='C:\big.zip' --seconds 8
-```
-
-It starts the guest under the discovered runtime, samples the process with
-`/usr/bin/sample`, classifies every sampled frame by the layer it belongs to,
-and writes `results/wine_profile.json`. The workload is 7-Zip compressing a
-115 MB archive with LZMA at `-mx=9`, single-threaded — a genuine, CPU-bound,
-third-party Windows x86-64 program.
-
-**Result** (28,739 samples):
-
-| layer | share |
-| --- | ---: |
-| unattributed system ranges (threads waiting in `mach_msg`) | 56.3% |
-| Rosetta runtime routines | 22.3% |
-| translated guest x86-64 | 21.3% |
-| Wine unix-side modules / host | 0% of sampled leaves |
-
-Of the samples that are executing rather than waiting, **≈49% are inside
-Rosetta's runtime** and 51% in translated guest code. The process is reported by
-the sampler as `Code Type: X86-64 (translated)`.
-
-**The attribution limit, measured rather than assumed.** The sampler names the
-guest's code `Rosetta JIT` and reports a JIT address such as `0x200196e5c`.
-There is no mapping back to the `7z.exe` instruction that produced it, and
-Wine's own Win32 PE modules are translated into the same JIT region. So the
-21.3% cannot be split between the application and Wine, and a
-profile-guided optimizer cannot obtain the per-function hot spots it would need.
-This is the same fact as Experiment 1 seen from the profiling side.
+**Conclusion (unchanged, scoped).** In architecture R the overhead is real, it is
+inside Rosetta, and it cannot be named or removed from outside.
 
 ---
 
-## 3. Experiment 3 — the existing engine's ceiling, re-measured
+## 3. Experiment 3 — the baselines on native ARM64 Wine (new)
 
-**Question.** For code Porte *can* control (its own engine, not Wine), how close
-does generated ARM64 code get to native ARM64?
+**Question.** Architecture N exists. Is it faster, and by how much against
+native ARM64? Everything Porte might contribute has to be measured against these
+numbers, not against an interpreter.
 
-**Method.**
+**Method.** `porte runtime workload` on one deterministic 30 MiB corpus
+(`fixtures/workload/make_input.py`, sha256 `3b9fb805…`), LZMA at `-mx=9`,
+`-mmt=off`, 5 repeats, **round-robin** between backends so a laptop that slows
+down mid-run cannot hand the win to whichever backend ran first. CPU is the sum
+of the guest process's own CPU time sampled from the kernel; memory is the sum of
+descendant peak RSS; output is the SHA-256 of the archive.
 
 ```bash
-porte pe experiment fixtures/opaque/out/crc.exe --workload 262144
+porte runtime workload --job fixtures/workload/7zip-lzma.json \
+  --out results/arm64_wine_bench.json
 ```
 
-Each image is stripped, has no exports, and is optimized without source or
-symbols; the pipeline profiles, lifts one hot loop to ARM64, proves equivalence
-over a 22-case corpus, caches it, and benches seven repeats.
+**Result** (`results/arm64_wine_bench.json`):
 
-**Result (2026-10-29, median ms per run):**
-
-| image | interpreter (baseline) | translated ARM64 | specialized ARM64 | speedup vs interpreter | native ARM64 reference | still slower than native |
+| backend | wall median | wall min | CPU | RSS | threads | vs first |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| blob (n=1e6) | 2.207 | 0.562 | **0.432** | 5.11× | 0.0221 | 19.5× |
-| lookup (n=65536) | 2.478 | 0.538 | **0.563** | 4.40× | 0.256 | 2.2× |
-| sieve (n=1e6) | 61.517 | 6.924 | **6.206** | 9.91× | 1.261 | 4.9× |
-| crc (n=262144) | 1.623 | 1.072 | **1.024** | 1.58× | 0.776 | 1.3× |
-| fault (n=16) | 0.104 | 0.180 | 0.169 | 0.61× (regression) | — | — |
+| Wine 11.20 under Rosetta | 20,484 ms | 19,465 ms | 15,450 ms | 351 MB | 5 | 1.00× |
+| MetalSharp Wine 4.0 (arm64 + FEX) | 21,190 ms | 20,370 ms | 16,670 ms | 420 MB | 4 | **0.97×** |
+| the same, memory-model specialization (§5) | 19,430 ms | 18,287 ms | 14,900 ms | 417 MB | 5 | **1.09×** |
+| native arm64 7-Zip 26.05 (`7zz`, Homebrew) | 13,505 ms | 12,757 ms | 13,030 ms | 336 MB | 1 | 1.57× |
 
-**Correctness.** The differential oracle compares baseline and specialized
-execution from the entry point over the 22-case corpus (`0, 1, 2, 3, 7, 16, 63,
-64, 65, 127, 255, 256, 257, 511, 1023, 1024, 1025, 2047, 2048, 4096, 65536,
-1000000`): stdout bytes, exit code, fault, heap digest and image digest. The
-Phase-2 report records 22/22 on all five images, a corrupted-trace rejection,
-and demotion to interpretation when the image's memory layout changes.
+All runs exited 0 and every archive passed an integrity check. The three Windows
+archives are **byte-identical** to each other; the native archive differs in its
+header (Windows vs POSIX file attributes), which is why correctness is reported
+two ways in `docs/14`.
 
-**What these numbers do and do not mean.** The 1.6×–9.9× is real and measured,
-but it is measured *against Porte's own interpreter*. Against a native ARM64
-build of the same algorithm, the specialized code is 1.3×–19.5× slower. Porte's
-engine is not competitive with a general translator; it is a research vehicle
-that proves guarded specialization can be made *verifiable*, not that it can be
-made *fast enough*.
+**What this means.**
 
----
-
-## 4. Putting the three together
-
-| question | answer | evidence |
-| --- | --- | --- |
-| Can Porte's ARM64 code run inside Wine? | no | §1 |
-| Can Porte locate hot code inside Wine to optimize it? | no | §2 |
-| Is the overhead worth removing? | yes, ~49% of executing samples are Rosetta runtime | §2 |
-| Can Porte's own engine reach native speed? | no, 1.3×–19.5× behind | §3 |
-| Can Porte's engine run a real program? | no: 15 host stubs, no `user32`/`gdi32`/SEH | `docs/12` §3 |
-
-The picture is consistent: the overhead is real, it is inside Rosetta, and every
-mechanism Porte has for removing overhead lives outside Rosetta. That is the
-whole finding, and it is why the brief's B+C cannot be delivered as stated.
+1. Native ARM64 Wine is **not** faster than Rosetta here (0.97×). The architecture
+   change buys address-space mixing and guest attribution, not speed.
+2. The gap to native is **1.57×** — that is the entire ceiling for any
+   optimization layer on this workload, and it is smaller than the "near-native"
+   framing implies.
+3. The only number that improved for free was memory-model emulation, and that is
+   the one Porte could reach (§5).
 
 ---
 
-## 5. Status against the milestone criteria
+## 4. Experiment 4 — can the guest be named? (new)
 
-From `docs/12` §8 ("native execution of a real, unmodified Windows console
-program"):
+**Hypothesis (C1's prerequisite).** A profiler can attribute a native-ARM64 Wine
+guest's samples to the Windows functions that produced them.
+
+**Instrument:** `porte/backends/fex_profile.py`, `porte runtime fex-profile`.
+
+FEX writes a perf map when told to name its JIT output
+(`FEX_LIBRARYJITNAMING=1`): one line per translated block, host address, size and
+the guest module + RVA it came from.
+
+**Result** (`results/arm64_wine_profile.json`, 7-Zip LZMA, 10,015 samples):
+
+| class | samples | share |
+| --- | ---: | ---: |
+| threads waiting in the kernel | 7,761 | 77.5% |
+| executing inside FEX's JIT region, **no named block covers the address** | 2,254 | 22.5% |
+| in a named guest block | **0** | 0% |
+| host code | 0 | 0% |
+
+The map itself is substantial and correct in form: **6,277** blocks with a guest
+origin were written during the run, including 3,631 for `7z.dll` and 3,399 for
+`7z.exe` — exactly the modules the hot loop lives in. But **none of the 57
+distinct top-of-stack addresses** in the sample falls inside a named range: the
+addresses sit in gaps between the blocks FEX named.
+
+That last sentence cost this phase a bug to establish. The first implementation
+looked blocks up with a binary search, which is wrong for this data twice over:
+FEX's map contains overlapping ranges (1 MB region markers, several entries for
+the same translated block at different addresses), so a bisect can report "no
+block" for code that is mapped. The instrument now scans, prefers entries that
+carry a guest origin, and only then falls back to the region marker — which is
+how the same samples moved from "unattributed" to "inside the JIT region but
+outside every named block". A profiler that gets this wrong flatters itself in
+both directions.
+
+**Conclusion.** Guest attribution is *possible* on this stack — the mechanism
+exists, is unprivileged, and is produced by the runtime itself — and it is *not
+working* in MetalSharp Wine 4.0 as shipped: the hot code is unnamed. The most
+plausible reading is that the hot blocks are exactly the ones FEX rewrites while
+linking (relocation, block splitting), and those versions are not re-named; that
+is a hypothesis, not a measurement. It is an implementation property of a
+MIT-licensed translator, not a platform limit. Until it is fixed, no
+profile-guided, function-level optimization can be aimed from a profile of this
+program.
+
+---
+
+## 5. Experiment 5 — the optimization Porte can actually ship (new)
+
+**Question.** Is there a measurable compatibility cost that Porte can remove for
+a real program, prove removed, and keep across launches — without changing the
+program and without forking FEX?
+
+**The cost.** x86 has a strong memory model; ARM64 does not. FEX emulates it in
+software with release/acquire sequences (`FEX_TSOENABLED`, plus separate switches
+for half-barriers, vector operations and `memcpy`/`memset`). A program that never
+runs two threads at the same time **cannot observe** those barriers: there is no
+second observer to see a store out of order.
+
+**The guard (measured, not assumed).** Porte runs the workload once and compares
+the guest's own CPU time with wall time:
+
+| 7-Zip 26.05, same input | CPU | wall | parallelism | decision |
+| --- | ---: | ---: | ---: | --- |
+| `-mmt=1` | 15.5 s | 17.3 s | **0.90** | candidate proposed |
+| `-mmt=4` | 13.4 s | 9.7 s | **1.39** | **refused** |
+
+(`results/arm64_specialization_guard.json`.) The same binary, the same input, two
+thread settings: the guard separates them. It also refuses a run it did not
+actually observe (`samples ≥ 10`, `wall ≥ 1 s`, `CPU ≥ 0.2 s`), because "no data"
+must never read as "one thread".
+
+**The proof.** Porte then runs the baseline and the specialization on the same
+workload, interleaved, and accepts only if the output is byte-identical, every
+run exited 0, the archive passes an integrity check, and the median wall clock
+improves by ≥ 3%:
+
+```bash
+porte runtime specialize --job fixtures/workload/7zip-lzma.json \
+  --baseline arm64-wine-fex --repeats 5 \
+  --out results/arm64_specialization.json
+```
+
+**Result** (`results/arm64_specialization_record.json`, 5 repeats):
+
+| | baseline | specialized | change |
+| --- | ---: | ---: | ---: |
+| wall clock (median) | 16,279 ms | 14,951 ms | **1.089×** |
+| wall clock (min) | 15,708 ms | 14,553 ms | 1.079× |
+| CPU | 15,960 ms | 14,650 ms | **1.089×** |
+| peak RSS | 418.3 MB | 417.8 MB | unchanged |
+| output | sha256 `e85b8f18…` | sha256 `e85b8f18…` | identical |
+
+Four evaluation runs of the same job gave 1.034×, 1.084×, 1.089× and 1.114× wall
+clock (median of the three five-repeat runs: 1.084×); the reported record is the
+5-repeat run. The CPU reduction is the more stable number (1.06–1.11×), which is
+what an emulation-cost change should look like.
+
+**What is stored.** A record keyed by the program's digest, in
+`~/Library/Caches/Porte/specializations/`, holding the observation, the guard
+result, the environment to apply, and the evidence. Only accepted records load
+back (`adaptive.load`), so a rejected specialization cannot be applied by
+accident.
+
+**What this is not.** It does not generate ARM64 code. The code is FEX's; Porte
+decides which semantics FEX must emulate and proves the choice. The claim it
+supports is precise: **Porte makes a real Windows program faster than the same
+runtime without Porte, by removing compatibility work the program does not use.**
+It is not a translation speedup and it is not near-native.
+
+---
+
+## 6. The engine's ceiling, re-measured (retained from Phase 3)
+
+For code Porte *can* own entirely, the numbers have not changed
+(`results/opaque_pe.json`): 5.11× (blob), 4.40× (lookup), 9.91× (sieve), 1.58×
+(crc) over Porte's own interpreter, 0.61× on `fault` (a regression), and still
+1.3×–19.5× slower than native ARM64. Correctness is byte-exact over a 22-case
+corpus on five stripped images.
+
+That is a research vehicle that proves guarded specialization can be *verified*,
+not one that has shown it can be *fast*.
+
+---
+
+## 7. Status against the milestone criteria
+
+Phase 4 gate (from `docs/12` §8, as revised): *a specialization that beats the
+unmodified backend on a real Windows program, with correctness.*
 
 | # | criterion | status |
 | --- | --- | --- |
-| 1 | a real third-party console program runs in the engine | **not met** — no real program's imports are served |
-| 2 | 100% of its imports stubbed, no silent fallback | **not met** — 15 stubs (`ExitProcess`, `WriteFile`, `VirtualAlloc`, …) |
-| 3 | ≥ 1.0× vs Wine on the same workload | **undefined** — cannot run the same workload yet |
-| 4 | no divergence on the boundary corpus | met for the five fixtures only |
-| 5 | bounded host-code cost | untested |
+| 1 | a real third-party program is specialized | **met** — 7-Zip 26.05 x64, official MSI, no source |
+| 2 | the win reproduces | **met** — 1.03–1.11× wall over four runs, ≥ 1.06× CPU |
+| 3 | correctness holds | **met for this workload** — byte-identical archives over 20/20 runs, integrity checks pass |
+| 4 | the guard refuses unsafe cases | **met** — 0 candidates at `-mmt=4` (parallelism 1.39) |
+| 5 | the specialization persists | **met** — record cached by program digest, reloaded by `adaptive.load` |
+| 6 | no FEX fork | **met** — stock MetalSharp Wine 4.0, environment variables only |
 
-Two of the five criteria cannot even be evaluated until the engine runs one real
-program. That is the next milestone, and it is the only one worth funding.
-
----
-
-## 6. Novelty assessment
-
-- **Novel and demonstrated here:** a guarded, profile-driven specialization of an
-  *opaque* Windows binary with a differential oracle and a versioned cache. The
-  competitive audit (`docs/11`) found no project doing this. The mechanism is
-  real; the performance is not competitive.
-- **Novel and demonstrated here:** a layer-classifying sampler for Wine guests on
-  macOS that states its own attribution limit instead of inventing per-function
-  numbers.
-- **Not novel:** runtime discovery, prefixes, installer recipes, `.app`
-  generation, Finder integration. Those exist elsewhere (§11).
-- **Not novel, and not built:** instruction-level x86-64 rewriting, JIT
-  translation, graphics translation.
+Milestone for the next phase, and it is deliberately harsher: criterion 1 must
+hold for a **second, different program**, criterion 2 on both, criterion 3 over
+≥ 20 inputs, or the result is a measurement rather than a capability
+(`docs/12` §8).
 
 ---
 
-## 7. Limitations, stated plainly
+## 8. Novelty assessment
 
-1. One third-party program was profiled (7-Zip/LZMA). It is representative of
-   CPU-bound Win32 code, not of games or I/O-bound applications.
-2. `sample` aggregates threads; 56% of samples are waiting threads. The
-   executing-only split (49/51) is derived from the same sample set, not from a
-   separate instrumented run.
-3. The engine measurements use tiny fixtures (3 KB–527 KB) with a single hot
-   loop and no OS interaction; they say nothing about real application
-   performance.
-4. No GPU measurement was taken in this phase; the frame numbers in
-   `results/frame_baseline.json` predate it and are unchanged.
-5. The arm64-in-x86-64 restriction was verified with `dlopen`; other
-   hypothetical channels (for example a native helper *process* called over
-   IPC) were not attempted, because per-instruction IPC is not a plausible
-   speedup.
+- **Novel and demonstrated:** an automatically *guarded* semantic specialization
+  of an opaque Windows binary — the guard derived from measured CPU/wall
+  parallelism, the effect proven byte-exact against the unmodified runtime, and
+  the decision persisted per program. The audit found no project shipping this;
+  MetalSharp ships a *documented global switch* (`FEX_TSOENABLED=0`, "faster for
+  programs that don't need it") that the user must judge per game by hand. Porte's
+  contribution is the decision and the proof, not the flag.
+- **Novel and demonstrated:** a workload comparison harness that measures a real
+  Windows program across two runtimes, native code and a specialization on
+  identical input, with CPU and memory taken from the kernel rather than from the
+  program's own output.
+- **Novel mechanism, incomplete result:** FEX perf-map guest attribution. The
+  instrument is Porte's; the data source is FEX's; the coverage is currently zero
+  for hot code (§4).
+- **Not novel:** FEX, Rosetta, Wine, ARM64EC, JIT translation, prefix management,
+  `.app` bundling, Finder integration, MSI handling, per-app environment tuning.
 
 ---
 
-## 8. Recommendation for the next milestone
+## 9. Limitations, stated plainly
 
-Build the narrow version of B and gate it on numbers:
+1. **One program, one workload.** 7-Zip compressing one deterministic corpus.
+   CPU-bound LZMA is not a game, a browser or an installer, and the guard's
+   verdict is a property of the workload as much as of the program.
+2. **The guard is empirical.** "No two threads ran at once, on this input" is
+   evidence, not proof. A different input can make the same program overlap two
+   threads; the recorded evidence would then be stale, which is why the record
+   stores the observation and why the runtime-side re-check matters before this is
+   wired into a launcher for arbitrary documents.
+3. **The gain is bounded.** 1.09× of a 1.57× gap. Nothing here closes the
+   translation gap, which lives in the guest's own code.
+4. **No per-function attribution.** §4 measured zero mapped hot samples in this
+   FEX build.
+5. **No ARM64EC generator.** C1 is reachable but unbuilt; the toolchain path
+   (`llvm-mingw` with ARM64EC runtimes) was identified, not attempted.
+6. **Thermal and load variance is real.** Wall-clock medians moved by up to 20%
+   between sessions, which is why repeats are interleaved and why CPU is reported
+   alongside wall clock.
+7. **The engine measurements still use toy fixtures** (3 KB–527 KB) with no OS
+   interaction.
 
-1. Pick one real Windows **console** program whose import surface is small
-   (a file/stream utility). Implement the host APIs it needs, one DLL family at
-   a time.
-2. Run it under Wine and under the engine on identical inputs; require
-   byte-identical output over the corpus.
-3. Bench both. If the engine is not at least at parity with Wine on that program
-   after it is complete, stop: Wine + Rosetta is better, and Porte should not
-   ship an execution path that is slower and less compatible.
+---
 
-Until that runs, Porte's honest position is: **a research project with one
-original mechanism and no product that beats what exists.**
+## 10. Recommendation
+
+Go, narrowly, and only on numbers:
+
+1. **Ship the specialization as it stands** — `porte runtime specialize`, with the
+   guard, the proof and the cached record. It is the first Porte feature that
+   makes a real Windows program measurably faster than the runtime it sits on.
+2. **Reproduce it on a second program** before calling it a capability. Different
+   vendor, different workload shape, ideally not a compressor.
+3. **Do not build C1 yet.** The mechanism is proven (ARM64EC modules do load into
+   an x86-64 guest) but the generator and the guest-call path are a compiler
+   project, and the profiling input it would need is currently unavailable (§4).
+4. **Do not fork FEX.** Two upstreamable contributions are already identified: a
+   complete perf map for relinked blocks, and the measured cost of each TSO
+   component. Both are worth more to Porte than a private fork.
+5. **Stop if the second program does not reproduce the win.** At that point the
+   honest outcome is to contribute the instrument and the finding and stop
+   claiming an execution platform.

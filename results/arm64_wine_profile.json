@@ -1,0 +1,23 @@
+{
+  "classes": {
+    "fex-runtime": 2254,
+    "waiting": 7761
+  },
+  "code_type": "ARM64",
+  "mapped_addresses": 0,
+  "modules": {},
+  "notes": [
+    "the perf map named 6277 guest blocks, but none of the 57 sampled top-of-stack addresses fall inside a named range in this build: the hot code is not attributable with FEX's own naming, so no per-function claim is made"
+  ],
+  "pid": 49132,
+  "program": "C:\\Program Files\\7-Zip\\7z.exe",
+  "sampled_addresses": 57,
+  "seconds": 5.71,
+  "shares": {
+    "fex-runtime": 0.2251,
+    "waiting": 0.7749
+  },
+  "top_guest_functions": [],
+  "total_samples": 10015,
+  "translated_blocks": 6277
+}

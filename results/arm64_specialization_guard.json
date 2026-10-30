@@ -1,0 +1,32 @@
+{
+  "cases": {
+    "four_threads": {
+      "candidates": [],
+      "observation": {
+        "cpu_s": 13.39,
+        "guest_processes": 1,
+        "parallelism": 1.385,
+        "program": "C:\\Program Files\\7-Zip\\7z.exe",
+        "samples": 59,
+        "single_threaded": false,
+        "wall_s": 9.67
+      }
+    },
+    "single_threaded": {
+      "candidates": [
+        "no-tso"
+      ],
+      "observation": {
+        "cpu_s": 15.5,
+        "guest_processes": 1,
+        "parallelism": 0.898,
+        "program": "C:\\Program Files\\7-Zip\\7z.exe",
+        "samples": 104,
+        "single_threaded": true,
+        "wall_s": 17.26
+      }
+    }
+  },
+  "verdict": "the guard separates 7-Zip's own single- and multi-threaded modes: the specialization is proposed only where two threads never overlap",
+  "workload": "7-Zip 26.05 LZMA2 -mx=9, same 30 MiB input, two thread settings"
+}

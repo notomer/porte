@@ -1,0 +1,49 @@
+{
+  "accepted": true,
+  "candidate": {
+    "env": {
+      "FEX_HALFBARRIERTSOENABLED": "0",
+      "FEX_MEMCPYSETTSOENABLED": "0",
+      "FEX_TSOENABLED": "0",
+      "FEX_VECTORTSOENABLED": "0"
+    },
+    "name": "no-tso",
+    "reason": "the guest used 16.4 s of CPU over 18.0 s of wall time (parallelism 0.91), so at most one thread was executing and x86 memory ordering between threads was not observable"
+  },
+  "evidence": {
+    "baseline": "arm64-wine-fex",
+    "cpu_ms": {
+      "baseline": 15960.0,
+      "specialized": 14650.0
+    },
+    "cpu_speedup": 1.0894,
+    "identical_output": true,
+    "output_sha256": [
+      "e85b8f1819f182781d9f170c35644fc16c097ce8d2fe13eba97dd87fb74c03ca"
+    ],
+    "repeats": 5,
+    "rss_mb": {
+      "baseline": 418.3,
+      "specialized": 417.8
+    },
+    "specialized": "arm64-wine-fex+no-tso",
+    "speedup": 1.0888,
+    "wall_ms": {
+      "baseline": 16278.98,
+      "specialized": 14951.4
+    }
+  },
+  "key": "c:\\program files\\7-zip\\7z.exe-7cb092178a5c353e584c5075b3aa8299",
+  "measured_at": "2026-10-30T01:20:23Z",
+  "observation": {
+    "cpu_s": 17.01,
+    "guest_processes": 1,
+    "parallelism": 0.927,
+    "program": "C:\\Program Files\\7-Zip\\7z.exe",
+    "samples": 107,
+    "single_threaded": true,
+    "wall_s": 18.35
+  },
+  "program": "C:\\Program Files\\7-Zip\\7z.exe",
+  "reason": "accepted: 1.089x wall clock and 1.089x CPU with byte-identical output"
+}

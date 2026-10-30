@@ -1,0 +1,448 @@
+{
+  "correctness": {
+    "all_checks_passed": true,
+    "all_exited_zero": true,
+    "identical": false,
+    "per_backend": {
+      "arm64-wine-fex": [
+        "be6e59c1670dea5fee2ceabcc906d2a0d47a57a690792da8f127c1ce4ee53f82"
+      ],
+      "arm64-wine-fex-no-tso": [
+        "be6e59c1670dea5fee2ceabcc906d2a0d47a57a690792da8f127c1ce4ee53f82"
+      ],
+      "native-arm64": [
+        "c930fdc61dd71c89240f5f34e35376f8d7e84fa36986f7945f68d32c00b83864"
+      ],
+      "wine-rosetta": [
+        "be6e59c1670dea5fee2ceabcc906d2a0d47a57a690792da8f127c1ce4ee53f82"
+      ]
+    },
+    "reference": "wine-rosetta"
+  },
+  "input": "/tmp/porte-workload.bin",
+  "input_bytes": 31457280,
+  "input_sha256": "3b9fb80531626dbf894d45cff97e8472edae5e92e346e1d0f55c0a136f453deb",
+  "job": "7zip-lzma-30mb",
+  "measured_at": "2026-10-30T01:17:00Z",
+  "repeats": 5,
+  "runs": [
+    {
+      "check_exit": 0,
+      "cpu_ms": 15820.0,
+      "exit_code": 0,
+      "extra": {
+        "cpu_source": "descendant rusage via ps, 100 ms samples",
+        "rss_source": "sum of descendant peaks",
+        "samples": 109
+      },
+      "label": "wine-rosetta",
+      "output_bytes": 12991658,
+      "output_sha256": "be6e59c1670dea5fee2ceabcc906d2a0d47a57a690792da8f127c1ce4ee53f82",
+      "repeat": 0,
+      "rss_mb": 350.6,
+      "threads_peak": 5,
+      "wall_ms": 21138.94
+    },
+    {
+      "check_exit": 0,
+      "cpu_ms": 15170.0,
+      "exit_code": 0,
+      "extra": {
+        "cpu_source": "descendant rusage via ps, 100 ms samples",
+        "rss_source": "sum of descendant peaks",
+        "samples": 104
+      },
+      "label": "wine-rosetta",
+      "output_bytes": 12991658,
+      "output_sha256": "be6e59c1670dea5fee2ceabcc906d2a0d47a57a690792da8f127c1ce4ee53f82",
+      "repeat": 1,
+      "rss_mb": 353.7,
+      "threads_peak": 5,
+      "wall_ms": 19982.84
+    },
+    {
+      "check_exit": 0,
+      "cpu_ms": 14790.0,
+      "exit_code": 0,
+      "extra": {
+        "cpu_source": "descendant rusage via ps, 100 ms samples",
+        "rss_source": "sum of descendant peaks",
+        "samples": 101
+      },
+      "label": "wine-rosetta",
+      "output_bytes": 12991658,
+      "output_sha256": "be6e59c1670dea5fee2ceabcc906d2a0d47a57a690792da8f127c1ce4ee53f82",
+      "repeat": 2,
+      "rss_mb": 350.7,
+      "threads_peak": 5,
+      "wall_ms": 19464.86
+    },
+    {
+      "check_exit": 0,
+      "cpu_ms": 15640.0,
+      "exit_code": 0,
+      "extra": {
+        "cpu_source": "descendant rusage via ps, 100 ms samples",
+        "rss_source": "sum of descendant peaks",
+        "samples": 106
+      },
+      "label": "wine-rosetta",
+      "output_bytes": 12991658,
+      "output_sha256": "be6e59c1670dea5fee2ceabcc906d2a0d47a57a690792da8f127c1ce4ee53f82",
+      "repeat": 3,
+      "rss_mb": 349.9,
+      "threads_peak": 5,
+      "wall_ms": 20884.05
+    },
+    {
+      "check_exit": 0,
+      "cpu_ms": 15450.0,
+      "exit_code": 0,
+      "extra": {
+        "cpu_source": "descendant rusage via ps, 100 ms samples",
+        "rss_source": "sum of descendant peaks",
+        "samples": 105
+      },
+      "label": "wine-rosetta",
+      "output_bytes": 12991658,
+      "output_sha256": "be6e59c1670dea5fee2ceabcc906d2a0d47a57a690792da8f127c1ce4ee53f82",
+      "repeat": 4,
+      "rss_mb": 354.7,
+      "threads_peak": 5,
+      "wall_ms": 20483.73
+    },
+    {
+      "check_exit": 0,
+      "cpu_ms": 16150.0,
+      "exit_code": 0,
+      "extra": {
+        "cpu_source": "descendant rusage via ps, 100 ms samples",
+        "rss_source": "sum of descendant peaks",
+        "samples": 106
+      },
+      "label": "arm64-wine-fex",
+      "output_bytes": 12991658,
+      "output_sha256": "be6e59c1670dea5fee2ceabcc906d2a0d47a57a690792da8f127c1ce4ee53f82",
+      "repeat": 0,
+      "rss_mb": 419.7,
+      "threads_peak": 4,
+      "wall_ms": 20578.29
+    },
+    {
+      "check_exit": 0,
+      "cpu_ms": 16840.0,
+      "exit_code": 0,
+      "extra": {
+        "cpu_source": "descendant rusage via ps, 100 ms samples",
+        "rss_source": "sum of descendant peaks",
+        "samples": 114
+      },
+      "label": "arm64-wine-fex",
+      "output_bytes": 12991658,
+      "output_sha256": "be6e59c1670dea5fee2ceabcc906d2a0d47a57a690792da8f127c1ce4ee53f82",
+      "repeat": 1,
+      "rss_mb": 417.0,
+      "threads_peak": 4,
+      "wall_ms": 22331.06
+    },
+    {
+      "check_exit": 0,
+      "cpu_ms": 16070.0,
+      "exit_code": 0,
+      "extra": {
+        "cpu_source": "descendant rusage via ps, 100 ms samples",
+        "rss_source": "sum of descendant peaks",
+        "samples": 105
+      },
+      "label": "arm64-wine-fex",
+      "output_bytes": 12991658,
+      "output_sha256": "be6e59c1670dea5fee2ceabcc906d2a0d47a57a690792da8f127c1ce4ee53f82",
+      "repeat": 2,
+      "rss_mb": 421.7,
+      "threads_peak": 4,
+      "wall_ms": 20369.72
+    },
+    {
+      "check_exit": 0,
+      "cpu_ms": 17380.0,
+      "exit_code": 0,
+      "extra": {
+        "cpu_source": "descendant rusage via ps, 100 ms samples",
+        "rss_source": "sum of descendant peaks",
+        "samples": 115
+      },
+      "label": "arm64-wine-fex",
+      "output_bytes": 12991658,
+      "output_sha256": "be6e59c1670dea5fee2ceabcc906d2a0d47a57a690792da8f127c1ce4ee53f82",
+      "repeat": 3,
+      "rss_mb": 419.6,
+      "threads_peak": 4,
+      "wall_ms": 23070.55
+    },
+    {
+      "check_exit": 0,
+      "cpu_ms": 16670.0,
+      "exit_code": 0,
+      "extra": {
+        "cpu_source": "descendant rusage via ps, 100 ms samples",
+        "rss_source": "sum of descendant peaks",
+        "samples": 109
+      },
+      "label": "arm64-wine-fex",
+      "output_bytes": 12991658,
+      "output_sha256": "be6e59c1670dea5fee2ceabcc906d2a0d47a57a690792da8f127c1ce4ee53f82",
+      "repeat": 4,
+      "rss_mb": 421.5,
+      "threads_peak": 4,
+      "wall_ms": 21189.62
+    },
+    {
+      "check_exit": 0,
+      "cpu_ms": 14600.0,
+      "exit_code": 0,
+      "extra": {
+        "cpu_source": "descendant rusage via ps, 100 ms samples",
+        "rss_source": "sum of descendant peaks",
+        "samples": 96
+      },
+      "label": "arm64-wine-fex-no-tso",
+      "output_bytes": 12991658,
+      "output_sha256": "be6e59c1670dea5fee2ceabcc906d2a0d47a57a690792da8f127c1ce4ee53f82",
+      "repeat": 0,
+      "rss_mb": 415.2,
+      "threads_peak": 4,
+      "wall_ms": 19124.43
+    },
+    {
+      "check_exit": 0,
+      "cpu_ms": 14900.0,
+      "exit_code": 0,
+      "extra": {
+        "cpu_source": "descendant rusage via ps, 100 ms samples",
+        "rss_source": "sum of descendant peaks",
+        "samples": 98
+      },
+      "label": "arm64-wine-fex-no-tso",
+      "output_bytes": 12991658,
+      "output_sha256": "be6e59c1670dea5fee2ceabcc906d2a0d47a57a690792da8f127c1ce4ee53f82",
+      "repeat": 1,
+      "rss_mb": 419.0,
+      "threads_peak": 4,
+      "wall_ms": 19429.96
+    },
+    {
+      "check_exit": 0,
+      "cpu_ms": 13860.0,
+      "exit_code": 0,
+      "extra": {
+        "cpu_source": "descendant rusage via ps, 100 ms samples",
+        "rss_source": "sum of descendant peaks",
+        "samples": 92
+      },
+      "label": "arm64-wine-fex-no-tso",
+      "output_bytes": 12991658,
+      "output_sha256": "be6e59c1670dea5fee2ceabcc906d2a0d47a57a690792da8f127c1ce4ee53f82",
+      "repeat": 2,
+      "rss_mb": 415.5,
+      "threads_peak": 4,
+      "wall_ms": 18286.83
+    },
+    {
+      "check_exit": 0,
+      "cpu_ms": 15050.0,
+      "exit_code": 0,
+      "extra": {
+        "cpu_source": "descendant rusage via ps, 100 ms samples",
+        "rss_source": "sum of descendant peaks",
+        "samples": 99
+      },
+      "label": "arm64-wine-fex-no-tso",
+      "output_bytes": 12991658,
+      "output_sha256": "be6e59c1670dea5fee2ceabcc906d2a0d47a57a690792da8f127c1ce4ee53f82",
+      "repeat": 3,
+      "rss_mb": 418.2,
+      "threads_peak": 5,
+      "wall_ms": 19728.08
+    },
+    {
+      "check_exit": 0,
+      "cpu_ms": 15120.0,
+      "exit_code": 0,
+      "extra": {
+        "cpu_source": "descendant rusage via ps, 100 ms samples",
+        "rss_source": "sum of descendant peaks",
+        "samples": 99
+      },
+      "label": "arm64-wine-fex-no-tso",
+      "output_bytes": 12991658,
+      "output_sha256": "be6e59c1670dea5fee2ceabcc906d2a0d47a57a690792da8f127c1ce4ee53f82",
+      "repeat": 4,
+      "rss_mb": 416.6,
+      "threads_peak": 4,
+      "wall_ms": 19961.62
+    },
+    {
+      "check_exit": 0,
+      "cpu_ms": 13120.0,
+      "exit_code": 0,
+      "extra": {
+        "cpu_source": "descendant rusage via ps, 100 ms samples",
+        "rss_source": "sum of descendant peaks",
+        "samples": 82
+      },
+      "label": "native-arm64",
+      "output_bytes": 12991658,
+      "output_sha256": "c930fdc61dd71c89240f5f34e35376f8d7e84fa36986f7945f68d32c00b83864",
+      "repeat": 0,
+      "rss_mb": 335.8,
+      "threads_peak": 1,
+      "wall_ms": 13750.95
+    },
+    {
+      "check_exit": 0,
+      "cpu_ms": 12560.0,
+      "exit_code": 0,
+      "extra": {
+        "cpu_source": "descendant rusage via ps, 100 ms samples",
+        "rss_source": "sum of descendant peaks",
+        "samples": 79
+      },
+      "label": "native-arm64",
+      "output_bytes": 12991658,
+      "output_sha256": "c930fdc61dd71c89240f5f34e35376f8d7e84fa36986f7945f68d32c00b83864",
+      "repeat": 1,
+      "rss_mb": 334.7,
+      "threads_peak": 1,
+      "wall_ms": 12757.0
+    },
+    {
+      "check_exit": 0,
+      "cpu_ms": 13030.0,
+      "exit_code": 0,
+      "extra": {
+        "cpu_source": "descendant rusage via ps, 100 ms samples",
+        "rss_source": "sum of descendant peaks",
+        "samples": 82
+      },
+      "label": "native-arm64",
+      "output_bytes": 12991658,
+      "output_sha256": "c930fdc61dd71c89240f5f34e35376f8d7e84fa36986f7945f68d32c00b83864",
+      "repeat": 2,
+      "rss_mb": 336.0,
+      "threads_peak": 1,
+      "wall_ms": 13504.63
+    },
+    {
+      "check_exit": 0,
+      "cpu_ms": 13010.0,
+      "exit_code": 0,
+      "extra": {
+        "cpu_source": "descendant rusage via ps, 100 ms samples",
+        "rss_source": "sum of descendant peaks",
+        "samples": 82
+      },
+      "label": "native-arm64",
+      "output_bytes": 12991658,
+      "output_sha256": "c930fdc61dd71c89240f5f34e35376f8d7e84fa36986f7945f68d32c00b83864",
+      "repeat": 3,
+      "rss_mb": 335.4,
+      "threads_peak": 1,
+      "wall_ms": 13372.32
+    },
+    {
+      "check_exit": 0,
+      "cpu_ms": 13320.0,
+      "exit_code": 0,
+      "extra": {
+        "cpu_source": "descendant rusage via ps, 100 ms samples",
+        "rss_source": "sum of descendant peaks",
+        "samples": 84
+      },
+      "label": "native-arm64",
+      "output_bytes": 12991658,
+      "output_sha256": "c930fdc61dd71c89240f5f34e35376f8d7e84fa36986f7945f68d32c00b83864",
+      "repeat": 4,
+      "rss_mb": 336.7,
+      "threads_peak": 1,
+      "wall_ms": 13851.16
+    }
+  ],
+  "summary": {
+    "arm64-wine-fex": {
+      "check_exits": [
+        0
+      ],
+      "cpu_ms_median": 16670.0,
+      "exit_codes": [
+        0
+      ],
+      "output_sha256": [
+        "be6e59c1670dea5fee2ceabcc906d2a0d47a57a690792da8f127c1ce4ee53f82"
+      ],
+      "rss_mb_median": 419.7,
+      "runs": 5,
+      "threads_peak": 4,
+      "wall_ms_max": 23070.55,
+      "wall_ms_median": 21189.62,
+      "wall_ms_min": 20369.72,
+      "wall_ms_stdev": 1159.78
+    },
+    "arm64-wine-fex-no-tso": {
+      "check_exits": [
+        0
+      ],
+      "cpu_ms_median": 14900.0,
+      "exit_codes": [
+        0
+      ],
+      "output_sha256": [
+        "be6e59c1670dea5fee2ceabcc906d2a0d47a57a690792da8f127c1ce4ee53f82"
+      ],
+      "rss_mb_median": 416.6,
+      "runs": 5,
+      "threads_peak": 5,
+      "wall_ms_max": 19961.62,
+      "wall_ms_median": 19429.96,
+      "wall_ms_min": 18286.83,
+      "wall_ms_stdev": 650.97
+    },
+    "native-arm64": {
+      "check_exits": [
+        0
+      ],
+      "cpu_ms_median": 13030.0,
+      "exit_codes": [
+        0
+      ],
+      "output_sha256": [
+        "c930fdc61dd71c89240f5f34e35376f8d7e84fa36986f7945f68d32c00b83864"
+      ],
+      "rss_mb_median": 335.8,
+      "runs": 5,
+      "threads_peak": 1,
+      "wall_ms_max": 13851.16,
+      "wall_ms_median": 13504.63,
+      "wall_ms_min": 12757.0,
+      "wall_ms_stdev": 430.33
+    },
+    "wine-rosetta": {
+      "check_exits": [
+        0
+      ],
+      "cpu_ms_median": 15450.0,
+      "exit_codes": [
+        0
+      ],
+      "output_sha256": [
+        "be6e59c1670dea5fee2ceabcc906d2a0d47a57a690792da8f127c1ce4ee53f82"
+      ],
+      "rss_mb_median": 350.7,
+      "runs": 5,
+      "threads_peak": 5,
+      "wall_ms_max": 21138.94,
+      "wall_ms_median": 20483.73,
+      "wall_ms_min": 19464.86,
+      "wall_ms_stdev": 677.39
+    }
+  }
+}

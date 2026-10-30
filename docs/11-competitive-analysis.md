@@ -1,10 +1,19 @@
 # 11 — Competitive analysis: what already exists, and what Porte actually adds
 
 Written 2026-10-29 on the machine the rest of this repository was measured on
-(Apple M2 Max, macOS 27.2, Wine Staging 11.20, Rosetta 2 present). Every claim
+(Apple M2 Max, macOS 27.2, Wine Staging 11.20 under Rosetta 2, and MetalSharp
+Wine 4.0 — Wine 11.20 built natively for arm64 with a FEX fork). Every claim
 below is either linked to a public source that was read during this audit, or
 marked as measured on this host with the command that produced it. Claims that
 could not be checked are labelled as such rather than repeated.
+
+**Revision note (Phase 4).** The first edition of this document concluded that
+x86-64 to ARM64 translation did not exist for Wine on macOS. That was wrong, and
+the error mattered: it removed the only architecture in which a native
+optimization layer could exist. §2 and §3 are rewritten from the projects'
+sources and from a runtime installed and measured here; §10 is rewritten to
+follow the new evidence. The parts that were right — Highball duplicates the
+frontend, nobody does per-application native code generation — are unchanged.
 
 The question this document answers is not "is Porte good?" but "is any part of
 Porte's plan already solved by something that exists, and if so, which part?".
@@ -76,15 +85,20 @@ work with a smaller database behind it.
 
 ## 2. Wine and CrossOver
 
-- **Wine** implements the Windows API (PE modules) over POSIX. On macOS the
-  published builds (Gcenx, WineHQ packages) are x86-64 Mach-O processes that
-  macOS runs under Rosetta. Wine 11.20 was measured here; `msiexec`, `user32`,
-  `gdi32`, WoW64 and the Mac driver are all present.
+- **Wine** implements the Windows API (PE modules) over POSIX. The widely used
+  macOS builds (Gcenx, WineHQ packages) are x86-64 Mach-O processes that macOS
+  runs under Rosetta. Wine 11.20 in that configuration was measured here;
+  `msiexec`, `user32`, `gdi32`, WoW64 and the Mac driver are all present.
 - **CrossOver** is CodeWeavers' commercial Wine with support, a patched tree and
   D3DMetal integration. Its licence does not permit redistribution of the
-  proprietary parts; the Wine tree it derives from is LGPL.
-- Neither implements x86-64 → ARM64 translation. Both rely on Rosetta on Apple
-  silicon.
+  proprietary parts; the Wine tree it derives from is LGPL. CodeWeavers shipped
+  a **native ARM64 preview build in July 2026** (announced as "the right to bear
+  ARM64 on Mac"): Wine itself compiled for aarch64, with x86-64 Windows programs
+  run by a macOS-compatible build of FEX. That is the commercial proof that the
+  native-ARM64 architecture is not hypothetical.
+- So the split that matters is not "Wine or no Wine", it is **which process
+  architecture Wine runs in**: x86-64 under Rosetta (no native code may join it)
+  or native arm64 with FEX (native code may join it, §3.2).
 
 Porte's Wine backend is a thin, honest client of that runtime: discovery,
 prefix creation, `msiexec`, and launch. It adds no execution capability that
@@ -92,20 +106,78 @@ Wine does not have.
 
 ---
 
-## 3. FEX-Emu
+## 3. Native ARM64 Wine with FEX on macOS
 
-Source read: `github.com/FEX-Emu/FEX` and `fex-emu.com`.
+Source read: `github.com/metalsharp/MetalSharp-Wine` (README, `docs/STATUS.md`,
+`docs/PERFORMANCE.md`, `patches/`), the CodeWeavers ARM64 preview announcement,
+and the installed runtime itself. Everything in §3.2 and §3.3 was measured on
+this host with MetalSharp Wine 4.0, not quoted.
 
-FEX is a **userspace x86 and x86-64 emulator for AArch64 Linux**. It JITs guest
-code through an IR, and its system-call translation layer targets the Linux
-kernel ABI. It is not a macOS product: the Linux syscall layer, the host
-libraries it expects, and its process model do not exist on macOS. Portability
-to Darwin would be a port of the syscall/host layer, not a configuration change,
-and Apple's Rosetta already occupies that role for whole processes.
+### 3.1 What FEX is, and what it needed to become
 
-Consequence for Porte: FEX cannot be dropped into a macOS build to obtain
-translation, and its techniques (IR + JIT) are the same family as Porte's
-prototype engine, not a shortcut past it.
+FEX-Emu is a userspace x86 and x86-64 **JIT translator** for AArch64: it decodes
+guest x86 into an IR, optimises it, and emits ARM64. Its upstream target is
+AArch64 **Linux**, including the syscall layer — which is why "FEX on macOS" was
+correctly dismissed for years as a port of the host layer rather than a
+configuration change.
+
+That port now exists. MetalSharp's FEX fork (FEX-2610 + 22 commits, not
+upstreamed) is built for macOS and linked into Wine's ARM64EC provider
+(`libarm64ecfex.dll`); i386 uses `libwow64fex.dll` instead. The Mac-specific
+work is in `docs/STATUS.md` and is architectural, not cosmetic: x18/TEB
+preservation across syscalls, a 4 GB `PAGEZERO` and the cross-architecture
+entitlement, 16K-page W^X handling, emulated stores into W+X pages, and
+`KUSER_SHARED_DATA` relocation with the load rebased at JIT time.
+
+### 3.2 How ARM64 code gets into a translated process
+
+On Windows ARM64 a 64-bit x86 process does not exist as such: the loader starts
+an ARM64 process and **ARM64EC** is how x86-64 code is called inside it. Wine
+implements that shape: its own PE modules are built as ARM64X (one image with
+arm64ec and aarch64 entry points), x86-64 guests run through FEX, and an
+x86-64 Windows program is an ARM64 process whose guest code is JIT output.
+
+Consequence, and this is the whole architectural finding of this phase: in a
+**native arm64** Wine process, native arm64 code and the translated guest share
+one address space, and the loader will load ARM64EC/ARM64X modules into it.
+MetalSharp already does exactly that for its own DLLs, and ships a third-party
+ARM64EC DLL (`lib/wfdxcompat/.../wfdx-launchers-v1.dll`) that ntdll loads into
+the x86-64 Rockstar launcher — proof that the mechanism accepts code that is not
+part of Wine.
+
+### 3.3 What the translator itself gives a profiler
+
+Measured here with `FEX_LIBRARYJITNAMING=1 FEX_BLOCKJITNAMING=1`: FEX writes a
+perf map, `/tmp/perf-<pid>.map`,
+
+```
+0x7ff4ade70004 690 \??\c:\program files\7-zip\7z.exe+0x61380 (0x7ff4ade70004)
+```
+
+— the host address and size of every translated block and the guest module + RVA
+it came from (6,277 such entries for one 7-Zip run). That is precisely the
+mapping Phase 3 recorded as unavailable under Rosetta. Its coverage is
+incomplete in this build: the sampled hot loop's addresses fall outside every
+named range (§`docs/13`, Experiment 5), so attribution works in principle and
+not yet in practice.
+
+### 3.4 Memory model
+
+FEX emulates x86 TSO in software (`LRCPC`/`LSE` sequences), with separate
+switches for the model as a whole and for the pieces that dominate real programs:
+`FEX_TSOENABLED`, `FEX_HALFBARRIERTSOENABLED`, `FEX_VECTORTSOENABLED`,
+`FEX_MEMCPYSETTSOENABLED`. A program that never runs two threads at once cannot
+observe those barriers, which makes them removable for that program — the one
+optimization this phase could implement and verify (`docs/13`, Experiment 6).
+
+### 3.5 Performance, as published and as measured
+
+The project's `docs/PERFORMANCE.md` (Apple M4, 2026-10-22) reports x86-64
+through FEX at 0.94–1.01× native ARM64 on C workloads except JIT-cold paths, and
+CPython at 1.67× native overall. Measured here on LZMA (`docs/14`): FEX is
+**0.97×** Rosetta Wine, i.e. the native-ARM64 architecture is not by itself a
+speedup, and native arm64 7-Zip is **1.57×** faster than the same program under
+FEX. Whatever Porte contributes has to be measured against those two numbers.
 
 ---
 
@@ -117,11 +189,13 @@ prototype engine, not a shortcut past it.
 - **Hangover** applies that idea to Wine *on Windows on ARM*, so 32-bit and
   64-bit Windows programs run in an ARM64 Wine.
 
-Neither is available on macOS. Apple silicon macOS has no ARM64EC loader, no
-`xtajit`, and no mixed-architecture process: the Rosetta probe in
-`docs/13-nativeization-experiment.md` shows an x86-64 process cannot even
-`dlopen` an arm64 dylib. Any plan that assumes "ARM64EC-style thunking inside a
-Rosetta Wine process" is therefore wrong on this platform, not merely hard.
+Neither exists as a Windows feature on macOS, and there is no mixed-architecture
+process under Rosetta: the probe in `docs/13` shows an x86-64 process cannot even
+`dlopen` an arm64 dylib. But **Wine implements the ARM64EC shape itself** when it
+is built for arm64 (§3.2): the host process is arm64, so "ARM64EC thunking inside
+a translated process" is no longer a contradiction — it is how MetalSharp runs
+Wine's own DLLs, D3D and a third-party launcher shim. The Rosetta-specific
+impossibility stands; the general one does not.
 
 ---
 
@@ -212,6 +286,8 @@ replace or even address-map.
 | Highball app/CLI/Kit | GPL-3.0 | read for ideas only; no code reuse without a deliberate GPL-3 relicense of Porte |
 | highball-db recipes/database | CC0-1.0 | reusable as data, with attribution practice |
 | Wine | LGPL-2.1+ | Porte links nothing into it; launches it |
+| FEX-Emu | MIT | a fork may be modified and shipped with attribution; upstream is not macOS-ready |
+| MetalSharp-Wine (Wine + FEX + patches) | LGPL-2.1+ Wine, MIT FEX, per-payload licences | usable as an installed runtime; redistribution means shipping sources/offers for the LGPL parts, and the fork is not upstream, so it is not a stable platform to build on |
 | DXMT | MIT / LGPL | usable if Porte ever selects renderers |
 | D3DMetal (GPTK) | Apple licence | never redistribute |
 
@@ -226,14 +302,19 @@ should be made deliberately, not by copying a file.
 1. Highball has already built the launcher, engine management and data layer
    that Porte spent its last two phases adjacent to. Porte's frontend duplicates
    it with less data and fewer renderers.
-2. No audited project does per-application native code generation for Windows
-   binaries on macOS. Porte's only unclaimed territory is its engine and its
-   oracle.
-3. That territory is boxed in by the platform: x86-64 Windows code on macOS is
-   Rosetta-translated, and translated processes cannot host arm64 code
-   (measured, §13). A "native acceleration layer next to Wine" cannot exist in
-   the form usually imagined.
-4. The honest choice is therefore between (a) building an engine complete enough
-   to replace Wine for some class of programs, (b) contributing to the layer that
-   actually runs the code, or (c) stopping. `docs/12-technical-direction.md`
-   makes that call with numbers.
+2. Native ARM64 Wine with FEX is real on macOS (MetalSharp Wine 4.0, CodeWeavers'
+   ARM64 preview), and it removes the platform barrier that Phase 3 mistook for
+   a permanent one: an arm64 Wine process can host native arm64/ARM64EC modules.
+3. It does not hand anyone a speedup. Measured on the same workload, FEX is 0.97×
+   Rosetta, native arm64 is 1.57× faster than either, and the memory-model
+   specialization in `docs/13` recovers 1.09× of the gap for a program that does
+   not need x86 ordering.
+4. No audited project does per-application native code generation for Windows
+   binaries on macOS, and none ships a measured, verified semantic specialization
+   per application. That territory is now reachable rather than blocked — and it
+   is reachable **through** FEX, whose licence permits it, rather than around it.
+5. The honest choice is between (a) building the specialization layer against a
+   native ARM64 Wine runtime and measuring it app by app, (b) contributing the
+   measurement machinery and patches upstream to FEX/Wine, or (c) stopping if the
+   next milestone cannot beat 1.09×. `docs/12-technical-direction.md` makes that
+   call with numbers, and `docs/14` holds the benchmark that decides it.

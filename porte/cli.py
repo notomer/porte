@@ -369,6 +369,71 @@ def _cmd_runtime(args) -> int:
         print(f"\nwrote {path}")
         return 0
 
+    if args.action == "workload":
+        from .backends import workload as workload_mod
+
+        job = workload_mod.load_job(Path(args.job))
+        if args.input:
+            job["input"] = str(Path(args.input).expanduser())
+        if not Path(job["input"]).exists():
+            print(f"no such input: {job['input']}\n"
+                  "Build it with fixtures/workload/make_input.py",
+                  file=sys.stderr)
+            return 2
+        report = workload_mod.run(
+            job, repeats=args.repeats, keep=args.keep,
+            out=Path(args.out) if args.out else None)
+        print(workload_mod.summarise(report))
+        if args.out:
+            print(f"\nwrote {args.out}")
+        return 0
+
+    if args.action == "specialize":
+        from .backends import adaptive as adaptive_mod
+        from .backends import workload as workload_mod
+
+        job = workload_mod.load_job(Path(args.job))
+        if args.input:
+            job["input"] = str(Path(args.input).expanduser())
+        baseline = next((b for b in job["backends"]
+                         if b["label"] == args.baseline), None)
+        if baseline is None:
+            print(f"no backend labelled {args.baseline!r}; the job has "
+                  + ", ".join(b["label"] for b in job["backends"]),
+                  file=sys.stderr)
+            return 2
+        observation = adaptive_mod.observe(baseline, job)
+        proposed = adaptive_mod.candidates(observation)
+        if not proposed:
+            print(adaptive_mod.summarise(adaptive_mod.Record(
+                program=str(baseline["program"]),
+                key=adaptive_mod.program_key(baseline), accepted=False,
+                reason="no specialization is safe for this program",
+                observation=observation.to_dict())))
+            return 0
+        record = adaptive_mod.evaluate(job, args.baseline, proposed[0],
+                                       repeats=args.repeats,
+                                       out=Path(args.out) if args.out else None)
+        print(adaptive_mod.summarise(record))
+        saved = adaptive_mod.save(record)
+        print(f"\nrecord: {saved}")
+        return 0 if record.accepted else 1
+
+    if args.action == "fex-profile":
+        from .backends import fex_profile as fex_mod
+
+        if not args.wine or not args.prefix:
+            print("--wine and --prefix are required: this profiles a specific "
+                  "ARM64 Wine runtime, not the discovered one", file=sys.stderr)
+            return 2
+        report = fex_mod.profile(args.program, Path(args.wine).expanduser(),
+                                 Path(args.prefix).expanduser(), args.arg,
+                                 seconds=args.seconds)
+        print(fex_mod.summarise(report))
+        out = Path(args.out) if args.out else None
+        print(f"\nwrote {fex_mod.write(report, out)}")
+        return 0
+
     if args.action == "profile":
         from .backends import profile as profile_mod
         from .backends import wine as wine_backend
@@ -765,6 +830,45 @@ def main(argv=None) -> int:
     r.add_argument("--repeats", type=int, default=5)
     r.add_argument("--iterations", type=int, default=20000000)
     r.add_argument("--no-gui", action="store_true")
+    r.set_defaults(fn=_cmd_runtime)
+    r = rsub.add_parser(
+        "workload",
+        help="run one real Windows program under several runtimes and "
+             "compare wall clock, CPU time, memory and output")
+    r.add_argument("--job", required=True,
+                   help="a job file (see fixtures/workload/7zip-lzma.json)")
+    r.add_argument("--input", help="override the job's input file")
+    r.add_argument("--repeats", type=int,
+                   help="override the job's repeat count")
+    r.add_argument("--keep", action="store_true",
+                   help="keep the working directory (outputs included)")
+    r.add_argument("--out", help="write the JSON report here")
+    r.set_defaults(fn=_cmd_runtime)
+    r = rsub.add_parser(
+        "specialize",
+        help="measure whether a semantics specialization is safe, prove it on "
+             "a workload, and record it")
+    r.add_argument("--job", required=True,
+                   help="a workload job (see fixtures/workload/7zip-lzma.json)")
+    r.add_argument("--baseline", default="arm64-wine-fex",
+                   help="which backend in the job is the unmodified baseline")
+    r.add_argument("--input", help="override the job's input file")
+    r.add_argument("--repeats", type=int, default=3)
+    r.add_argument("--out", help="write the workload comparison here")
+    r.set_defaults(fn=_cmd_runtime)
+    r = rsub.add_parser(
+        "fex-profile",
+        help="attribute a Windows program's time to its own functions under "
+             "an ARM64 Wine/FEX runtime")
+    r.add_argument("--program", required=True,
+                   help="the Windows program to launch")
+    r.add_argument("--wine", required=True, help="the ARM64 Wine binary")
+    r.add_argument("--prefix", required=True, help="its prefix")
+    r.add_argument("--arg", action="append", default=[],
+                   help="an argument for the program (repeatable)")
+    r.add_argument("--seconds", type=int, default=3,
+                   help="how long to sample once the guest is running")
+    r.add_argument("--out", help="write the JSON report here")
     r.set_defaults(fn=_cmd_runtime)
     r = rsub.add_parser(
         "profile",

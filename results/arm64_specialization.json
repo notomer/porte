@@ -1,0 +1,234 @@
+{
+  "correctness": {
+    "all_checks_passed": true,
+    "all_exited_zero": true,
+    "identical": true,
+    "per_backend": {
+      "arm64-wine-fex": [
+        "e85b8f1819f182781d9f170c35644fc16c097ce8d2fe13eba97dd87fb74c03ca"
+      ],
+      "arm64-wine-fex+no-tso": [
+        "e85b8f1819f182781d9f170c35644fc16c097ce8d2fe13eba97dd87fb74c03ca"
+      ]
+    },
+    "reference": "arm64-wine-fex"
+  },
+  "input": "/tmp/porte-workload.bin",
+  "input_bytes": 31457280,
+  "input_sha256": "3b9fb80531626dbf894d45cff97e8472edae5e92e346e1d0f55c0a136f453deb",
+  "job": "7zip-lzma-30mb",
+  "measured_at": "2026-10-30T01:20:23Z",
+  "repeats": 5,
+  "runs": [
+    {
+      "check_exit": 0,
+      "cpu_ms": 17290.0,
+      "exit_code": 0,
+      "extra": {
+        "cpu_source": "descendant rusage via ps, 100 ms samples",
+        "rss_source": "sum of descendant peaks",
+        "samples": 106
+      },
+      "label": "arm64-wine-fex",
+      "output_bytes": 12991658,
+      "output_sha256": "e85b8f1819f182781d9f170c35644fc16c097ce8d2fe13eba97dd87fb74c03ca",
+      "repeat": 0,
+      "rss_mb": 420.2,
+      "threads_peak": 4,
+      "wall_ms": 17709.02
+    },
+    {
+      "check_exit": 0,
+      "cpu_ms": 17000.0,
+      "exit_code": 0,
+      "extra": {
+        "cpu_source": "descendant rusage via ps, 100 ms samples",
+        "rss_source": "sum of descendant peaks",
+        "samples": 105
+      },
+      "label": "arm64-wine-fex",
+      "output_bytes": 12991658,
+      "output_sha256": "e85b8f1819f182781d9f170c35644fc16c097ce8d2fe13eba97dd87fb74c03ca",
+      "repeat": 1,
+      "rss_mb": 420.4,
+      "threads_peak": 4,
+      "wall_ms": 17347.14
+    },
+    {
+      "check_exit": 0,
+      "cpu_ms": 15960.0,
+      "exit_code": 0,
+      "extra": {
+        "cpu_source": "descendant rusage via ps, 100 ms samples",
+        "rss_source": "sum of descendant peaks",
+        "samples": 99
+      },
+      "label": "arm64-wine-fex",
+      "output_bytes": 12991658,
+      "output_sha256": "e85b8f1819f182781d9f170c35644fc16c097ce8d2fe13eba97dd87fb74c03ca",
+      "repeat": 2,
+      "rss_mb": 417.5,
+      "threads_peak": 4,
+      "wall_ms": 16269.9
+    },
+    {
+      "check_exit": 0,
+      "cpu_ms": 15940.0,
+      "exit_code": 0,
+      "extra": {
+        "cpu_source": "descendant rusage via ps, 100 ms samples",
+        "rss_source": "sum of descendant peaks",
+        "samples": 99
+      },
+      "label": "arm64-wine-fex",
+      "output_bytes": 12991658,
+      "output_sha256": "e85b8f1819f182781d9f170c35644fc16c097ce8d2fe13eba97dd87fb74c03ca",
+      "repeat": 3,
+      "rss_mb": 418.3,
+      "threads_peak": 4,
+      "wall_ms": 16278.98
+    },
+    {
+      "check_exit": 0,
+      "cpu_ms": 15400.0,
+      "exit_code": 0,
+      "extra": {
+        "cpu_source": "descendant rusage via ps, 100 ms samples",
+        "rss_source": "sum of descendant peaks",
+        "samples": 96
+      },
+      "label": "arm64-wine-fex",
+      "output_bytes": 12991658,
+      "output_sha256": "e85b8f1819f182781d9f170c35644fc16c097ce8d2fe13eba97dd87fb74c03ca",
+      "repeat": 4,
+      "rss_mb": 416.3,
+      "threads_peak": 4,
+      "wall_ms": 15707.92
+    },
+    {
+      "check_exit": 0,
+      "cpu_ms": 15880.0,
+      "exit_code": 0,
+      "extra": {
+        "cpu_source": "descendant rusage via ps, 100 ms samples",
+        "rss_source": "sum of descendant peaks",
+        "samples": 97
+      },
+      "label": "arm64-wine-fex+no-tso",
+      "output_bytes": 12991658,
+      "output_sha256": "e85b8f1819f182781d9f170c35644fc16c097ce8d2fe13eba97dd87fb74c03ca",
+      "repeat": 0,
+      "rss_mb": 417.8,
+      "threads_peak": 4,
+      "wall_ms": 16341.87
+    },
+    {
+      "check_exit": 0,
+      "cpu_ms": 14650.0,
+      "exit_code": 0,
+      "extra": {
+        "cpu_source": "descendant rusage via ps, 100 ms samples",
+        "rss_source": "sum of descendant peaks",
+        "samples": 91
+      },
+      "label": "arm64-wine-fex+no-tso",
+      "output_bytes": 12991658,
+      "output_sha256": "e85b8f1819f182781d9f170c35644fc16c097ce8d2fe13eba97dd87fb74c03ca",
+      "repeat": 1,
+      "rss_mb": 416.0,
+      "threads_peak": 4,
+      "wall_ms": 14951.4
+    },
+    {
+      "check_exit": 0,
+      "cpu_ms": 14430.0,
+      "exit_code": 0,
+      "extra": {
+        "cpu_source": "descendant rusage via ps, 100 ms samples",
+        "rss_source": "sum of descendant peaks",
+        "samples": 90
+      },
+      "label": "arm64-wine-fex+no-tso",
+      "output_bytes": 12991658,
+      "output_sha256": "e85b8f1819f182781d9f170c35644fc16c097ce8d2fe13eba97dd87fb74c03ca",
+      "repeat": 2,
+      "rss_mb": 415.1,
+      "threads_peak": 4,
+      "wall_ms": 14717.65
+    },
+    {
+      "check_exit": 0,
+      "cpu_ms": 14940.0,
+      "exit_code": 0,
+      "extra": {
+        "cpu_source": "descendant rusage via ps, 100 ms samples",
+        "rss_source": "sum of descendant peaks",
+        "samples": 92
+      },
+      "label": "arm64-wine-fex+no-tso",
+      "output_bytes": 12991658,
+      "output_sha256": "e85b8f1819f182781d9f170c35644fc16c097ce8d2fe13eba97dd87fb74c03ca",
+      "repeat": 3,
+      "rss_mb": 417.9,
+      "threads_peak": 4,
+      "wall_ms": 15569.74
+    },
+    {
+      "check_exit": 0,
+      "cpu_ms": 14260.0,
+      "exit_code": 0,
+      "extra": {
+        "cpu_source": "descendant rusage via ps, 100 ms samples",
+        "rss_source": "sum of descendant peaks",
+        "samples": 89
+      },
+      "label": "arm64-wine-fex+no-tso",
+      "output_bytes": 12991658,
+      "output_sha256": "e85b8f1819f182781d9f170c35644fc16c097ce8d2fe13eba97dd87fb74c03ca",
+      "repeat": 4,
+      "rss_mb": 418.0,
+      "threads_peak": 4,
+      "wall_ms": 14552.86
+    }
+  ],
+  "summary": {
+    "arm64-wine-fex": {
+      "check_exits": [
+        0
+      ],
+      "cpu_ms_median": 15960.0,
+      "exit_codes": [
+        0
+      ],
+      "output_sha256": [
+        "e85b8f1819f182781d9f170c35644fc16c097ce8d2fe13eba97dd87fb74c03ca"
+      ],
+      "rss_mb_median": 418.3,
+      "runs": 5,
+      "threads_peak": 4,
+      "wall_ms_max": 17709.02,
+      "wall_ms_median": 16278.98,
+      "wall_ms_min": 15707.92,
+      "wall_ms_stdev": 833.12
+    },
+    "arm64-wine-fex+no-tso": {
+      "check_exits": [
+        0
+      ],
+      "cpu_ms_median": 14650.0,
+      "exit_codes": [
+        0
+      ],
+      "output_sha256": [
+        "e85b8f1819f182781d9f170c35644fc16c097ce8d2fe13eba97dd87fb74c03ca"
+      ],
+      "rss_mb_median": 417.8,
+      "runs": 5,
+      "threads_peak": 4,
+      "wall_ms_max": 16341.87,
+      "wall_ms_median": 14951.4,
+      "wall_ms_min": 14552.86,
+      "wall_ms_stdev": 733.19
+    }
+  }
+}

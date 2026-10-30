@@ -45,12 +45,19 @@ Porte now has two backends behind one interface (`porte/backends/`):
   install (LGPL-2.1-or-later for WineHQ builds; CrossOver is proprietary).
 
 Why the macOS Wine build: WineHQ's macOS binaries are x86-64 Mach-O and execute
-through Rosetta 2, which is present and fast on Apple silicon. The alternatives
-do not apply here:
+through Rosetta 2, which is present and fast on Apple silicon. Porte does not
+require that particular build, though, and the choice matters more than it used
+to look (revision, Phase 4):
 
-- **FEX** is a Linux userspace emulator; it cannot be dropped into a macOS
-  process, and Wine-for-macOS does not use it.
-- **ARM64EC** is Windows-on-ARM's ABI; it has no macOS equivalent.
+- **Wine compiled for arm64 with FEX** exists on macOS (MetalSharp Wine 4.0, and
+  CodeWeavers' July 2026 ARM64 preview). It runs x86-64 guests through FEX inside
+  an **arm64** process, which is a different execution architecture from Rosetta,
+  with different overhead and different extension points (`docs/11` §3). Discovery
+  is by behaviour, so a user-installed or otherwise-discovered arm64 Wine is used
+  if it is the selected runtime.
+- **ARM64EC** is Windows-on-ARM's ABI, but Wine implements the same shape when it
+  is arm64: its own PE modules are ARM64X and an x86-64 guest calls them through
+  thunks. That does not exist inside a Rosetta process.
 - **CrossOver's** Apple silicon build is proprietary and cannot be redistributed;
   Porte can still use it if the user has installed it, because discovery is by
   behaviour, not by vendor.
@@ -111,9 +118,10 @@ message checks, and from files the guest wrote and saved.
 
 - **A runtime must already exist.** Porte locates one and validates it; setup
   says so instead of pretending to install something it does not ship.
-- **x86-64 through Rosetta.** This is real Windows code, but not native ARM64:
-  speed is Rosetta-class, not native. Rosetta's support horizon is why the cache
-  and profiler stay translator-agnostic.
+- **x86-64 through a translator.** Depending on the runtime, this is Rosetta or
+  FEX; neither is native ARM64 speed, and on the one workload measured here FEX
+  is *not* faster than Rosetta (0.97×, `docs/14`). Rosetta's support horizon is
+  why the cache and profiler stay translator-agnostic.
 - **MSI importer vs. runtime installer.** Whenever a runtime is present the
   package is installed by `msiexec`, including packages Porte's own reader
   cannot parse at all (Epic's) and packages whose payload needs LZX or Quantum

@@ -1,0 +1,43 @@
+{
+  "name": "7zip-lzma-30mb",
+  "input": "${PORTE_WORKLOAD_INPUT}",
+  "input_sha256": "3b9fb80531626dbf894d45cff97e8472edae5e92e346e1d0f55c0a136f453deb",
+  "repeats": 5,
+  "check": {
+    "program": "${PORTE_NATIVE_7ZZ}",
+    "args": ["t", "{out}"]
+  },
+  "backends": [
+    {
+      "label": "wine-rosetta",
+      "kind": "windows",
+      "wine": "${PORTE_ROSETTA_WINE}",
+      "prefix": "${PORTE_ROSETTA_PREFIX}",
+      "program": "C:\\Program Files\\7-Zip\\7z.exe",
+      "args": ["a", "-t7z", "-mx=9", "-mmt=off", "-y", "{out}", "{in}"]
+    },
+    {
+      "label": "arm64-wine-fex",
+      "kind": "windows",
+      "wine": "${PORTE_ARM64_WINE}",
+      "prefix": "${PORTE_ARM64_PREFIX}",
+      "program": "C:\\Program Files\\7-Zip\\7z.exe",
+      "args": ["a", "-t7z", "-mx=9", "-mmt=off", "-y", "{out}", "{in}"]
+    },
+    {
+      "label": "arm64-wine-fex-no-tso",
+      "kind": "windows",
+      "wine": "${PORTE_ARM64_WINE}",
+      "prefix": "${PORTE_ARM64_PREFIX}",
+      "program": "C:\\Program Files\\7-Zip\\7z.exe",
+      "env": {"FEX_TSOENABLED": "0"},
+      "args": ["a", "-t7z", "-mx=9", "-mmt=off", "-y", "{out}", "{in}"]
+    },
+    {
+      "label": "native-arm64",
+      "kind": "native",
+      "program": "${PORTE_NATIVE_7ZZ}",
+      "args": ["a", "-t7z", "-mx=9", "-mmt=off", "-y", "{out}", "{in}"]
+    }
+  ]
+}
